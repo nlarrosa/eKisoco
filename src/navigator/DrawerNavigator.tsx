@@ -1,41 +1,66 @@
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import React, { useContext } from 'react';
+import { createDrawerNavigator, DrawerContentScrollView, DrawerContentComponentProps, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
 
-import { StackNavigator } from './StackNavigator';
-import { LoginScreen } from '../screens/auth/LoginScreen';
-import { RegisterScreen } from '../screens/auth/RegisterScreen';
-import { ForgotScreen } from '../screens/auth/ForgotScreen';
+import { ProfileScreen } from '../screens/user/ProfileScreen';
+import { AccountScreen } from '../screens/user/AccountScreen';
+import { ProductScreen } from '../screens/reposiciones/ProductScreen';
+import { AuthContext } from '../context/AuthContext';
 
 
-const Drawer =  createDrawerNavigator();
+export type rootDrawParams = {
+
+    ProfileScreen: undefined,
+    AccountScreen: undefined,
+    ProductScreen: undefined,
+}
+
+const Drawer =  createDrawerNavigator<rootDrawParams>();
 
 
 export const  DrawerNavigator = () => {
 
+
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      initialRouteName='ProductScreen'
+      drawerContent={  (props)  => <CustomDrawerContent {...props} />}
+    >
       <Drawer.Screen 
-        name ="RegisterScreen" 
-        component ={RegisterScreen} 
+        name ="ProfileScreen" 
+        component ={ProfileScreen} 
         options = {{
-          title: 'Registro'
+          title: 'Mi Perfil'
         }}
       />
       <Drawer.Screen 
-        name ="LoginScreen" 
-        component ={LoginScreen} 
+        name ="AccountScreen" 
+        component ={AccountScreen} 
         options = {{
-          title: 'Login'
+          title: 'Mi cuenta'
         }}
       />
       <Drawer.Screen 
-        name ="ForgotScreen" 
-        component ={ForgotScreen} 
+        name ="ProductScreen" 
+        component ={ProductScreen} 
         options = {{
-          title: 'Recuperar Clave'
+          title: 'Pedidos'
         }}
       />
     </Drawer.Navigator>
   );
+}
 
+
+/** Listado del menu personalizado  */
+const CustomDrawerContent = (props: DrawerContentComponentProps) => {
+
+    const { logOut } = useContext(AuthContext);
+
+    return (
+      <DrawerContentScrollView {...props}>
+        <DrawerItemList {...props} />
+        <DrawerItem label="Cerrar Sesion" onPress={logOut} />
+      </DrawerContentScrollView>
+    )
 }

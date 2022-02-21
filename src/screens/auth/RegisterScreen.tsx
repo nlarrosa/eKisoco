@@ -54,87 +54,87 @@ export const RegisterScreen = ( {navigation}: Props ) => {
 
       <View style={ stylesGral.glCenterContainer }>
         <Image style={ styleRegister.logo } source={logoUrl} />
-        <Text style={ styleRegister.subTitleText }>Registrate!</Text>
+        <Text style={ styleRegister.subTitleText }>Registrate Ahora!</Text>
       </View>
 
       <ScrollView style={ stylesGral.glScrollView }>
         <View style={ styleRegister.registerContainer }>
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Email *'
-              keyboardType='email-address'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Clave *'
-              keyboardType='default'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Reingresar Clave *'
-              keyboardType='default'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Nombre *'
-              keyboardType='default'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Apellido *'
-              keyboardType='default'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Direccion *'
-              keyboardType='default'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Cod. Postal *'
-              keyboardType='default'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Celular *'
-              keyboardType='numeric'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Interior / Amba *'
-              keyboardType='numeric'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Distribuidora *'
-              keyboardType='numeric'
-            />
-            <TextInput 
-              style={ stylesGral.glTextInput}
-              placeholder='Paquete *'
-              keyboardType='numeric'
-            />
-            
-            <View style={ styleRegister.checkContainer }>
-              <TouchableOpacity>
-                  <Text style={ styleRegister.ckeckText }>Acepta términos y condiciones *</Text>
-              </TouchableOpacity>
-              <CustomSwitch isOn={ isActive } onChange={ ( value ) => handlerChangeBases(value, 'isActive')} />
-            </View>
-
-            <View>
-                <TouchableOpacity style={ stylesGral.glButton }>
-                  <Text style={ stylesGral.glButtonText }>Registrate</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={ goToLogin }>
-                  <Text style={ stylesGral.glTextLink }>Volver</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={ goToLogin }>
-                  <Text style={ stylesGral.glTextLink }>Olvidaste tu clave?</Text>
-                </TouchableOpacity>
-            </View>
-
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Email *'
+            keyboardType='email-address'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Clave *'
+            keyboardType='default'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Reingresar Clave *'
+            keyboardType='default'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Nombre *'
+            keyboardType='default'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Apellido *'
+            keyboardType='default'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Direccion *'
+            keyboardType='default'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Cod. Postal *'
+            keyboardType='default'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Celular *'
+            keyboardType='numeric'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Interior / Amba *'
+            keyboardType='numeric'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Distribuidora *'
+            keyboardType='numeric'
+          />
+          <TextInput 
+            style={ stylesGral.glTextInput}
+            placeholder='Paquete *'
+            keyboardType='numeric'
+          />
+        </View>    
+        <View style={ styleRegister.checkContainer }>
+          <TouchableOpacity>
+              <Text style={ styleRegister.ckeckText }>Acepta términos y condiciones *</Text>
+          </TouchableOpacity>
+          <CustomSwitch isOn={ isActive } onChange={ ( value ) => handlerChangeBases(value, 'isActive')} />
         </View>
+
+        <View style={ stylesGral.glFooterContainer }>
+            <TouchableOpacity style={ stylesGral.glButton }>
+              <Text style={ stylesGral.glButtonText }>Registrate</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={ goToLogin }>
+              <Text style={ stylesGral.glTextLink }>Volver</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={ goToLogin }>
+              <Text style={ stylesGral.glTextLink }>Olvidaste tu clave?</Text>
+            </TouchableOpacity>
+        </View>
+
+        
       </ScrollView>
     </SafeAreaView>
 

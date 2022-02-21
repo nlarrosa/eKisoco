@@ -11,7 +11,7 @@ export const styleLogin = StyleSheet.create({
     logo: {
         width: 190,
         height: 50,
-        marginVertical: '30%',
+        marginVertical: '20%',
     },
 
 });

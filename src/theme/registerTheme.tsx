@@ -12,23 +12,23 @@ export const styleRegister = StyleSheet.create({
     logo: {
         width: 190,
         height: 50,
-        marginTop: '15%',
+        marginTop: '10%',
         marginBottom: 10,
     },
 
     checkContainer: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
-        width: '75%',
-        marginVertical: 10,
+        width: '100%',
         paddingHorizontal: 10,
         height: 54,
     },
 
     ckeckText: {
         fontSize: 14,
-        fontWeight: 'bold',
+        fontWeight: 'normal',
+        marginRight: 15,
     },
 
     subTitleText: { 
