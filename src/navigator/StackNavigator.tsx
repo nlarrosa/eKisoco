@@ -10,6 +10,7 @@ import { ProfileScreen } from '../screens/user/ProfileScreen';
 import { AccountScreen } from '../screens/user/AccountScreen';
 import { DrawerNavigator } from './DrawerNavigator';
 import { Loading } from '../components/Loading';
+import { Alert } from 'react-native';
 
 
 export type rootStackParams = {
@@ -44,7 +45,6 @@ export const StackNavigator = () => {
             },
         }}
     >
- 
         { ( status !== 'authenticated') 
         
         ? (

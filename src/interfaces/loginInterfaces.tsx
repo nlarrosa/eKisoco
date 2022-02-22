@@ -10,3 +10,46 @@ export interface loginData {
     mail: string,
     clave: string,
 }
+
+
+export interface registerData {
+    token: string,
+    idCanilla: string,
+    clave: string,
+    apellido: string,
+    nombre: string,
+    direccion: string,
+    codPostal: string,
+    localidad: string,
+    celular: string,
+    paquete: string,
+}
+
+
+export interface forgotPass {
+    mail: string,
+}
+
+
+export interface CanillaResponse {
+    IdCanilla:             string;
+    Token:                 string;
+    Mail:                  string;
+    Apellido:              string;
+    Nombre:                string;
+    Direccion:             string;
+    CodPostal:             string;
+    Localidad:             null;
+    Celular:               string;
+    IdMedioDeEntregaPadre: string;
+    MedioDeEntregaPadre:   string;
+    NroCuentaHija:         string;
+    CuentaHija:            null;
+    GrupoCuenta:           string;
+    Paquete:               null;
+    HabilitadoRepo:        boolean;
+    Estado:                null;
+    Motivo:                null;
+    FechaCreacion:         string;
+}
+

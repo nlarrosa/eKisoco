@@ -25,8 +25,8 @@ export const LoginScreen = ( {route , navigation}: Props ) => {
   const logoUrl        = constGeneral.logoComplete;
   const colorGreen     = constColor.green;
   const goToRegister   = () => navigation.navigate('RegisterScreen');
-  const goToForgotPass = () => navigation.navigate('ForgotScreen')
-  const { signIn, errorMessage, removeError } = useContext( AuthContext )
+  const goToForgotPass = () => navigation.navigate('ForgotScreen');
+  const { signIn, errorMessage, removeError } = useContext( AuthContext );
 
 
   useEffect(() => {
@@ -38,12 +38,12 @@ export const LoginScreen = ( {route , navigation}: Props ) => {
 
 
   useEffect(() => {
-
-    if(errorMessage.length === 0) return;
+    if(errorMessage.length === 0) 
+    return;
 
     Alert.alert(
       'Error al Ingresar', 
-      'Falta la api error', 
+      errorMessage, 
       [{ text: 'Aceptar', onPress: removeError}]
     );
   }, [errorMessage])

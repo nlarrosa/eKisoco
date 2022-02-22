@@ -1,8 +1,8 @@
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-import { LoginResponse, loginData } from '../interfaces/loginInterfaces';
+import { LoginResponse, loginData, forgotPass, CanillaResponse, registerData } from '../interfaces/loginInterfaces';
 import { AuthState, authReducer } from '../reducers/authReducer';
 import Sgdi from '../api/Sgdi';
 
@@ -12,21 +12,26 @@ import Sgdi from '../api/Sgdi';
 type AuthContextProps = {
 
     errorMessage: string,
+    errorForgot: string,
     userId: string | null,
+    dataUser: CanillaResponse | null,
     token: string | null,
     enabledReposity: boolean,
-    status: 'checking' | 'authenticated' | 'no-authenticated',
+    status: 'checking' | 'authenticated' | 'no-authenticated' | null,
     signIn:  (loginData : loginData) => void,
     signUp: () => void,
     logOut:  () => void,
     removeError: () => void,
+    forgotPassword: (forgotPass: forgotPass) => void,
 
 }
 
 
 const authInitialState: AuthState = {
     errorMessage: '',
+    errorForgot: '',
     userId: null,
+    dataUser: null,
     token: null,
     enabledReposity: false,
     status: 'checking',
@@ -35,7 +40,7 @@ const authInitialState: AuthState = {
 
 export const AuthContext = createContext( {} as AuthContextProps );
 
-export const Authprovider = ({ children }: any ) => {
+export const AuthProvider = ({ children }: any ) => {
 
     const [state, dispatch] = useReducer(authReducer, authInitialState)
 
@@ -47,7 +52,7 @@ export const Authprovider = ({ children }: any ) => {
 
     const validToken = async() => {
         const userData = await AsyncStorage.getItem('userData');
-        const { token, userId, enabledReposity} = JSON.parse(userData || '{}');
+        const { token, userId, enabledReposity, dataUser} = JSON.parse(userData || '{}');
 
         if(!token) 
         return dispatch({ type: 'NoAuthenticated' });
@@ -57,6 +62,7 @@ export const Authprovider = ({ children }: any ) => {
             payload: {
                 token,
                 userId,
+                dataUser,
                 enabledReposity,
             }
         });
@@ -70,13 +76,29 @@ export const Authprovider = ({ children }: any ) => {
 
         try {
 
-            const { data } = await Sgdi.get<LoginResponse>('/Login', { params: {mail, clave} });
+            const { data } = await Sgdi.get<LoginResponse>('/Login', { 
+                params: {
+                    mail, 
+                    clave
+                } 
+            });
+            
+
+            const response = await Sgdi.get<CanillaResponse>('/Canillas', { 
+                params: { 
+                    token: data.Token, 
+                    idCanilla: data.IdCanilla 
+                }
+            });
+
+
             dispatch({ 
                 type: 'signIn', 
                 payload: {
                     token: data.Token,
                     userId: data.IdCanilla,
-                    enabledReposity: true
+                    dataUser:response.data,
+                    enabledReposity: response.data.HabilitadoRepo,
                 }
             });
 
@@ -84,22 +106,35 @@ export const Authprovider = ({ children }: any ) => {
                 JSON.stringify({
                     token: data.Token,
                     userId: data.IdCanilla,
-                    enabledReposity: true,
+                    dataUser: response.data,
+                    enabledReposity: response.data.HabilitadoRepo,
                 })
             );
 
-        } catch (data) {
+
+        } catch (error) {
             
             dispatch({
                 type: 'addError',
-                payload: JSON.stringify(data) || 'Informacion Incorrecta',
+                payload: JSON.stringify(error) || 'Informacion Incorrecta',
             });
         }
 
     };
 
 
-    const signUp = () => {};
+    /** Registra un nuevo usuario y ejecuta el login
+     * de acceso al mismo tiempo
+     */
+    const signUp = async ( datauser : registerData ) => {
+
+        try {
+
+            
+        } catch (error) {
+            
+        }
+    };
 
 
     /** Logout de usuario eliminando storage
@@ -125,6 +160,34 @@ export const Authprovider = ({ children }: any ) => {
         });
     };
 
+
+    
+    const forgotPassword = async({ mail }: forgotPass) => {
+
+        try {
+
+            if(!mail){
+
+                dispatch({
+                    type: 'addErrorForgot',
+                    payload: 'Debe ingesar un email',
+                });
+            } else { 
+
+                const resp = await Sgdi.post('/Login/BlanquearContraseña', { params: { mail }});
+                console.log(resp);
+            }
+
+            
+        } catch ({ message }) {
+            
+            dispatch({
+                type: 'addErrorForgot',
+                payload: JSON.stringify(message) || 'Informacion Incorrecta',
+            });
+        }
+    }
+
     
 
     return(
@@ -134,6 +197,7 @@ export const Authprovider = ({ children }: any ) => {
             signUp,
             logOut,
             removeError,
+            forgotPassword,
         }}>
        { children }
         </AuthContext.Provider>
