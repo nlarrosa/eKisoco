@@ -8,7 +8,7 @@ export const styleProfile = StyleSheet.create({
 
     headerBanner: {
         textAlign: 'center',
-        marginBottom: 10,
+        marginBottom: 20,
         backgroundColor: '#f0f0f0',
         flexDirection: 'row',
         alignItems: 'center',
@@ -34,7 +34,6 @@ export const styleProfile = StyleSheet.create({
         fontSize: 13,
         color: constColor.darkLight,
         textAlign: 'left',
-        marginBottom: 10
     },
 
     avatarContent: {

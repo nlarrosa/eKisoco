@@ -7,13 +7,8 @@ export const styleRegister = StyleSheet.create({
 
     registerContainer: {
         alignItems: 'center',
-    },
-
-    logo: {
-        width: 190,
-        height: 50,
-        marginTop: '10%',
-        marginBottom: 10,
+        marginHorizontal: 35,
+        marginTop: 20,
     },
 
     checkContainer: {
@@ -21,7 +16,8 @@ export const styleRegister = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: '100%',
-        paddingHorizontal: 10,
+        marginTop: 35,
+
         height: 54,
     },
 

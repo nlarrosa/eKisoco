@@ -5,8 +5,11 @@ import  constColor  from '../constants/color';
 export const stylesGral = StyleSheet.create({
 
     glSafeArea: {
-        backgroundColor: 'white',
         flex: 1,
+        backgroundColor: 'white',
+        justifyContent: 'center',
+        height: 600,
+        marginBottom: 50
     },
 
     glCenterContainer: {
@@ -22,33 +25,44 @@ export const stylesGral = StyleSheet.create({
         marginTop : 30,
     },
 
+    glContainerLogo: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: '20%',
+    },
+
+    glLogo: {
+        width: 230,
+        height: 70,
+    },
+
     glTextInput: {
         height: 45,
         width: '80%',
         margin: 10,
         borderWidth: 1,
         paddingVertical: 10,
-        paddingHorizontal: 30,
+        paddingHorizontal: 35,
         borderColor: '#cccccc',
         alignItems: 'center',
         borderRadius: 50,
     },
 
     glTextInputLine: {
-        height: 33,
+        height: 40,
         width: '100%',
-        borderBottomWidth: 1,
+        borderBottomWidth: 2,
         borderColor: '#cccccc',
         alignItems: 'center',
     },
 
     glButton: {
         backgroundColor: constColor.green,
-        height: 45,
-        borderRadius: 50,
-        padding: 10,
+        height: 55,
+        width: 300,
+        borderRadius: 20,
+        padding: 15,
         alignItems: "center",
-        marginVertical: 25,
         shadowColor: constColor.dark,
         shadowOffset: {
             width: 0,
@@ -70,7 +84,7 @@ export const stylesGral = StyleSheet.create({
     glTextLink: {
         color: constColor.green,
         fontSize: 15,
-        marginTop: 10,
+        marginTop: 25,
         textAlign: 'center'
     },
 
@@ -81,7 +95,13 @@ export const stylesGral = StyleSheet.create({
 
     glLabel: {
         fontWeight: 'bold',
-        fontSize: 12,
+        fontSize: 13,
+        marginTop: 10,
+    },
+
+    glSubtitle: {
+        fontWeight: 'bold',
+        fontSize: 14,
         marginTop: 10,
     },
 
@@ -93,7 +113,13 @@ export const stylesGral = StyleSheet.create({
 
     glFooterContainer: {
         alignItems: 'center',
-        marginBottom: 30,
-    }
+        marginVertical: 40,
+    },
+
+    glPicker: {
+        fontSize: 14,
+        color: '#879191',
+        marginBottom: 10,
+    },
 
 });

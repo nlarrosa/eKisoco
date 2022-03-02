@@ -1,10 +1,11 @@
-import { ProfileData } from '../interfaces/userInterfaces';
+import { ProfileData, CuentasMadresData } from '../interfaces/userInterfaces';
 
 
 export interface UserState {
 
     messageProfile: string | null,
     userData: ProfileData | null,
+    cuentasMadresData: CuentasMadresData | null,
 }
 
 
@@ -12,9 +13,10 @@ type UserAction =
     |{ type: 'editProfile', payload: { userData: ProfileData } }
     |{ type: 'addMessageProfile', payload: string }
     |{ type: 'removeMessageProfile' }
+    |{ type: 'cuentasMadres', payload: { cuentasMadresData: CuentasMadresData }}
 
 
-export const userReducer = ( state: UserState, action: UserAction): UserState => {
+export const userReducer = ( state: UserState, action: UserAction): UserState  => {
 
     switch (action.type) {
 
@@ -36,6 +38,13 @@ export const userReducer = ( state: UserState, action: UserAction): UserState =>
             return {
                 ...state,
                 messageProfile: '',
+            }
+        break;
+
+        case 'cuentasMadres':
+            return {
+                ...state,
+                cuentasMadresData: action.payload.cuentasMadresData
             }
         break;
     

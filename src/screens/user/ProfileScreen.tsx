@@ -37,7 +37,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
   // }, [])
 
 
-  const {onChange, form } = useForm({ 
+  const {onChange, formData } = useForm({ 
 
     clave: '',
     apellido: dataUser?.Apellido,
@@ -49,7 +49,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
     paquete: dataUser?.Paquete, 
   });
 
-  const { clave, apellido, nombre, direccion, codPostal, celular, localidad, paquete } = form;
+  const { clave, apellido, nombre, direccion, codPostal, celular, localidad, paquete } = formData;
 
 
   useEffect(() => {
@@ -66,9 +66,17 @@ export const ProfileScreen = ({ navigation }: Props ) => {
 
 
   const onSubmitHandler = () => {
-      //  editProfile({ clave, apellido, nombre, direccion, codPostal, celular, localidad, paquete })
-      // getProfile();
-      editProfile(apellido);
+
+      editProfile({ 
+        Clave: clave,
+        Apellido: apellido,
+        Nombre: nombre,
+        Direccion: direccion,
+        CodPostal: codPostal,
+        Celular: celular,
+        Localidad: '',
+        Paquete: '', 
+      });
   }
   
     

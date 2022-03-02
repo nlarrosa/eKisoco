@@ -51,5 +51,7 @@ export interface CanillaResponse {
     Estado:                null;
     Motivo:                null;
     FechaCreacion:         string;
-}
+};
+
+
 

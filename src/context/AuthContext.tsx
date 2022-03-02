@@ -9,6 +9,7 @@ import Sgdi from '../api/Sgdi';
 
 
 
+
 type AuthContextProps = {
 
     errorMessage: string,
@@ -40,16 +41,20 @@ const authInitialState: AuthState = {
 
 export const AuthContext = createContext( {} as AuthContextProps );
 
+
 export const AuthProvider = ({ children }: any ) => {
 
     const [state, dispatch] = useReducer(authReducer, authInitialState)
+    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
 
 
     useEffect(() => {
       validToken();
     }, []);
-    
 
+
+
+    
     const validToken = async() => {
         const userData = await AsyncStorage.getItem('userData');
         const { token, userId, enabledReposity, dataUser} = JSON.parse(userData || '{}');
@@ -75,6 +80,17 @@ export const AuthProvider = ({ children }: any ) => {
     const signIn = async({ mail, clave }: loginData) => {
 
         try {
+
+            if(mail.length === 0 || clave.length === 0){
+                dispatch({ type: 'addError', payload: 'Complete los campos obligatorios'});
+                return;
+            }
+
+            if(!emailRegex.test(mail)){
+                dispatch({ type: 'addError', payload: 'El campo Email es incorrecto'});
+                return;
+            }
+            
 
             const { data } = await Sgdi.get<LoginResponse>('/Login', { 
                 params: {
@@ -112,11 +128,11 @@ export const AuthProvider = ({ children }: any ) => {
             );
 
 
-        } catch (error) {
+        } catch ({ message }) {
             
             dispatch({
                 type: 'addError',
-                payload: JSON.stringify(error) || 'Informacion Incorrecta',
+                payload: JSON.stringify(message) || 'Informacion Incorrecta',
             });
         }
 
@@ -129,7 +145,9 @@ export const AuthProvider = ({ children }: any ) => {
     const signUp = async ( datauser : registerData ) => {
 
         try {
-
+            
+            console.log(datauser);
+            
             
         } catch (error) {
             
@@ -166,17 +184,14 @@ export const AuthProvider = ({ children }: any ) => {
 
         try {
 
-            if(!mail){
-
-                dispatch({
-                    type: 'addErrorForgot',
-                    payload: 'Debe ingesar un email',
-                });
-            } else { 
-
-                const resp = await Sgdi.post('/Login/BlanquearContraseña', { params: { mail }});
-                console.log(resp);
-            }
+            if(!mail || !emailRegex.test(mail)){
+                dispatch({ type: 'addErrorForgot', payload: 'Ingrese un email válido' });
+                return;
+            } 
+            
+            const resp = await Sgdi.post('/Login/BlanquearContraseña', { 
+                params: { mail }
+            });
 
             
         } catch ({ message }) {

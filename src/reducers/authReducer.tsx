@@ -4,7 +4,7 @@ export interface AuthState {
 
     errorMessage: string,
     errorForgot: string,
-    userId: string | null,
+    userId:      string | null,
     dataUser: CanillaResponse | null,
     token: string | null,
     enabledReposity: boolean,
