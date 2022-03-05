@@ -8,8 +8,6 @@ import { rootStackParams } from '../../navigator/StackNavigator';
 
 import { styleProfile } from '../../theme/profileTheme';
 import { stylesGral } from '../../theme/generalTheme';
-import  constGral  from '../../constants/globals';
-import { styleRegister } from '../../theme/registerTheme';
 import constColor from '../../constants/color';
 import { AuthContext } from '../../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
@@ -49,7 +47,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
     paquete: dataUser?.Paquete, 
   });
 
-  const { clave, apellido, nombre, direccion, codPostal, celular, localidad, paquete } = formData;
+  // const { clave, apellido, nombre, direccion, codPostal, celular, localidad, paquete } = formData;
+
 
 
   useEffect(() => {
@@ -67,16 +66,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
 
   const onSubmitHandler = () => {
 
-      editProfile({ 
-        Clave: clave,
-        Apellido: apellido,
-        Nombre: nombre,
-        Direccion: direccion,
-        CodPostal: codPostal,
-        Celular: celular,
-        Localidad: '',
-        Paquete: '', 
-      });
+      editProfile(formData);
   }
   
     

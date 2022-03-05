@@ -1,36 +1,41 @@
-import { createContext, useReducer, useEffect, useState } from "react";
+import { createContext, useReducer, useEffect } from "react";
+import {AxiosError} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-import { LoginResponse, loginData, forgotPass, CanillaResponse, registerData } from '../interfaces/loginInterfaces';
+import { LoginResponse, loginData, forgotPass, CanillaResponse } from '../interfaces/loginInterfaces';
 import { AuthState, authReducer } from '../reducers/authReducer';
 import Sgdi from '../api/Sgdi';
-
+import constantes from '../constants/globals';
+import axios from 'axios';
+import { RegisterData } from '../interfaces/userInterfaces';
 
 
 
 
 type AuthContextProps = {
-
+    
     errorMessage: string,
     errorForgot: string,
+    errorSignup: string,
     userId: string | null,
     dataUser: CanillaResponse | null,
     token: string | null,
     enabledReposity: boolean,
     status: 'checking' | 'authenticated' | 'no-authenticated' | null,
     signIn:  (loginData : loginData) => void,
-    signUp: () => void,
+    signUp:  (datauser : RegisterData, region: string, distribuidor: string, bases: boolean) => void,
     logOut:  () => void,
     removeError: () => void,
     forgotPassword: (forgotPass: forgotPass) => void,
-
+    
 }
 
 
 const authInitialState: AuthState = {
     errorMessage: '',
     errorForgot: '',
+    errorSignup: '',
     userId: null,
     dataUser: null,
     token: null,
@@ -39,19 +44,21 @@ const authInitialState: AuthState = {
 }
 
 
+
+
+
 export const AuthContext = createContext( {} as AuthContextProps );
 
 
 export const AuthProvider = ({ children }: any ) => {
-
+    
     const [state, dispatch] = useReducer(authReducer, authInitialState)
-    const emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+    
 
 
     useEffect(() => {
       validToken();
     }, []);
-
 
 
     
@@ -86,7 +93,7 @@ export const AuthProvider = ({ children }: any ) => {
                 return;
             }
 
-            if(!emailRegex.test(mail)){
+            if(!constantes.emailRegex.test(mail)){
                 dispatch({ type: 'addError', payload: 'El campo Email es incorrecto'});
                 return;
             }
@@ -128,29 +135,67 @@ export const AuthProvider = ({ children }: any ) => {
             );
 
 
-        } catch ({ message }) {
+        } catch (error) {
             
+            const err = error as AxiosError;
+
             dispatch({
                 type: 'addError',
-                payload: JSON.stringify(message) || 'Informacion Incorrecta',
+                payload: err.response?.data || 'Informacion Incorrecta',
             });
         }
-
     };
+
 
 
     /** Registra un nuevo usuario y ejecuta el login
      * de acceso al mismo tiempo
      */
-    const signUp = async ( datauser : registerData ) => {
+    const signUp = ( datauser : RegisterData, region: string, distribuidor: string, bases: boolean ) => {
 
         try {
+
+            const validate: any = validateForm(datauser, region, distribuidor);
             
-            console.log(datauser);
+            if(!validate.status){
+                dispatch({ type: 'addErrorSignup', payload: validate.msg });
+                return;
+            }
             
+            if(!bases){
+                dispatch({type: 'addErrorSignup', payload: 'Debe aceptar los términos y condiciones'});
+                return;
+            }
+            
+            
+            let cuentaHija;
+            (region === constantes.regionInterior) 
+            ? cuentaHija = datauser.Localidad : cuentaHija = distribuidor;
+            
+            const registerUSer = axios.post('/Canillas', {
+                params: {
+                    mail: datauser.Email,
+                    clave: datauser.Clave,
+                    apellido: datauser.Apellido,
+                    nombre: datauser.Nombre,
+                    direccion: datauser.Direccion,
+                    codPostal: datauser.CodPostal,
+                    celular: datauser.Celular,
+                    idMedioDeEntregaPadre: distribuidor,
+                    nroCuentaHija: cuentaHija,
+                    localidad: datauser.Localidad,
+                    paquete: datauser.Paquete,
+                }
+            });
             
         } catch (error) {
-            
+
+            const err = error as AxiosError; 
+            dispatch({
+                type: 'addErrorSignup', 
+                payload: err.response?.data
+            });
+            return;
         }
     };
 
@@ -179,31 +224,101 @@ export const AuthProvider = ({ children }: any ) => {
     };
 
 
+    /** Formulario para recuperar la contraseña
+     * el email se envia segun endpoint Api
+     */
     
     const forgotPassword = async({ mail }: forgotPass) => {
-
+        
         try {
 
-            if(!mail || !emailRegex.test(mail)){
+            if(!mail || !constantes.emailRegex.test(mail)){
                 dispatch({ type: 'addErrorForgot', payload: 'Ingrese un email válido' });
                 return;
             } 
-            
+
             const resp = await Sgdi.post('/Login/BlanquearContraseña', { 
                 params: { mail }
             });
-
             
-        } catch ({ message }) {
+        } catch ({ response }) {
             
-            dispatch({
-                type: 'addErrorForgot',
-                payload: JSON.stringify(message) || 'Informacion Incorrecta',
-            });
+            // const err = error as AxiosError;
+            // console.log(JSON.stringify(response));
+            // dispatch({
+            //     type: 'addErrorForgot',
+            //     payload: err.response?.data || 'Informacion Incorrecta',
+            // });
         }
-    }
+    };
+
 
     
+
+    /** validamos los campos del form segun restricciones
+     * solicitadas en documentacion
+     */
+    const validateForm = (datauser: object, region: string, distri: string): object => {
+        
+        let  clave: string = '';
+
+        let validate: object = {
+            status: true,
+            msg: '',
+        };
+
+        Object.entries(datauser).forEach(([key, value]) =>  {
+
+            if( key === 'Clave') { clave = value; }
+
+            if(key !== 'Localidad'){ 
+                
+                if( key !== 'Paquete'){
+
+                    if(!Boolean(value) || !Boolean(region) || !Boolean(distri))
+                    {
+
+                        validate = {
+                            status: false,
+                            msg: 'Complete los campos obligatorios',
+                        };
+                    }
+
+                    if( key === 'Email'){
+                        if(!constantes.emailRegex.test(value)){
+                            validate = {
+                                status: false,
+                                msg: 'Ingrese un Email válido',
+                            };
+                        }
+                    }
+
+                    if( key === 'ReClave'){
+
+                        if( value !== clave ){
+                            validate = {
+                                status: false,
+                                msg: 'Las Claves ingresadas no coinciden'
+                            }
+                        }
+                    }
+
+                }else {
+
+                    if( region === constantes.regionAmba && !Boolean(value))
+                    {
+                        validate = {
+                            status: false,
+                            msg: 'Complete el campo Paquete',
+                        };
+                    }
+                }
+            }
+        });
+
+        return validate;
+    };
+
 
     return(
         <AuthContext.Provider value = {{
@@ -217,5 +332,4 @@ export const AuthProvider = ({ children }: any ) => {
        { children }
         </AuthContext.Provider>
     )
-
 }

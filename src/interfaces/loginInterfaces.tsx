@@ -13,16 +13,16 @@ export interface loginData {
 
 
 export interface registerData {
-    token: string,
+    token:     string,
     idCanilla: string,
-    clave: string,
-    apellido: string,
-    nombre: string,
+    clave:     string,
+    apellido:  string,
+    nombre:    string,
     direccion: string,
     codPostal: string,
     localidad: string,
-    celular: string,
-    paquete: string,
+    celular:   string,
+    paquete:   string,
 }
 
 
@@ -52,6 +52,5 @@ export interface CanillaResponse {
     Motivo:                null;
     FechaCreacion:         string;
 };
-
 
 

@@ -1,4 +1,4 @@
-import { ProfileData, CuentasMadresData } from '../interfaces/userInterfaces';
+import { ProfileData, CuentasMadresData, CuentasHijasData } from '../interfaces/userInterfaces';
 
 
 export interface UserState {
@@ -6,14 +6,16 @@ export interface UserState {
     messageProfile: string | null,
     userData: ProfileData | null,
     cuentasMadresData: CuentasMadresData | null,
+    cuentasHijasData: CuentasHijasData | null,
 }
 
 
 type UserAction = 
     |{ type: 'editProfile', payload: { userData: ProfileData } }
-    |{ type: 'addMessageProfile', payload: string }
-    |{ type: 'removeMessageProfile' }
+    |{ type: 'addErrorProfile', payload: string }
+    |{ type: 'removeErrorProfile' }
     |{ type: 'cuentasMadres', payload: { cuentasMadresData: CuentasMadresData }}
+    |{ type: 'cuentasHijas', payload: { cuentasHijasData: CuentasHijasData }}
 
 
 export const userReducer = ( state: UserState, action: UserAction): UserState  => {
@@ -27,14 +29,14 @@ export const userReducer = ( state: UserState, action: UserAction): UserState  =
             }
         break;
 
-        case 'addMessageProfile':
+        case 'addErrorProfile':
             return {
                 ...state,
-                messageProfile: '',
+                messageProfile: action.payload,
             }
         break;
 
-        case 'removeMessageProfile':
+        case 'removeErrorProfile':
             return {
                 ...state,
                 messageProfile: '',
@@ -45,6 +47,13 @@ export const userReducer = ( state: UserState, action: UserAction): UserState  =
             return {
                 ...state,
                 cuentasMadresData: action.payload.cuentasMadresData
+            }
+        break;
+
+        case 'cuentasHijas':
+            return {
+                ...state,
+                cuentasHijasData: action.payload.cuentasHijasData,
             }
         break;
     

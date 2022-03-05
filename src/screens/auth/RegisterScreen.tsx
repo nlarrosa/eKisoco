@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, Alert } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Picker } from '@react-native-picker/picker';
 import { Icon, Input } from 'react-native-elements';
@@ -14,8 +14,9 @@ import { styleRegister } from '../../theme/registerTheme';
 import { CustomSwitch } from '../../components/CustomSwitch';
 import { LogoHeader } from '../../components/LogoHeader';
 import { UserContext } from '../../context/UserContext';
-import { CuentasMadresData } from '../../interfaces/userInterfaces';
+import { CuentasMadresData, CuentasHijasData } from '../../interfaces/userInterfaces';
 import { useForm } from '../../hooks/useForm';
+import { AuthContext } from '../../context/AuthContext';
 
 
 
@@ -29,10 +30,13 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   const colorGreenLight   = constColor.greenLight;
   const goToLogin         = () => navigation.navigate('LoginScreen');
 
-  const { getCuentasMadres, cuentasMadresData } = useContext(UserContext);
+  const { getCuentasMadres, getCuentasHijas, cuentasMadresData, cuentasHijasData } = useContext(UserContext);
+  const { signUp, errorSignup, removeError } = useContext(AuthContext);
+
   const [basesStatus, setBasesStatus] = useState({ isActive: false });
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedCuenta, setSelectedCuenta] = useState('');
+  const [selectedCuentaHija, setSelectedCuentaHija] = useState('');
   const [regionStatus, setRegionStatus] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { isActive } = basesStatus;
@@ -45,18 +49,16 @@ export const RegisterScreen = ( {navigation}: Props ) => {
 
 
   const { onChange, formData } = useForm({
-    email: '',
-    clave: '',
-    reclave: '',
-    nombre: '',
-    apellido: '',
-    direccion: '',
-    codpostal: '',
-    celular: '',
-    region: selectedRegion,
-    distribuidor: selectedCuenta,
-    localidad: '',
-    paquete: '',
+    Email: '',
+    Clave: '',
+    ReClave: '',
+    Nombre: '',
+    Apellido: '',
+    Direccion: '',
+    CodPostal: '',
+    Celular: '',
+    Localidad: '',
+    Paquete: '',
   })
 
 
@@ -66,6 +68,22 @@ export const RegisterScreen = ( {navigation}: Props ) => {
       headerShown: false,
     })
   }, []);
+
+
+  /** Evaluamos los campos a validar y 
+   * devolvemos el error
+   */
+  useEffect(() => {
+    
+    if(errorSignup.length === 0) 
+    return;
+
+    Alert.alert(
+      'Error de Registro', 
+      errorSignup, 
+      [{ text: 'Aceptar', onPress: removeError}]
+    );
+  }, [errorSignup]);
 
 
 
@@ -90,15 +108,26 @@ export const RegisterScreen = ( {navigation}: Props ) => {
       : setRegionStatus(false);
     
     setSelectedCuenta('');
+    setSelectedCuentaHija('');
     getCuentasMadres(selectedRegion);
   }, [selectedRegion])
+
+
+
+  /** Obtenemos las cuentas hijas segun
+   *  ID cuenta madre seleccionado
+   */
+  useEffect(() => {
+    getCuentasHijas(selectedCuenta);
+  }, [selectedCuenta])
+  
 
 
   /** actualiza el valor de los campos
    * input del formulario
    */
   const saveRegisterHandler = () => {
-    console.log(formData);
+    signUp(formData, selectedRegion, selectedCuenta, basesStatus.isActive);
   }
   
     
@@ -117,16 +146,16 @@ export const RegisterScreen = ( {navigation}: Props ) => {
               inputStyle={{ fontSize: 16}}
               placeholder='Email *'
               keyboardType='email-address'
-              value={ formData.email }
-              onChangeText={ (value) => onChange( value, 'email' )}
+              value={ formData.Email }
+              onChangeText={ (value) => onChange( value, 'Email' )}
             />
             <Input 
               inputStyle={{ fontSize: 16}}
               placeholder='Clave *'
               keyboardType='default'
               secureTextEntry={ (showPass) ? false : true }
-              value={ formData.clave }
-              onChangeText={ (value) => onChange( value, 'clave' )}
+              value={ formData.Clave }
+              onChangeText={ (value) => onChange( value, 'Clave' )}
               rightIcon={
                 <Icon 
                     type='ionicon'
@@ -143,43 +172,43 @@ export const RegisterScreen = ( {navigation}: Props ) => {
               placeholder='Reingresar Clave *'
               keyboardType='default'
               secureTextEntry={ (showPass) ? false : true }
-              value={ formData.reclave }
-              onChangeText={ (value) => onChange(value, 'reclave' )}
+              value={ formData.ReClave }
+              onChangeText={ (value) => onChange(value, 'ReClave' )}
             />
             <Input
               inputStyle={{ fontSize: 16}}
               placeholder='Nombre *'
               keyboardType='default'
-              value={ formData.nombre }
-              onChangeText={ (value) => onChange(value, 'nombre' )}
+              value={ formData.Nombre }
+              onChangeText={ (value) => onChange(value, 'Nombre' )}
             />
             <Input
               placeholder='Apellido *'
               keyboardType='default'
               inputStyle={{ fontSize: 16}}
-              value={ formData.apellido }
-              onChangeText={ (value) => onChange(value, 'apellido' )}
+              value={ formData.Apellido }
+              onChangeText={ (value) => onChange(value, 'Apellido' )}
             />
             <Input
               placeholder='Direccion *'
               keyboardType='default'
               inputStyle={{ fontSize: 16}}
-              value={ formData.direccion }
-              onChangeText={ (value) => onChange(value, 'direccion' )}
+              value={ formData.Direccion }
+              onChangeText={ (value) => onChange(value, 'Direccion' )}
             />
             <Input
               placeholder='Cod. Postal *'
               keyboardType='default'
               inputStyle={{ fontSize: 16}}
-              value={ formData.codpostal }
-              onChangeText={ (value) => onChange(value, 'codpostal' )}
+              value={ formData.CodPostal }
+              onChangeText={ (value) => onChange(value, 'CodPostal' )}
             />
             <Input
               placeholder='Celular *'
               keyboardType='numeric'
               inputStyle={{ fontSize: 16}}
-              value={ formData.celular }
-              onChangeText={ (value) => onChange(value, 'celular' )}
+              value={ formData.Celular }
+              onChangeText={ (value) => onChange(value, 'Celular' )}
             />
 
             <Picker
@@ -208,22 +237,36 @@ export const RegisterScreen = ( {navigation}: Props ) => {
               </Picker>
             }
 
-            {regionStatus && 
+            {selectedRegion.length > 0 && regionStatus && 
               <Input
                 placeholder='Localidad  (opcional)'
                 keyboardType='default'
                 inputStyle={{ fontSize: 16}}
-                value={ formData.localidad }
-                onChangeText={ (value) => onChange( value, 'localidad' )}
+                value={ formData.Localidad }
+                onChangeText={ (value) => onChange( value, 'Localidad' )}
               />
+            }
+
+            {selectedRegion.length > 0 && !regionStatus &&
+            <Picker
+              selectedValue={selectedCuentaHija}
+              onValueChange={(itemValue, itemIndex) => setSelectedCuentaHija(itemValue)}
+              mode='dialog'
+              style={{ ...stylesGral.glTextInputLine, ...stylesGral.glPicker}}
+              >
+                  <Picker.Item label='Localidad *' value='' />
+                { cuentasHijasData?.map( (cuentaHija: CuentasHijasData, index: any) => (
+                  <Picker.Item key={ index} label={ cuentaHija.RazonSocial.toUpperCase()} value={ cuentaHija.IdCuentaHija } />
+                  ))}
+            </Picker>
             }
 
             <Input
               placeholder={ (regionStatus) ? 'Paquete *' : 'Paquete (Opcional)'} 
               keyboardType='default'
               inputStyle={{ fontSize: 16}}
-              value={ formData.paquete }
-              onChangeText={ (value) => onChange( value, 'paquete' )}
+              value={ formData.Paquete }
+              onChangeText={ (value) => onChange( value, 'Paquete' )}
             />
           </View>    
 
@@ -259,30 +302,5 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   )
 }
 
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
-    width: '100%'
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: 'purple',
-    borderRadius: 8,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
-    width: '100%'
-  },
-});
 
 

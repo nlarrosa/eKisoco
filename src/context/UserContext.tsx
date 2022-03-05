@@ -1,8 +1,10 @@
 import { createContext, useReducer } from "react"
-import { ProfileData, ProfileModify, CuentasMadresData } from '../interfaces/userInterfaces';
+import { ProfileData, ProfileModify, CuentasMadresData, CuentasHijasData } from '../interfaces/userInterfaces';
 import { userReducer, UserState } from '../reducers/userReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Sgdi from "../api/Sgdi";
+import { AxiosError } from 'axios';
+import axios from 'axios';
 
 
 
@@ -11,11 +13,13 @@ type UserContextProps = {
     messageProfile: string | null,
     userData: ProfileData | null,
     cuentasMadresData: CuentasMadresData | null,
+    cuentasHijasData: CuentasHijasData | null,
     getProfile:  () => void,
     editProfile: (ProfileModify : ProfileModify) => void,
     editAccount: () => void,
-    removeMessaggeProfile: () => void,
+    removeErrorProfile: () => void,
     getCuentasMadres: (region: string) => void,
+    getCuentasHijas:  (idCuentaMadre: string) => void,
 }
 
 
@@ -23,6 +27,7 @@ const  userInitialState: UserState = {
     messageProfile: '',
     userData: null,
     cuentasMadresData: null,
+    cuentasHijasData: null,
 }
 
 
@@ -78,14 +83,58 @@ export const UserProvider = ( { children }: any ) => {
 
         } catch (error) {
             
-            // console.log(error, 'error cuentas madres')
+            const err = error as AxiosError;
+            dispatch({
+                type: 'addErrorProfile',
+                payload: err.response?.data,
+            });
         }
-    }
+    };
+
+
+    /** Obtenemos las cuentas hijas segun
+     * la cuenta madre seleccionada
+    */
+    const getCuentasHijas = async(idCuentaMadre: string) => {
+        
+        try {
+
+            const response = await Sgdi.get('/CuentasHijas', {
+                params: {
+                    grupoCuenta: 'YDI',
+                    idCuentaMadre,
+                }
+            });
+
+            dispatch({
+                type: 'cuentasHijas',
+                payload: {
+                    cuentasHijasData: response.data,
+                },
+            })
+            
+        } catch (error) {
+            const err = error as AxiosError;
+            dispatch({
+                type: 'addErrorProfile',
+                payload: err.response?.data,
+            });
+        }
+    };
 
 
 
     const editAccount =  () => {};
-    const removeMessaggeProfile =  () => {};
+
+
+    /** Limpia los errores para poder reutilizarlos
+     * y cerrar las alertas
+     */
+    const removeErrorProfile =  () => {
+        dispatch({ 
+            type: 'removeMessageProfile' 
+        });
+    };
 
 
     return(
@@ -94,8 +143,9 @@ export const UserProvider = ( { children }: any ) => {
             getProfile,
             editProfile,
             editAccount,
-            removeMessaggeProfile,
-            getCuentasMadres
+            removeErrorProfile,
+            getCuentasMadres,
+            getCuentasHijas,
         }}>
 
             { children }

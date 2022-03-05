@@ -4,6 +4,7 @@ export interface AuthState {
 
     errorMessage: string,
     errorForgot: string,
+    errorSignup: string,
     userId:      string | null,
     dataUser: CanillaResponse | null,
     token: string | null,
@@ -17,6 +18,7 @@ type AuthAction =
     |{ type: 'signUp', payload: { token: string, userId: string, dataUser: CanillaResponse, enabledReposity: boolean }}
     |{ type: 'addError', payload: string }
     |{ type: 'addErrorForgot', payload: string }
+    |{ type: 'addErrorSignup', payload: string }
     |{ type: 'removeError' }
     |{ type: 'NoAuthenticated' }
     |{ type: 'logout' }
@@ -32,6 +34,7 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 ...state,
                 errorMessage: '',
                 errorForgot: '',
+                errorSignup: '',
                 status: 'authenticated',
                 token: action.payload.token,
                 userId: action.payload.userId,
@@ -45,6 +48,7 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 ...state,
                 errorMessage: action.payload,
                 errorForgot: '',
+                errorSignup: '',
                 userId: null,
                 dataUser: null,
                 status: 'no-authenticated',
@@ -58,6 +62,21 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 ...state,
                 errorForgot: action.payload,
                 errorMessage: '',
+                errorSignup: '',
+                userId: null,
+                dataUser: null,
+                status: 'no-authenticated',
+                token: null,
+                enabledReposity: false,
+            }
+        break;
+
+        case 'addErrorSignup':
+            return {
+                ...state,
+                errorSignup: action.payload,
+                errorMessage: '',
+                errorForgot: '',
                 userId: null,
                 dataUser: null,
                 status: 'no-authenticated',
@@ -71,6 +90,7 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 ...state,
                 errorMessage: '',
                 errorForgot: '',
+                errorSignup: '',
             }
         break;
 
@@ -80,6 +100,7 @@ export const authReducer = ( state: AuthState, action: AuthAction ): AuthState =
                 ...state,
                 errorMessage: '',
                 errorForgot: '',
+                errorSignup: '',
                 userId: null,
                 dataUser: null,
                 status: 'no-authenticated',
