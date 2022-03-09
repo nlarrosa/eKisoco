@@ -20,19 +20,8 @@ interface Props extends StackScreenProps<rootStackParams, 'ProfileScreen'>{}
 export const ProfileScreen = ({ navigation }: Props ) => {
 
   const { dataUser, errorMessage, removeError } = useContext(AuthContext);
-  const { getProfile, editProfile } = useContext(UserContext);
-  // const [password, setPassword] = useState('');
-  // const [name, setName]         = useState(dataUser?.Nombre);
-  // const [lastname, setLastname] = useState(dataUser?.Apellido);
-  // const [address, setAddress]   = useState(dataUser?.Direccion);
-  // const [codpost, setCodpost]   = useState(dataUser?.CodPostal);
-  // const [phone, setPhone]       = useState(dataUser?.Celular);
-  // const [locality, setLocality] = useState(dataUser?.Localidad);
-  // const [pakage, setPakage]     = useState(dataUser?.Paquete);
-  
-  // useEffect(() => {
-    
-  // }, [])
+  const { editProfile } = useContext(UserContext);
+ 
 
 
   const {onChange, formData } = useForm({ 

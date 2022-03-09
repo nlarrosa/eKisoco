@@ -3,11 +3,10 @@ import {AxiosError} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
+import Sgdi from '../api/Sgdi';
 import { LoginResponse, loginData, forgotPass, CanillaResponse } from '../interfaces/loginInterfaces';
 import { AuthState, authReducer } from '../reducers/authReducer';
-import Sgdi from '../api/Sgdi';
 import constantes from '../constants/globals';
-import axios from 'axios';
 import { RegisterData } from '../interfaces/userInterfaces';
 
 
@@ -151,7 +150,7 @@ export const AuthProvider = ({ children }: any ) => {
     /** Registra un nuevo usuario y ejecuta el login
      * de acceso al mismo tiempo
      */
-    const signUp = ( datauser : RegisterData, region: string, distribuidor: string, bases: boolean ) => {
+    const signUp = async ( datauser : RegisterData, region: string, distribuidor: string, bases: boolean ) => {
 
         try {
 
@@ -169,31 +168,47 @@ export const AuthProvider = ({ children }: any ) => {
             
             
             let cuentaHija;
-            (region === constantes.regionInterior) 
-            ? cuentaHija = datauser.Localidad : cuentaHija = distribuidor;
+            (region === constantes.regionInterior) ? cuentaHija = datauser.Localidad : cuentaHija = distribuidor;
             
-            const registerUSer = axios.post('/Canillas', {
-                params: {
-                    mail: datauser.Email,
-                    clave: datauser.Clave,
-                    apellido: datauser.Apellido,
-                    nombre: datauser.Nombre,
-                    direccion: datauser.Direccion,
-                    codPostal: datauser.CodPostal,
-                    celular: datauser.Celular,
-                    idMedioDeEntregaPadre: distribuidor,
-                    nroCuentaHija: cuentaHija,
-                    localidad: datauser.Localidad,
-                    paquete: datauser.Paquete,
+
+            const { data } = await Sgdi.post<LoginResponse>('/Canillas', {
+
+                mail: datauser.Email,
+                clave: datauser.Clave,
+                apellido: datauser.Apellido,
+                nombre: datauser.Nombre,
+                direccion: datauser.Direccion,
+                codPostal: datauser.CodPostal,
+                celular: datauser.Celular,
+                idMedioDeEntregaPadre: distribuidor,
+                nroCuentaHija: cuentaHija,
+                localidad: datauser.Localidad,
+                paquete: datauser.Paquete,
+            });
+
+            const response = await Sgdi.get<CanillaResponse>('/Canillas', { 
+                params: { 
+                    token: data.Token, 
+                    idCanilla: data.IdCanilla 
+                }
+            });
+
+            dispatch({ 
+                type: 'signUp', 
+                payload: {
+                    token: data.Token,
+                    userId: data.IdCanilla,
+                    dataUser:response.data,
+                    enabledReposity: response.data.HabilitadoRepo,
                 }
             });
             
         } catch (error) {
 
-            const err = error as AxiosError; 
+            const err = error as AxiosError;
             dispatch({
                 type: 'addErrorSignup', 
-                payload: err.response?.data
+                payload: JSON.stringify(err.response?.request._response) || 'Informacion Incorrecta',
             });
             return;
         }
@@ -236,19 +251,16 @@ export const AuthProvider = ({ children }: any ) => {
                 dispatch({ type: 'addErrorForgot', payload: 'Ingrese un email válido' });
                 return;
             } 
-
-            const resp = await Sgdi.post('/Login/BlanquearContraseña', { 
-                params: { mail }
+            
+            const resp = await Sgdi.post('/Login/BlanquearContraseña', { mail } );
+            
+        } catch ( error ) {
+            
+            const err = error as AxiosError;
+            dispatch({
+                type: 'addErrorForgot',
+                payload: JSON.stringify(err.response) || 'Informacion Incorrecta',
             });
-            
-        } catch ({ response }) {
-            
-            // const err = error as AxiosError;
-            // console.log(JSON.stringify(response));
-            // dispatch({
-            //     type: 'addErrorForgot',
-            //     payload: err.response?.data || 'Informacion Incorrecta',
-            // });
         }
     };
 

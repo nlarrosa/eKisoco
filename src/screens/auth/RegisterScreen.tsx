@@ -36,7 +36,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   const [basesStatus, setBasesStatus] = useState({ isActive: false });
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedCuenta, setSelectedCuenta] = useState('');
-  const [selectedCuentaHija, setSelectedCuentaHija] = useState('');
+  const [selectedCuentaHija, setSelectedCuentaHija] = useState({});
   const [regionStatus, setRegionStatus] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { isActive } = basesStatus;
@@ -158,6 +158,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
               onChangeText={ (value) => onChange( value, 'Clave' )}
               rightIcon={
                 <Icon 
+                    tvParallaxProperties={undefined}
                     type='ionicon'
                     name={(showPass) ? 'eye-off-outline' : 'eye-outline'}
                     iconStyle={{
@@ -233,7 +234,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
                   <Picker.Item label='Distribuidora *' value='' />
                 { cuentasMadresData?.map( (cuenta:CuentasMadresData, index: any) => (
                   <Picker.Item key={ index} label={ cuenta.RazonSocial.toUpperCase()} value={ cuenta.IdCuentaMadre } />
-                  ))}
+                ))}
               </Picker>
             }
 

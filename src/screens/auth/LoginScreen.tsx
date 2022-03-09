@@ -115,12 +115,13 @@ export const LoginScreen = ( {route , navigation}: Props ) => {
               onSubmitEditing={ onChangeLogin }
               rightIcon={
                 <Icon 
-                    type='ionicon'
-                    name={(showPass) ? 'eye-off-outline' : 'eye-outline'}
-                    iconStyle={{
-                      marginRight: 10,
-                    }}
-                    onPress={ () => setShowPass(!showPass)}
+                  tvParallaxProperties={undefined}
+                  type='ionicon'
+                  name={(showPass) ? 'eye-off-outline' : 'eye-outline'}
+                  iconStyle={{
+                    marginRight: 10,
+                  }}
+                  onPress={ () => setShowPass(!showPass)}
                 />
               }
           />
