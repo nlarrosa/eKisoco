@@ -252,14 +252,14 @@ export const AuthProvider = ({ children }: any ) => {
                 return;
             } 
             
-            const resp = await Sgdi.post('/Login/BlanquearContraseña', { mail } );
+            const resp = await Sgdi.post('https://q-sgdiwebapi.lanacion.com.ar/api/Login/BlanquearContraseña', { mail } );
             
         } catch ( error ) {
             
             const err = error as AxiosError;
             dispatch({
                 type: 'addErrorForgot',
-                payload: JSON.stringify(err.response) || 'Informacion Incorrecta',
+                payload: JSON.stringify(err.response?.status) || 'Informacion Incorrecta',
             });
         }
     };

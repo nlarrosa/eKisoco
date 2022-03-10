@@ -1,4 +1,5 @@
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const baseURL = 'https://q-sgdiwebapi.lanacion.com.ar/api';
 
@@ -10,8 +11,20 @@ const Sgdi = axios.create({
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': '*'
     },
-    // withCredentials: true,
+    // withCredentials: false,
     // httpsAgent: new https.Agent({keepAlive:true}),
 });
+
+Sgdi.interceptors.request.use(
+
+    async(config) => {
+        const userData = await AsyncStorage.getItem('userData');
+        const { token } = JSON.parse(userData || '{}');
+        if ( token ) {
+            config.headers['x-token'] = token;
+        }
+        return config;
+    }
+);
 
 export default Sgdi;
