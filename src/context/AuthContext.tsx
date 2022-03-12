@@ -4,10 +4,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 import Sgdi from '../api/Sgdi';
-import { LoginResponse, loginData, forgotPass, CanillaResponse } from '../interfaces/loginInterfaces';
+import { LoginResponse, loginData, forgotPass} from '../interfaces/loginInterfaces';
 import { AuthState, authReducer } from '../reducers/authReducer';
 import constantes from '../constants/globals';
-import { RegisterData } from '../interfaces/userInterfaces';
+import { RegisterData, ProfileData } from '../interfaces/userInterfaces';
 import { Alert } from "react-native";
 
 
@@ -19,12 +19,12 @@ type AuthContextProps = {
     errorForgot: string,
     errorSignup: string,
     userId: string | null,
-    dataUser: CanillaResponse | null,
+    dataUser: ProfileData | null,
     token: string | null,
     enabledReposity: boolean,
     status: 'checking' | 'authenticated' | 'no-authenticated' | null,
     signIn:  (loginData : loginData) => void,
-    signUp:  (datauser : RegisterData, region: string, distribuidor: string, bases: boolean) => void,
+    signUp:  (datauser : RegisterData, region: string, distribuidor: string, cuentaHija: string, bases: boolean) => void,
     logOut:  () => void,
     removeError: () => void,
     forgotPassword: (forgotPass: forgotPass) => void,
@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }: any ) => {
         if(!token) 
         return dispatch({ type: 'NoAuthenticated' });
 
-        const resp = await Sgdi.get<CanillaResponse>('/Canillas', { 
+        const resp = await Sgdi.get<ProfileData>('/Canillas', { 
             params: { 
                 token, 
                 idCanilla: userId,
@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }: any ) => {
             });
             
 
-            const response = await Sgdi.get<CanillaResponse>('/Canillas', { 
+            const response = await Sgdi.get<ProfileData>('/Canillas', { 
                 params: { 
                     token: data.Token, 
                     idCanilla: data.IdCanilla 
@@ -159,7 +159,7 @@ export const AuthProvider = ({ children }: any ) => {
     /** Registra un nuevo usuario y ejecuta el login
      * de acceso al mismo tiempo
      */
-    const signUp = async ( datauser : RegisterData, region: string, distribuidor: string, bases: boolean ) => {
+    const signUp = async ( datauser : RegisterData, region: string, distribuidor: string, cuentaHija: string, bases: boolean ) => {
 
         try {
 
@@ -176,9 +176,10 @@ export const AuthProvider = ({ children }: any ) => {
             }
             
             
-            let cuentaHija;
-            (region === constantes.regionInterior) ? cuentaHija = datauser.Localidad : cuentaHija = distribuidor;
+            let ctaHija;
+            (region === constantes.regionInterior) ? ctaHija = cuentaHija : ctaHija = distribuidor;
             
+            console.log(cuentaHija);
 
             const { data } = await Sgdi.post<LoginResponse>('/Canillas', null, {
                 params: {
@@ -190,13 +191,13 @@ export const AuthProvider = ({ children }: any ) => {
                     codPostal: datauser.CodPostal,
                     celular: datauser.Celular,
                     idMedioDeEntregaPadre: distribuidor,
-                    nroCuentaHija: cuentaHija,
+                    nroCuentaHija: ctaHija,
                     localidad: datauser.Localidad,
                     paquete: datauser.Paquete,
                 }
             });
 
-            const response = await Sgdi.get<CanillaResponse>('/Canillas', { 
+            const response = await Sgdi.get<ProfileData>('/Canillas', { 
                 params: { 
                     token: data.Token, 
                     idCanilla: data.IdCanilla 

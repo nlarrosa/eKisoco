@@ -1,12 +1,12 @@
-import { createContext, useReducer } from "react"
+import { createContext, useReducer, useState } from "react"
 import { AxiosError } from 'axios';
 
-import { ProfileModify, CuentasMadresData, CuentasHijasData } from '../interfaces/userInterfaces';
+import { ProfileModify, CuentasMadresData, CuentasHijasData, ProfileData } from '../interfaces/userInterfaces';
 import { userReducer, UserState } from '../reducers/userReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Sgdi from "../api/Sgdi";
 import constantes from '../constants/globals';
-import { CanillaResponse } from '../interfaces/loginInterfaces';
+
 
 
 
@@ -14,21 +14,22 @@ import { CanillaResponse } from '../interfaces/loginInterfaces';
 type UserContextProps = {
 
     isLoading: boolean,
+    profile: ProfileData | undefined,
+    insigne: string,
     messageProfile: string,
     cuentasMadresData: CuentasMadresData | null,
     cuentasHijasData: CuentasHijasData | null,
     editProfile: (ProfileModify : ProfileModify, grupoCuenta:string) => void,
-    editAccount: () => void,
     removeErrorProfile: () => void,
     getCuentasMadres: (region: string) => void,
     getCuentasHijas:  (idCuentaMadre: string) => void,
+    getProfile: (token:string, idCanilla:string) => Promise<ProfileData>,
 }
 
 
 const  userInitialState: UserState = {
-    isLoading: false,
+    
     messageProfile: '',
-    userProfile: null,
     cuentasMadresData: null,
     cuentasHijasData: null,
 }
@@ -36,9 +37,33 @@ const  userInitialState: UserState = {
 
 export const UserContext = createContext( {} as UserContextProps );
 
+
+
 export const UserProvider = ( { children }: any ) => {
 
-    const  [ state, dispatch ] = useReducer( userReducer, userInitialState);
+    const [ state, dispatch ]   = useReducer( userReducer, userInitialState);
+    const [isLoading, setIsLoading] = useState(false);
+    const [profile, setProfile] = useState<ProfileData>();   
+    const [insigne, setInsigne] = useState(''); 
+
+
+    /** Devuelve los datos del Canilla lofueado */
+    const getProfile = async(token:string, idCanilla:string) => {
+
+        setIsLoading(true);
+
+        const response = await Sgdi.get<ProfileData>('/Canillas', { 
+            params: { 
+                token, 
+                idCanilla
+            }
+        });
+
+        getInsigneName();
+
+        setIsLoading(false);
+        return response.data;
+    }
 
 
     /** Cambiamos los datos del usuario desde el 
@@ -73,21 +98,14 @@ export const UserProvider = ( { children }: any ) => {
                 }
             });
 
-            /*Obtengo los datos actualizados*/
             
-
-            // dispatch({
-            //     type: 'getProfile',
-            //     payload: { 
-            //         userData: 
-            //     }
-            // })
-
             dispatch({
                 type: 'addMessageProfile',
                 payload: 'Perfil de vendedor actualizado.'
             });
-
+            
+            /*Obtengo los datos actualizados*/
+            setProfile(resp.data);
 
 
         } catch (error) {
@@ -165,9 +183,6 @@ export const UserProvider = ( { children }: any ) => {
 
 
 
-    const editAccount =  () => {};
-
-
     /** Limpia los errores para poder reutilizarlos
      * y cerrar las alertas
      */
@@ -176,6 +191,7 @@ export const UserProvider = ( { children }: any ) => {
             type: 'removeErrorProfile',
         });
     };
+
 
 
 
@@ -226,11 +242,25 @@ export const UserProvider = ( { children }: any ) => {
     }
 
 
+    
+    /** Generamos la insignia del logo del perfil */
+    const getInsigneName = async() => {
+
+        const userData  = await AsyncStorage.getItem('userData');
+        const { dataUser } = JSON.parse(userData || '{}');
+        const insigneName =  (dataUser.Nombre.charAt(0) + dataUser.Apellido.charAt(0)).toUpperCase();
+        setInsigne(insigneName);
+    }
+
+
     return(
         <UserContext.Provider value = {{
             ...state,
+            isLoading,
+            profile,
+            insigne,
+            getProfile,
             editProfile,
-            editAccount,
             removeErrorProfile,
             getCuentasMadres,
             getCuentasHijas,

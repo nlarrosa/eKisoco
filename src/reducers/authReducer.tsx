@@ -1,4 +1,4 @@
-import { LoginResponse, CanillaResponse } from '../interfaces/loginInterfaces';
+import { ProfileData } from '../interfaces/userInterfaces';
 
 export interface AuthState {
 
@@ -6,7 +6,7 @@ export interface AuthState {
     errorForgot: string,
     errorSignup: string,
     userId:      string | null,
-    dataUser: CanillaResponse | null,
+    dataUser: ProfileData | null,
     token: string | null,
     enabledReposity: boolean,
     status: 'checking' | 'authenticated' | 'no-authenticated' | null,
@@ -14,8 +14,8 @@ export interface AuthState {
 
 
 type AuthAction = 
-    |{ type: 'signIn', payload: { token: string, userId: string, dataUser: CanillaResponse, enabledReposity: boolean }}
-    |{ type: 'signUp', payload: { token: string, userId: string, dataUser: CanillaResponse, enabledReposity: boolean }}
+    |{ type: 'signIn', payload: { token: string, userId: string, dataUser: ProfileData, enabledReposity: boolean }}
+    |{ type: 'signUp', payload: { token: string, userId: string, dataUser: ProfileData, enabledReposity: boolean }}
     |{ type: 'addError', payload: string }
     |{ type: 'addErrorForgot', payload: string }
     |{ type: 'addErrorSignup', payload: string }
@@ -25,7 +25,7 @@ type AuthAction =
 
 
     
-export const authReducer = ( state: AuthState, action: AuthAction ): AuthState => {
+export const authReducer = ( state: AuthState, action: AuthAction ):AuthState => {
 
     switch (action.type) {
         case 'signIn':

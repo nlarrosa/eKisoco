@@ -5,9 +5,6 @@ import { Picker } from '@react-native-picker/picker';
 import { Icon, Input } from 'react-native-elements';
 
 
-
-
-
 import { stylesGral } from '../../theme/generalTheme';
 import  constColor  from '../../constants/color';
 import { styleRegister } from '../../theme/registerTheme';
@@ -127,7 +124,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
    * input del formulario
    */
   const saveRegisterHandler = () => {
-    signUp(formData, selectedRegion, selectedCuenta, basesStatus.isActive);
+    signUp(formData, selectedRegion, selectedCuenta, selectedCuentaHija, basesStatus.isActive);
   }
   
     

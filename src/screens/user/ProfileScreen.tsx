@@ -9,9 +9,12 @@ import { rootStackParams } from '../../navigator/StackNavigator';
 import { styleProfile } from '../../theme/profileTheme';
 import { stylesGral } from '../../theme/generalTheme';
 import constColor from '../../constants/color';
+import constGlobal from '../../constants/globals';
 import { AuthContext } from '../../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
 import { UserContext } from '../../context/UserContext';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Loading } from '../../components/Loading';
 
 
 
@@ -20,47 +23,54 @@ interface Props extends StackScreenProps<rootStackParams, 'ProfileScreen'>{}
 export const ProfileScreen = ({ navigation }: Props ) => {
 
   const { dataUser } = useContext(AuthContext);
-  const { messageProfile, removeErrorProfile, editProfile } = useContext(UserContext);
-  const [grupoCuenta, setGrupoCuenta] = useState(dataUser?.GrupoCuenta);
-  // const { canilla, isLoading } = useCanilla();
+  const { messageProfile, removeErrorProfile, editProfile, getProfile, isLoading, insigne } = useContext(UserContext);
+  const [grupoCuenta, setGrupoCuenta] = useState('');
+  const [opcional, setOpcional] = useState('opcional');
 
-  const [clave, setClave] = useState('');
-  const [nombre, setNombre] = useState(dataUser?.Nombre);
-  const [apellido, setApellido] = useState(dataUser?.Apellido);
-  const [direccion, setDireccion] = useState(dataUser?.Direccion);
-  const [codPost, setCodPost] = useState(dataUser?.CodPostal);
-  const [celular, setCelular] = useState(dataUser?.Celular);
-  const [localidad, setLocalidad] = useState(dataUser?.Localidad);
-  const [paquete, setPaquete] = useState(dataUser?.Paquete);
-  
 
-  useEffect(() => {
-
-    setNombre('');
-    setApellido('');
-    setDireccion('');
-    setCodPost('');
-    setCelular('');
-
-    
-  }, [])
-  
-
-  const {onChange, formData } = useForm({ 
+  const {onChange, formData, setFormValue } = useForm({ 
 
     Clave: '',
-    Apellido: apellido,
-    Nombre: nombre,
-    Direccion: direccion,
-    CodPostal: codPost,
-    Celular: celular,
-    Localidad: localidad || '', 
-    Paquete: paquete || '', 
+    Apellido: '',
+    Nombre: '',
+    Direccion: '',
+    CodPostal: '',
+    Celular: '',
+    Localidad: '', 
+    Paquete: '', 
   });
 
 
 
+  useEffect(() => {
+    loadProfile();
+  }, [])
 
+
+
+  const loadProfile = async() => {
+
+    const userData = await AsyncStorage.getItem('userData');
+    const { token, userId } = JSON.parse(userData || '{}');
+    const profile = await getProfile(token, userId);
+    setGrupoCuenta(profile.GrupoCuenta);
+
+    (constGlobal.regionAmba === profile.GrupoCuenta) 
+    ? setOpcional('*') : setOpcional('opcional');
+
+    setFormValue({
+      Clave: '',
+      Apellido: profile.Apellido,
+      Nombre: profile.Nombre,
+      Direccion: profile.Direccion,
+      CodPostal: profile.CodPostal,
+      Celular: profile.Celular,
+      Localidad: profile.Localidad || '', 
+      Paquete: profile.Paquete || '', 
+    });
+  }
+  
+  
   useEffect(() => {
     if(messageProfile.length === 0) 
     return;
@@ -78,13 +88,9 @@ export const ProfileScreen = ({ navigation }: Props ) => {
       editProfile(formData, grupoCuenta);
   }
 
-  // if( isLoading ){
-  //   return(
-  //     <View>
-  //       <ActivityIndicator color={'green'} size={50} />
-  //     </View>
-  //   )
-  // }
+  if( isLoading ){
+    return( <Loading />)
+  }
   
     
   return (
@@ -95,7 +101,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               <Avatar
                 size={54}
                 rounded
-                title = 'NL'
+                title = { insigne }
                 containerStyle={{ 
                   backgroundColor: constColor.green,
                 }}
@@ -195,7 +201,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
             />
           </View>
           <View style={ stylesGral.formControl }>
-            <Text style={ stylesGral.glLabel }>Ingrese Paquete *</Text>
+            <Text style={ stylesGral.glLabel }>Ingrese Paquete { opcional } </Text>
             <TextInput 
               style={ stylesGral.glTextInputLine}
               keyboardType='default'

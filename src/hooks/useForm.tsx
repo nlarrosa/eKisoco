@@ -2,28 +2,24 @@ import { useState } from 'react';
 
 export const useForm = <T extends Object>( initState: T ) => {
     
-    const [formData, setFormData] = useState( initState );
-
-
+    const [state, setState] = useState( initState );
 
     const onChange = ( value: string, field: keyof T ) => {
-
-        setFormData({
-            ...formData,
+        setState({
+            ...state,
             [field]: value
         });
     }
 
-
-    const resetForm = () => {
-        setFormData({ ...initState });
+    const setFormValue = ( form: T ) =>{
+        setState( form );
     }
 
     return {
-        ...formData,
-        formData,
+        ...state,
+        formData: state,
         onChange,
-        resetForm,
+        setFormValue
     }
 
 }
