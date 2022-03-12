@@ -8,6 +8,7 @@ import { LoginResponse, loginData, forgotPass, CanillaResponse } from '../interf
 import { AuthState, authReducer } from '../reducers/authReducer';
 import constantes from '../constants/globals';
 import { RegisterData } from '../interfaces/userInterfaces';
+import { Alert } from "react-native";
 
 
 
@@ -53,27 +54,34 @@ export const AuthProvider = ({ children }: any ) => {
     
     const [state, dispatch] = useReducer(authReducer, authInitialState)
     
-
-
     useEffect(() => {
-      validToken();
+        validToken();
     }, []);
-
-
+    
+    
     
     const validToken = async() => {
+        
         const userData = await AsyncStorage.getItem('userData');
         const { token, userId, enabledReposity, dataUser} = JSON.parse(userData || '{}');
 
         if(!token) 
         return dispatch({ type: 'NoAuthenticated' });
 
+        const resp = await Sgdi.get<CanillaResponse>('/Canillas', { 
+            params: { 
+                token, 
+                idCanilla: userId,
+            }
+        });
+
+        
         dispatch({ 
             type: 'signIn', 
             payload: {
                 token,
                 userId,
-                dataUser,
+                dataUser: resp.data,
                 enabledReposity,
             }
         });
@@ -124,6 +132,7 @@ export const AuthProvider = ({ children }: any ) => {
                 }
             });
 
+
             await AsyncStorage.setItem('userData', 
                 JSON.stringify({
                     token: data.Token,
@@ -171,19 +180,20 @@ export const AuthProvider = ({ children }: any ) => {
             (region === constantes.regionInterior) ? cuentaHija = datauser.Localidad : cuentaHija = distribuidor;
             
 
-            const { data } = await Sgdi.post<LoginResponse>('/Canillas', {
-
-                mail: datauser.Email,
-                clave: datauser.Clave,
-                apellido: datauser.Apellido,
-                nombre: datauser.Nombre,
-                direccion: datauser.Direccion,
-                codPostal: datauser.CodPostal,
-                celular: datauser.Celular,
-                idMedioDeEntregaPadre: distribuidor,
-                nroCuentaHija: cuentaHija,
-                localidad: datauser.Localidad,
-                paquete: datauser.Paquete,
+            const { data } = await Sgdi.post<LoginResponse>('/Canillas', null, {
+                params: {
+                    mail: datauser.Email,
+                    clave: datauser.Clave,
+                    apellido: datauser.Apellido,
+                    nombre: datauser.Nombre,
+                    direccion: datauser.Direccion,
+                    codPostal: datauser.CodPostal,
+                    celular: datauser.Celular,
+                    idMedioDeEntregaPadre: distribuidor,
+                    nroCuentaHija: cuentaHija,
+                    localidad: datauser.Localidad,
+                    paquete: datauser.Paquete,
+                }
             });
 
             const response = await Sgdi.get<CanillaResponse>('/Canillas', { 
@@ -252,14 +262,18 @@ export const AuthProvider = ({ children }: any ) => {
                 return;
             } 
             
-            const resp = await Sgdi.post('https://q-sgdiwebapi.lanacion.com.ar/api/Login/BlanquearContraseña', { mail } );
+            const resp = await Sgdi.post('Login/BlanquearContraseña', null, { params: { mail }});
+
+            if(resp){
+                Alert.alert('falta mensaje de aprobacion');
+            }
             
         } catch ( error ) {
             
             const err = error as AxiosError;
             dispatch({
                 type: 'addErrorForgot',
-                payload: JSON.stringify(err.response?.status) || 'Informacion Incorrecta',
+                payload: err.response?.data || 'Informacion Incorrecta',
             });
         }
     };

@@ -19,44 +19,72 @@ interface Props extends StackScreenProps<rootStackParams, 'ProfileScreen'>{}
 
 export const ProfileScreen = ({ navigation }: Props ) => {
 
-  const { dataUser, errorMessage, removeError } = useContext(AuthContext);
-  const { editProfile } = useContext(UserContext);
- 
+  const { dataUser } = useContext(AuthContext);
+  const { messageProfile, removeErrorProfile, editProfile } = useContext(UserContext);
+  const [grupoCuenta, setGrupoCuenta] = useState(dataUser?.GrupoCuenta);
+  // const { canilla, isLoading } = useCanilla();
 
+  const [clave, setClave] = useState('');
+  const [nombre, setNombre] = useState(dataUser?.Nombre);
+  const [apellido, setApellido] = useState(dataUser?.Apellido);
+  const [direccion, setDireccion] = useState(dataUser?.Direccion);
+  const [codPost, setCodPost] = useState(dataUser?.CodPostal);
+  const [celular, setCelular] = useState(dataUser?.Celular);
+  const [localidad, setLocalidad] = useState(dataUser?.Localidad);
+  const [paquete, setPaquete] = useState(dataUser?.Paquete);
+  
+
+  useEffect(() => {
+
+    setNombre('');
+    setApellido('');
+    setDireccion('');
+    setCodPost('');
+    setCelular('');
+
+    
+  }, [])
+  
 
   const {onChange, formData } = useForm({ 
 
-    clave: '',
-    apellido: dataUser?.Apellido,
-    nombre: dataUser?.Nombre,
-    direccion: dataUser?.Direccion,
-    codPostal: dataUser?.CodPostal,
-    celular: dataUser?.Celular,
-    localidad: dataUser?.Localidad, 
-    paquete: dataUser?.Paquete, 
+    Clave: '',
+    Apellido: apellido,
+    Nombre: nombre,
+    Direccion: direccion,
+    CodPostal: codPost,
+    Celular: celular,
+    Localidad: localidad || '', 
+    Paquete: paquete || '', 
   });
 
-  // const { clave, apellido, nombre, direccion, codPostal, celular, localidad, paquete } = formData;
 
 
 
   useEffect(() => {
-    if(errorMessage.length === 0) 
+    if(messageProfile.length === 0) 
     return;
 
     Alert.alert(
       'Error Cambios en Perfil', 
-      errorMessage, 
-      [{ text: 'Aceptar', onPress: removeError}]
+      messageProfile, 
+      [{ text: 'Aceptar', onPress: removeErrorProfile}]
     );
-  }, [errorMessage])
+  }, [messageProfile])
 
 
 
   const onSubmitHandler = () => {
-
-      editProfile(formData);
+      editProfile(formData, grupoCuenta);
   }
+
+  // if( isLoading ){
+  //   return(
+  //     <View>
+  //       <ActivityIndicator color={'green'} size={50} />
+  //     </View>
+  //   )
+  // }
   
     
   return (
@@ -90,8 +118,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               autoCapitalize='none'
               autoCorrect={ false }
               secureTextEntry={ true }
-              onChangeText={ (value) => onChange( value, 'clave')}
-              value={ clave }
+              onChangeText={ (value) => onChange( value, 'Clave')}
               onSubmitEditing={ onSubmitHandler }
             />
           </View>
@@ -102,8 +129,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               keyboardType='default'
               autoCapitalize='words'
               autoCorrect={ false }
-              onChangeText={ (value) => onChange( value, 'apellido')}
-              value={ apellido }
+              onChangeText={ (value) => onChange( value, 'Apellido')}
+              value={ formData?.Apellido }
               onSubmitEditing={ onSubmitHandler }
             />
           </View>
@@ -114,8 +141,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               keyboardType='default'
               autoCapitalize='words'
               autoCorrect={ false }
-              onChangeText={ (value) => onChange( value, 'nombre')}
-              value={ nombre }
+              onChangeText={ (value) => onChange( value, 'Nombre')}
+              value={ formData?.Nombre }
               onSubmitEditing={ onSubmitHandler }
             />
           </View>
@@ -126,8 +153,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               keyboardType='default'
               autoCapitalize='none'
               autoCorrect={ false }
-              onChangeText={ (value) => onChange( value, 'direccion')}
-              value={ direccion }
+              onChangeText={ (value) => onChange( value, 'Direccion')}
+              value={ formData?.Direccion }
               onSubmitEditing={ onSubmitHandler }
             />
           </View>
@@ -138,8 +165,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               keyboardType='default'
               autoCapitalize='none'
               autoCorrect={ false }
-              onChangeText={ (value) => onChange( value, 'codPostal')}
-              value={ codPostal }
+              onChangeText={ (value) => onChange( value, 'CodPostal')}
+              value={ formData?.CodPostal }
               onSubmitEditing={ onSubmitHandler }
             />
           </View>
@@ -150,8 +177,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               keyboardType='phone-pad'
               autoCapitalize='none'
               autoCorrect={ false }
-              onChangeText={ (value) => onChange( value, 'celular')}
-              value={ celular }
+              onChangeText={ (value) => onChange( value, 'Celular')}
+              value={ formData?.Celular }
               onSubmitEditing={ onSubmitHandler }
             />
           </View>
@@ -162,8 +189,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               keyboardType='default'
               autoCapitalize='none'
               autoCorrect={ false }
-              onChangeText={ (value) => onChange( value, 'localidad' )}
-              value={ localidad || undefined }
+              onChangeText={ (value) => onChange( value, 'Localidad' )}
+              value={ formData?.Localidad || undefined }
               onSubmitEditing={ onSubmitHandler }
             />
           </View>
@@ -174,8 +201,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               keyboardType='default'
               autoCapitalize='none'
               autoCorrect={ false }
-              onChangeText={ (value) => onChange( value, 'paquete')}
-              value={ paquete || undefined }
+              onChangeText={ (value) => onChange( value, 'Paquete')}
+              value={ formData?.Paquete || undefined }
               onSubmitEditing={ onSubmitHandler }
             />
           </View>

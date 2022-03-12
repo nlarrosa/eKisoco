@@ -1,5 +1,5 @@
 import React, { useEffect, useContext, useState } from 'react'
-import { View, Text, Image, Alert, TextInput, TouchableOpacity, KeyboardAvoidingView, Keyboard, Platform } from 'react-native';
+import { View, Text, Alert, TouchableOpacity, KeyboardAvoidingView, Keyboard, Platform } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack'
 
 import { rootStackParams } from '../../navigator/StackNavigator';

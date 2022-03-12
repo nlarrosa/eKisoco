@@ -15,16 +15,16 @@ const Sgdi = axios.create({
     // httpsAgent: new https.Agent({keepAlive:true}),
 });
 
-Sgdi.interceptors.request.use(
+// Sgdi.interceptors.request.use(
 
-    async(config) => {
-        const userData = await AsyncStorage.getItem('userData');
-        const { token } = JSON.parse(userData || '{}');
-        if ( token ) {
-            config.headers['x-token'] = token;
-        }
-        return config;
-    }
-);
+//     async(config) => {
+//         const userData = await AsyncStorage.getItem('userData');
+//         const { token } = JSON.parse(userData || '{}');
+//         if ( token ) {
+//             config.headers['x-token'] = token;
+//         }
+//         return config;
+//     }
+// );
 
 export default Sgdi;

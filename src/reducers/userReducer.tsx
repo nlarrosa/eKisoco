@@ -1,18 +1,20 @@
-import { ProfileData, CuentasMadresData, CuentasHijasData } from '../interfaces/userInterfaces';
+import { CuentasMadresData, CuentasHijasData, ProfileModify } from '../interfaces/userInterfaces';
+import { CanillaResponse } from '../interfaces/loginInterfaces';
 
 
 export interface UserState {
 
-    messageProfile: string | null,
-    userData: ProfileData | null,
+    isLoading: boolean,
+    messageProfile: string,
+    userProfile: CanillaResponse | null,
     cuentasMadresData: CuentasMadresData | null,
     cuentasHijasData: CuentasHijasData | null,
 }
 
 
 type UserAction = 
-    |{ type: 'editProfile', payload: { userData: ProfileData } }
-    |{ type: 'addErrorProfile', payload: string }
+
+    |{ type: 'addMessageProfile', payload: string }
     |{ type: 'removeErrorProfile' }
     |{ type: 'cuentasMadres', payload: { cuentasMadresData: CuentasMadresData }}
     |{ type: 'cuentasHijas', payload: { cuentasHijasData: CuentasHijasData }}
@@ -22,17 +24,12 @@ export const userReducer = ( state: UserState, action: UserAction): UserState  =
 
     switch (action.type) {
 
-        case 'editProfile':
-            return {
-                ...state,
-                userData: null,
-            }
-        break;
-
-        case 'addErrorProfile':
+        case 'addMessageProfile':
             return {
                 ...state,
                 messageProfile: action.payload,
+                cuentasMadresData: null,
+                cuentasHijasData: null,
             }
         break;
 
@@ -40,13 +37,16 @@ export const userReducer = ( state: UserState, action: UserAction): UserState  =
             return {
                 ...state,
                 messageProfile: '',
+                cuentasMadresData: null,
+                cuentasHijasData: null,
             }
         break;
 
         case 'cuentasMadres':
             return {
                 ...state,
-                cuentasMadresData: action.payload.cuentasMadresData
+                cuentasMadresData: action.payload.cuentasMadresData,
+                messageProfile: '',
             }
         break;
 
@@ -54,6 +54,7 @@ export const userReducer = ( state: UserState, action: UserAction): UserState  =
             return {
                 ...state,
                 cuentasHijasData: action.payload.cuentasHijasData,
+                messageProfile: '',
             }
         break;
     
