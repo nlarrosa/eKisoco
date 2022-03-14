@@ -197,6 +197,7 @@ export const AuthProvider = ({ children }: any ) => {
                 }
             });
 
+            
             const response = await Sgdi.get<ProfileData>('/Canillas', { 
                 params: { 
                     token: data.Token, 

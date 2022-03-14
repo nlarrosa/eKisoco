@@ -33,7 +33,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   const [basesStatus, setBasesStatus] = useState({ isActive: false });
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedCuenta, setSelectedCuenta] = useState('');
-  const [selectedCuentaHija, setSelectedCuentaHija] = useState({});
+  const [selectedCuentaHija, setSelectedCuentaHija] = useState('');
   const [regionStatus, setRegionStatus] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { isActive } = basesStatus;
@@ -254,7 +254,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
               >
                   <Picker.Item label='Localidad *' value='' />
                 { cuentasHijasData?.map( (cuentaHija: CuentasHijasData, index: any) => (
-                  <Picker.Item key={ index} label={ cuentaHija.RazonSocial.toUpperCase()} value={ cuentaHija.IdCuentaHija } />
+                  <Picker.Item key={ index } label={ cuentaHija.RazonSocial.toUpperCase()} value={ cuentaHija.IdCuentaHija } />
                   ))}
             </Picker>
             }

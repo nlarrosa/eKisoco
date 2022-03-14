@@ -13,7 +13,7 @@ export const styleRegister = StyleSheet.create({
 
     checkContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         width: '100%',
         marginTop: 35,

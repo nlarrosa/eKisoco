@@ -14,6 +14,8 @@ export const stylesGral = StyleSheet.create({
 
     glCenterContainer: {
         alignItems: 'center',
+        marginHorizontal: 45,
+        marginVertical: 50,
     },
 
     dividerHeader: {
@@ -119,7 +121,7 @@ export const stylesGral = StyleSheet.create({
     glPicker: {
         fontSize: 14,
         color: '#879191',
-        marginBottom: 10,
+        marginBottom: 10
     },
 
 });

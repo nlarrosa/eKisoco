@@ -1,7 +1,7 @@
 import { createContext, useReducer, useState } from "react"
 import { AxiosError } from 'axios';
 
-import { ProfileModify, CuentasMadresData, CuentasHijasData, ProfileData } from '../interfaces/userInterfaces';
+import { ProfileModify, CuentasMadresData, CuentasHijasData, ProfileData, AccountData } from '../interfaces/userInterfaces';
 import { userReducer, UserState } from '../reducers/userReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Sgdi from "../api/Sgdi";
@@ -24,6 +24,7 @@ type UserContextProps = {
     getCuentasMadres: (region: string) => void,
     getCuentasHijas:  (idCuentaMadre: string) => void,
     getProfile: (token:string, idCanilla:string) => Promise<ProfileData>,
+    getAccount: (token:string, idCanilla:string) => Promise<AccountData>,
 }
 
 
@@ -44,6 +45,7 @@ export const UserProvider = ( { children }: any ) => {
     const [ state, dispatch ]   = useReducer( userReducer, userInitialState);
     const [isLoading, setIsLoading] = useState(false);
     const [profile, setProfile] = useState<ProfileData>();   
+    const [account, setAccount] = useState<AccountData>()
     const [insigne, setInsigne] = useState(''); 
 
 
@@ -63,6 +65,26 @@ export const UserProvider = ( { children }: any ) => {
 
         setIsLoading(false);
         return response.data;
+    }
+
+
+
+    /** Retorna los datos de la cuenta del canilla con horarios
+     * dias de reparto, tipos de servicios
+     */
+    const getAccount = async(token: string, idCanilla:string) => {
+
+        setIsLoading(true);
+
+        const resp = await Sgdi.get<AccountData>('/Canillas/ObtenerCanillaAdicional', {
+            params: { 
+                token, 
+                idCanilla
+            }
+        });
+
+        setIsLoading(false);
+        return resp.data;
     }
 
 
@@ -260,6 +282,7 @@ export const UserProvider = ( { children }: any ) => {
             profile,
             insigne,
             getProfile,
+            getAccount,
             editProfile,
             removeErrorProfile,
             getCuentasMadres,

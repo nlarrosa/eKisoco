@@ -10,9 +10,10 @@ const glLabel = stylesGral.glLabel;
 export const styleProduct = StyleSheet.create({
 
     container: {
-        alignContent: 'center',
-        marginHorizontal: 30,
-
+        marginHorizontal: 35,
+        flex: 1,
+        backgroundColor: 'white',
+        // justifyContent: 'flex-start',
     },
 
     containerPicker: {
@@ -37,7 +38,7 @@ export const styleProduct = StyleSheet.create({
     buttonChangeSearch: {
         backgroundColor: 'white',
         height: 45,
-        borderRadius: 50,
+        borderRadius: 20,
         padding: 10,
         alignItems: "center",
         marginVertical: 25,
@@ -60,5 +61,54 @@ export const styleProduct = StyleSheet.create({
         textAlign: 'center',
         shadowColor: constColor.dark,
         fontWeight: 'bold',
+    },
+
+    glButton: {
+        backgroundColor: constColor.green,
+        height: 55,
+        width: '100%',
+        borderRadius: 20,
+        padding: 15,
+        alignItems: "center",
+        shadowColor: constColor.dark,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+        marginVertical: 25,
+    },
+
+    glButtonText: {
+        color: 'white',
+        fontSize: 18,
+        width: 200,
+        textAlign: 'center',
+        shadowColor: constColor.dark,
+    },
+
+    productContainer: {
+        height: 500,
+        borderRadius: 10,
+        borderColor: constColor.grey,
+        borderWidth: 1,
+        padding: 10,
+        // shadowColor: constColor.dark,
+        // shadowOffset: {
+        //     width: 0,
+        //     height: 2,
+        // },
+        // shadowOpacity: 0.25,
+        // shadowRadius: 3.84,
+        // elevation: 5,
+    },
+
+    imageProduct: {
+        height: 280,
+        borderRadius: 10,
     }
+
+
 })

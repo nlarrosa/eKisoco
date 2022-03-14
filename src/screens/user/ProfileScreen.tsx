@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { Text, View, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, ScrollView, TextInput, TouchableOpacity, Alert, RefreshControl, Platform, KeyboardAvoidingView } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 import { rootStackParams } from '../../navigator/StackNavigator';
-
-
 import { styleProfile } from '../../theme/profileTheme';
 import { stylesGral } from '../../theme/generalTheme';
 import constColor from '../../constants/color';
@@ -13,8 +13,8 @@ import constGlobal from '../../constants/globals';
 import { AuthContext } from '../../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
 import { UserContext } from '../../context/UserContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Loading } from '../../components/Loading';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 
@@ -26,6 +26,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
   const { messageProfile, removeErrorProfile, editProfile, getProfile, isLoading, insigne } = useContext(UserContext);
   const [grupoCuenta, setGrupoCuenta] = useState('');
   const [opcional, setOpcional] = useState('opcional');
+  const [refresh, setRefresh] = useState(false);
 
 
   const {onChange, formData, setFormValue } = useForm({ 
@@ -88,33 +89,40 @@ export const ProfileScreen = ({ navigation }: Props ) => {
       editProfile(formData, grupoCuenta);
   }
 
+
+  const loadProfileToRefresh = () => {
+
+  }
+
   if( isLoading ){
     return( <Loading />)
   }
   
     
   return (
-    
-    <SafeAreaView style={ stylesGral.glSafeArea }>
-        <View style={ styleProfile.headerBanner }>
-            <View style={ styleProfile.avatarContent }>
-              <Avatar
-                size={54}
-                rounded
-                title = { insigne }
-                containerStyle={{ 
-                  backgroundColor: constColor.green,
-                }}
-              />
-            </View>
-            <View>
-              <Text style={ styleProfile.headerNameText }>{ dataUser?.Nombre } { dataUser?.Apellido }</Text>
-              <Text style={ styleProfile.headerTitleText }>Distribuidor:</Text>
-              <Text style={ styleProfile.headerSubtitleText}>{ dataUser?.MedioDeEntregaPadre }</Text>
-            </View>
-        </View>
+    <>
+      <View style={ styleProfile.headerBanner }>
+          <View style={ styleProfile.avatarContent }>
+            <Avatar
+              size={54}
+              rounded
+              title = { insigne }
+              containerStyle={{ 
+                backgroundColor: constColor.green,
+              }}
+            />
+          </View>
+          <View>
+            <Text style={ styleProfile.headerNameText }>{ dataUser?.Nombre } { dataUser?.Apellido }</Text>
+            <Text style={ styleProfile.headerTitleText }>Distribuidor:</Text>
+            <Text style={ styleProfile.headerSubtitleText}>{ dataUser?.MedioDeEntregaPadre }</Text>
+          </View>
+      </View>
 
-          
+      <KeyboardAvoidingView 
+        style={{ ...stylesGral.glSafeArea, flex: 1 }}
+        behavior={ (Platform.OS === 'ios') ? 'padding' : 'height' }
+      >
         <ScrollView style={ stylesGral.glScrollView }>
           <View style={ stylesGral.formControl }>
             <Text style={ stylesGral.glLabel }>Cambiar Clave *</Text>
@@ -221,6 +229,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
               </TouchableOpacity>
           </View>
         </ScrollView>
-    </SafeAreaView>
+      </KeyboardAvoidingView>
+    </>
   )
 }

@@ -1,112 +1,164 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import RNPickerSelect  from 'react-native-picker-select';
 
-import { styleProduct } from '../theme/productTheme';
 import { stylesGral } from '../theme/generalTheme';
-import constColor from '../constants/color';
+import { Picker } from '@react-native-picker/picker';
+import colors from '../constants/color';
+import { Divider } from 'react-native-elements';
+import { ProductContext } from '../context/ProductContext';
+import { TipoProductosData, FamiliasProductoData, AutorProductData, ProductoData } from '../interfaces/reposicionesInterface';
+import { Loading } from './Loading';
+import { ProductCard } from './ProductCard';
 
 
 
 export const AsistenSearch = () => {
 
-    const [tipo, setTipo] = useState('');
-    const [familia, setFamilia] = useState('');
-    const [autor, setAutor] = useState('');
-    const [titulo, setTitulo] = useState('');
+  const { getProductTipo, getFamiliaByTipo, isLoading, getAutorByFamilia, getTitulosByAutor } = useContext(ProductContext)
+  const [tipoProducts, setTipoProducts] = useState<TipoProductosData>();
+  const [familiaProducts, setFamiliaProducts] = useState<FamiliasProductoData>();
+  const [titulosProductos, setTitulosProductos] = useState<ProductoData>();
+  const [autorProducts, setAutorProducts] = useState<AutorProductData>();
+  const [selectedTipo, setSelectedTipo] = useState('');
+  const [selectedFamilia, setSelectedFamilia] = useState('');
+  const [selectedAutor, setSelectedAutor] = useState('');
+  const [selectedTitulo, setSelectedTitulo] = useState('');
+
+  useEffect(() => {
+    loadTipoProducts();
+  }, []);
 
 
-    const placeholder = {
-        label: 'Select a sport...',
-        value: null,
-        color: '#9EA0A4',
-      };
+  useEffect(() => {
 
-      const sports = [
-        {
-          label: 'Football',
-          value: 'football',
-        },
-        {
-          label: 'Baseball',
-          value: 'baseball',
-        },
-        {
-          label: 'Hockey',
-          value: 'hockey',
-        },
-      ];
+    loadFamiliaProducts();
+    setSelectedFamilia('');
+    setSelectedAutor('');
+    setSelectedTitulo('');
+
+  }, [selectedTipo]);
+
+
+  useEffect(() => {
+    loadAutorProducts();
+  }, [selectedFamilia]);
+
+
+  useEffect(() => {
+    loadTitulosProducts();
+  }, [selectedAutor]);
+
+
+  // useEffect(() => {
+  //   loadProducts();
+  // }, [selectedTitulo]);
+
+
+  
+
+  const loadTipoProducts = async() => {
+
+    const tipos = await getProductTipo();
+    setTipoProducts(tipos);
+  }
+
+
+  const loadFamiliaProducts = async() => {
+
+    const familias = await getFamiliaByTipo(selectedTipo);
+    setFamiliaProducts(familias);
+  }
+
+
+  const loadAutorProducts = async() => {
+
+    const autor = await getAutorByFamilia(selectedFamilia);
+    setAutorProducts(autor);
+  }
+
+
+  const loadTitulosProducts = async() => {
+    const titulos = await getTitulosByAutor(selectedFamilia, selectedAutor);
+    setTitulosProductos(titulos);
+  }
+
+
+  
+
+  (isLoading) && ( <Loading />)
 
   return (
-    <>
+    <View>
+      <Picker
+        selectedValue={ selectedTipo }
+        onValueChange={(itemValue) => setSelectedTipo(itemValue)}
+        mode='dialog'
+        style={{ ...stylesGral.glTextInputLine, ...stylesGral.glPicker}}
+        >
+            <Picker.Item label='Seleccionar Tipo *' value='' />
+        { tipoProducts?.map((tipo: TipoProductosData) => (
+            <Picker.Item key={ tipo.IdTipoProducto } label={ tipo.Descripcion } value={ tipo.IdTipoProducto } />
+        ))}
+      </Picker>
+      <Divider width={1} color={colors.grey} />
 
-        <View style={ styleProduct.containerPicker }>
-            <Text style={ stylesGral.glLabel }>Seleccione Tipo</Text>
-            <RNPickerSelect
-            key={1}
-            placeholder={placeholder}
-            items={sports}
-            onValueChange={value => setTipo(value)}
-            style={pickerSelectStyles}
-            value={tipo}
-          />
+      
+      { Boolean(selectedTipo) && (
+        <View>
+          <Picker
+            selectedValue={ selectedFamilia}
+            onValueChange={(itemValue) => setSelectedFamilia(itemValue)}
+            mode='dialog'
+            style={{ ...stylesGral.glTextInputLine, ...stylesGral.glPicker}}
+          >
+              <Picker.Item label='Seleccionar Familia *' value='' />
+          { familiaProducts?.map((familia: FamiliasProductoData) => (
+              <Picker.Item key={ familia.IdProductoLogistica } label={ familia.Descripcion } value={ familia.IdProductoLogistica } />
+          ))}
+          </Picker>
+          <Divider width={1} color={colors.grey} />
         </View>
-        <View style={ styleProduct.containerPicker }>
-            <Text style={ stylesGral.glLabel }>Seleccione Familia</Text>
-            <RNPickerSelect
-            key={2}
-            placeholder={placeholder}
-            items={sports}
-            onValueChange={value => setFamilia(value)}
-            style={pickerSelectStyles}
-            value={familia}
-          />
+      )}
+
+
+      { Boolean(selectedFamilia) && (
+        <View>
+          <Picker
+            selectedValue={ selectedAutor}
+            onValueChange={(itemValue) => setSelectedAutor(itemValue)}
+            mode='dialog'
+            style={{ ...stylesGral.glTextInputLine, ...stylesGral.glPicker}}
+          >
+              <Picker.Item label='Seleccionar Autor *' value='' />
+          { autorProducts?.map((autor: string, index: any) => (
+              <Picker.Item key={ index } label={ autor } value={ autor } />
+          ))}
+          </Picker>
+          <Divider width={1} color={colors.grey} />
         </View>
-        <View style={ styleProduct.containerPicker }>
-            <Text style={ stylesGral.glLabel }>Seleccione Autor</Text>
-            <RNPickerSelect
-            key={3}
-            placeholder={placeholder}
-            items={sports}
-            onValueChange={value => setAutor(value)}
-            style={pickerSelectStyles}
-            value={autor}
-          />
+      )}
+
+
+      { Boolean(selectedAutor) && (
+        <View>
+          <Picker
+            selectedValue={ selectedTitulo }
+            onValueChange={(itemValue) => setSelectedTitulo(itemValue)}
+          mode='dialog'
+          style={{ ...stylesGral.glTextInputLine, ...stylesGral.glPicker}}
+          >
+              <Picker.Item label='Seleccionar Titulo *' value='' />
+          { titulosProductos?.map((titulos: ProductoData) => (
+              <Picker.Item key={ titulos.IdProductoLogistica } label={ titulos.Descripcion } value={ titulos.Descripcion } />
+          ))}
+          </Picker>
+          <Divider width={1} color={colors.grey} />
         </View>
-        <View style={ styleProduct.containerPicker }>
-            <Text style={ stylesGral.glLabel }>Seleccione Titulo</Text>
-            <RNPickerSelect
-            key={4}
-            placeholder={placeholder}
-            items={sports}
-            onValueChange={value => setTitulo(value)}
-            style={pickerSelectStyles}
-            value={titulo}
-          />
-        </View>
-    </>
+      )}
+
+      <View>
+        <ProductCard products={ titulosProductos }/>
+      </View>
+    </View>
   )
 }
-
-const pickerSelectStyles = StyleSheet.create({
-
-    inputIOS: {
-      fontSize: 16,
-      paddingVertical: 12,
-      paddingHorizontal: 10,
-      borderBottomWidth: 1,
-      borderColor: 'gray',
-      borderRadius: 4,
-      color: 'black',
-      paddingRight: 30, // to ensure the text is never behind the icon
-    },
-    inputAndroid: {
-      fontSize: 13,
-      paddingHorizontal: 10,
-      paddingVertical: 8,
-      borderBottomWidth: 1,
-      borderColor: constColor.grey,
-      color: 'black',
-      paddingRight: 30, // to ensure the text is never behind the icon
-    },
-  });
