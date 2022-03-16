@@ -111,6 +111,9 @@ export const authReducer = ( state: AuthState, action: AuthAction ):AuthState =>
 
     
         default:
-            break;
+            return {
+                ...state,
+            }
+        break;
     }
 }

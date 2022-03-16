@@ -15,18 +15,21 @@ import { ProductCard } from './ProductCard';
 export const AsistenSearch = () => {
 
   const { getProductTipo, getFamiliaByTipo, isLoading, getAutorByFamilia, getTitulosByAutor } = useContext(ProductContext)
-  const [tipoProducts, setTipoProducts] = useState<TipoProductosData>();
-  const [familiaProducts, setFamiliaProducts] = useState<FamiliasProductoData>();
-  const [titulosProductos, setTitulosProductos] = useState<ProductoData>();
-  const [autorProducts, setAutorProducts] = useState<AutorProductData>();
+  const [tipoProducts, setTipoProducts] = useState<TipoProductosData[]>();
+  const [familiaProducts, setFamiliaProducts] = useState<FamiliasProductoData[]>();
+  const [titulosProductos, setTitulosProductos] = useState<ProductoData[]>();
+  const [autorProducts, setAutorProducts] = useState<AutorProductData[]>();
   const [selectedTipo, setSelectedTipo] = useState('');
   const [selectedFamilia, setSelectedFamilia] = useState('');
   const [selectedAutor, setSelectedAutor] = useState('');
   const [selectedTitulo, setSelectedTitulo] = useState('');
+  const [productFilter, setProductFilter] = useState<ProductoData[]>();
+
 
   useEffect(() => {
     loadTipoProducts();
   }, []);
+
 
 
   useEffect(() => {
@@ -39,67 +42,86 @@ export const AsistenSearch = () => {
   }, [selectedTipo]);
 
 
+
   useEffect(() => {
+    setSelectedAutor('');
+    setSelectedTitulo('');
     loadAutorProducts();
   }, [selectedFamilia]);
 
 
+
   useEffect(() => {
+    setSelectedTitulo('');
     loadTitulosProducts();
   }, [selectedAutor]);
 
 
-  // useEffect(() => {
-  //   loadProducts();
-  // }, [selectedTitulo]);
 
+
+ /** Obtengo los productos filtrados
+   * con la busqueda asistida
+   */
+  useEffect(() => {
+    
+    setProductFilter(
+      titulosProductos?.filter(
+        ( product ) => product.Descripcion.toLowerCase()
+        .includes(selectedTitulo.toLowerCase()))
+    );
+  }, [selectedTitulo]);
+  
 
   
 
-  const loadTipoProducts = async() => {
-
-    const tipos = await getProductTipo();
+  const loadTipoProducts = async() => 
+  {
+    const tipos:any  = await getProductTipo();
     setTipoProducts(tipos);
   }
 
+  
 
-  const loadFamiliaProducts = async() => {
-
-    const familias = await getFamiliaByTipo(selectedTipo);
+  const loadFamiliaProducts = async() => 
+  {
+    const familias:any = await getFamiliaByTipo(selectedTipo);
     setFamiliaProducts(familias);
   }
 
 
-  const loadAutorProducts = async() => {
 
-    const autor = await getAutorByFamilia(selectedFamilia);
+  const loadAutorProducts = async() => 
+  {
+    const autor:any = await getAutorByFamilia(selectedFamilia);
     setAutorProducts(autor);
   }
 
 
-  const loadTitulosProducts = async() => {
-    const titulos = await getTitulosByAutor(selectedFamilia, selectedAutor);
+
+  const loadTitulosProducts = async() => 
+  {
+    const titulos:any = await getTitulosByAutor(selectedFamilia, selectedAutor);
     setTitulosProductos(titulos);
   }
 
-
-  
 
   (isLoading) && ( <Loading />)
 
   return (
     <View>
-      <Picker
-        selectedValue={ selectedTipo }
-        onValueChange={(itemValue) => setSelectedTipo(itemValue)}
-        mode='dialog'
-        style={{ ...stylesGral.glTextInputLine, ...stylesGral.glPicker}}
-        >
-            <Picker.Item label='Seleccionar Tipo *' value='' />
-        { tipoProducts?.map((tipo: TipoProductosData) => (
-            <Picker.Item key={ tipo.IdTipoProducto } label={ tipo.Descripcion } value={ tipo.IdTipoProducto } />
-        ))}
-      </Picker>
+      <View>
+        <Picker
+          selectedValue={ selectedTipo }
+          onValueChange={(itemValue) => setSelectedTipo(itemValue)}
+          mode='dialog'
+          style={{ ...stylesGral.glTextInputLine, ...stylesGral.glPicker}}
+          >
+              <Picker.Item label='Seleccionar Tipo *' value='' />
+          { tipoProducts?.map((tipo: TipoProductosData) => (
+              <Picker.Item key={ tipo.IdTipoProducto } label={ tipo.Descripcion } value={ tipo.IdTipoProducto } />
+          ))}
+        </Picker>
+      </View>
       <Divider width={1} color={colors.grey} />
 
       
@@ -116,9 +138,9 @@ export const AsistenSearch = () => {
               <Picker.Item key={ familia.IdProductoLogistica } label={ familia.Descripcion } value={ familia.IdProductoLogistica } />
           ))}
           </Picker>
-          <Divider width={1} color={colors.grey} />
         </View>
       )}
+      <Divider width={1} color={colors.grey} />
 
 
       { Boolean(selectedFamilia) && (
@@ -130,13 +152,13 @@ export const AsistenSearch = () => {
             style={{ ...stylesGral.glTextInputLine, ...stylesGral.glPicker}}
           >
               <Picker.Item label='Seleccionar Autor *' value='' />
-          { autorProducts?.map((autor: string, index: any) => (
+          { autorProducts?.map((autor: AutorProductData, index: number) => (
               <Picker.Item key={ index } label={ autor } value={ autor } />
           ))}
           </Picker>
-          <Divider width={1} color={colors.grey} />
         </View>
       )}
+      <Divider width={1} color={colors.grey} />
 
 
       { Boolean(selectedAutor) && (
@@ -152,13 +174,15 @@ export const AsistenSearch = () => {
               <Picker.Item key={ titulos.IdProductoLogistica } label={ titulos.Descripcion } value={ titulos.Descripcion } />
           ))}
           </Picker>
-          <Divider width={1} color={colors.grey} />
         </View>
       )}
+      <Divider width={1} color={colors.grey} />
 
-      <View>
-        <ProductCard products={ titulosProductos }/>
-      </View>
+      { Boolean(selectedTitulo) && (
+        <View style={{ marginVertical: 50}}>
+          <ProductCard products={ productFilter }/>
+        </View>
+      )} 
     </View>
   )
 }

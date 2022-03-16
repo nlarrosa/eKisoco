@@ -68,20 +68,31 @@ export const AuthProvider = ({ children }: any ) => {
         if(!token) 
         return dispatch({ type: 'NoAuthenticated' });
 
-        const resp = await Sgdi.get<ProfileData>('/Canillas', { 
+        const { data } = await Sgdi.get<ProfileData>('/Canillas', { 
             params: { 
                 token, 
                 idCanilla: userId,
             }
         });
 
+        AsyncStorage.removeItem('userData');
+
+        await AsyncStorage.setItem('userData', 
+            JSON.stringify({
+                token: data.Token,
+                userId: data.IdCanilla,
+                dataUser: data,
+                enabledReposity: data.HabilitadoRepo,
+            })
+        );
+
         
         dispatch({ 
             type: 'signIn', 
             payload: {
-                token,
-                userId,
-                dataUser: resp.data,
+                token: data.Token,
+                userId: data.IdCanilla,
+                dataUser: data,
                 enabledReposity,
             }
         });

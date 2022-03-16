@@ -22,10 +22,10 @@ export const styleProduct = StyleSheet.create({
     },
 
     title: {
-        fontSize: 16,
-        fontWeight: 'normal',
+        fontSize: 15,
+        fontWeight: 'bold',
         textAlign: 'center',
-        marginBottom: 15,
+        marginVertical: 15,
     },
 
     labelSearch: {
@@ -78,7 +78,7 @@ export const styleProduct = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 5,
-        marginVertical: 25,
+        marginVertical: 25
     },
 
     glButtonText: {
@@ -86,7 +86,7 @@ export const styleProduct = StyleSheet.create({
         fontSize: 18,
         width: 200,
         textAlign: 'center',
-        shadowColor: constColor.dark,
+        shadowColor: constColor.dark
     },
 
     productContainer: {
@@ -94,21 +94,27 @@ export const styleProduct = StyleSheet.create({
         borderRadius: 10,
         borderColor: constColor.grey,
         borderWidth: 1,
-        padding: 10,
-        // shadowColor: constColor.dark,
-        // shadowOffset: {
-        //     width: 0,
-        //     height: 2,
-        // },
-        // shadowOpacity: 0.25,
-        // shadowRadius: 3.84,
-        // elevation: 5,
+        padding: 10
     },
 
     imageProduct: {
         height: 280,
-        borderRadius: 10,
+        borderRadius: 10
+    },
+
+    description: {
+        fontSize: 13,
+        textAlign: 'center',
+    },
+
+    precio: {
+        fontSize: 14,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: constColor.green,
+        marginTop: 10,
     }
+
 
 
 })

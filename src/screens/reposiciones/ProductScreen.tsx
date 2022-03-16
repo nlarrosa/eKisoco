@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, Image, ScrollView, FlatList } from 'react-native';
-import { Button, Card, Icon, SearchBar } from 'react-native-elements';
+import { View, Text, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Alert, Keyboard } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 
 
 import { stylesGral } from '../../theme/generalTheme';
@@ -8,38 +8,70 @@ import { styleProduct } from '../../theme/productTheme';
 import  constColor  from '../../constants/color';
 import { AsistenSearch } from '../../components/AsistenSearch';
 import { ProductContext } from '../../context/ProductContext';
+import { useNavigation } from '@react-navigation/native';
+import { ProductSearchData } from '../../interfaces/reposicionesInterface';
 import { ProductCard } from '../../components/ProductCard';
+
+
+
 
 
 
 export const ProductScreen = () => {
 
-    
+    const { messageProduct, quantityReposity, removeError, getSearchByText, isLoading } = useContext(ProductContext)
     const [search, setSearch] = useState('');
     const [searchText, setSearchText] = useState(true);
-    const [titleAsistida, setTitleAsistida] = useState('BUSQUEDA ASISTIDA')
-    
-    const BASE_URI = 'https://q-sgdiwebapi.lanacion.com.ar/Imagenes/110930/16.jpg';
-
-    const serachTextHandler = () => {
+    const [titleAsistida, setTitleAsistida] = useState('BUSQUEDA ASISTIDA');
+    const [searchResult, setSearchResult] = useState<ProductSearchData>();
+    const navigation = useNavigation();
 
 
+
+    useEffect(() => {
+
+        if(messageProduct.length === 0)
+        return;
+
+        Alert.alert(
+            'Atención',
+            messageProduct,
+            [ { text: "Salir",  style: "destructive", onPress: removeError} ],
+        );
+    }, [messageProduct])
+
+
+
+    /** Busqueda de productos por texto */
+    const serachTextHandler = async() => 
+    {
+        const result = await getSearchByText(search.toLowerCase());
+        setSearchResult(result);
+        Keyboard.dismiss();
     }
 
 
+
     /** Realizamos la busqueda asistida ocultando
-     * la busqueda por texto y utilizando el 
-     * componente AsistenSearch
+     * la busqueda por texto y utilizando el  componente AsistenSearch
      */
-    const searchAsistidaHandler = async () => {
-        
+    const searchAsistidaHandler = async () => 
+    {
         setSearchText(!searchText);
         
         (searchText) 
         ? setTitleAsistida('BUSCAR POR TEXTO') 
         : setTitleAsistida('BUSQUEDA ASISTIDA');
-    }
+    };
 
+
+
+
+    /** Limpia los resultados de busqueda */
+    const removeSearch = () => 
+    {
+        setSearchResult(undefined);
+    }
 
 
 
@@ -49,51 +81,61 @@ export const ProductScreen = () => {
         style={ stylesGral.glSafeArea }
         behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
     >
-        <ScrollView>
-        <View style={ styleProduct.container }>
-            { searchText && (
-                <View>
-                    <Text style={ styleProduct.title }>Seleccione Modo de Búsqueda</Text>
-                    <SearchBar 
-                        platform="default"
-                        placeholder="Titulo o producto a buscar..."
-                        lightTheme={ true }
-                        onChangeText={ (text:string) => setSearch(text) }
-                        value={search}
-                        containerStyle={{
-                            backgroundColor: constColor.green,
-                            borderRadius: 40
-                        }}
-                        inputContainerStyle={{
-                            backgroundColor: 'white',
-                            borderRadius: 40,
-                        }}
-                        onClear={ () => {}}
-                    />
-                </View>
-            )}
+        <ScrollView nestedScrollEnabled={true}>
+            <View style={ styleProduct.container }>
+                { searchText && (
+                    <View>
+                        <Text style={ styleProduct.title }>Seleccione Modo de Búsqueda</Text>
+                        <SearchBar 
+                            platform="default"
+                            placeholder="Titulo o producto a buscar..."
+                            lightTheme={ true }
+                            onChangeText={ (text) => setSearch(text) }
+                            onClear={ removeSearch }
+                            onSubmitEditing={ serachTextHandler }
+                            value={search}
+                            containerStyle={{
+                                backgroundColor: constColor.green,
+                                borderRadius: 40
+                            }}
+                            inputContainerStyle={{
+                                backgroundColor: 'white',
+                                borderRadius: 40,
+                            }}
+                        />
+                    </View>
+                )}
 
-            <View>
-                { !search ? 
-                    <TouchableOpacity 
-                        style={ styleProduct.buttonChangeSearch }
-                        onPress={ searchAsistidaHandler }
-                    >
-                        <Text style={ styleProduct.textChangeSearch }>{ titleAsistida }</Text>
-                    </TouchableOpacity>
-                :
-                    <TouchableOpacity style={styleProduct.glButton }>
-                        <Text style={ stylesGral.glButtonText }>Buscar</Text>
-                    </TouchableOpacity>
-                }
-            </View>
-            
-            <View>    
+                <View>
+                    { !search ? 
+                        <TouchableOpacity 
+                            style={ styleProduct.buttonChangeSearch }
+                            onPress={ searchAsistidaHandler }
+                        >
+                            <Text style={ styleProduct.textChangeSearch }>{ titleAsistida }</Text>
+                        </TouchableOpacity>
+                    :
+                        <TouchableOpacity 
+                            style={styleProduct.glButton }
+                            onPress={ serachTextHandler }
+                        >
+                            <Text style={ stylesGral.glButtonText }>Buscar</Text>
+                        </TouchableOpacity>
+                    }
+                </View>
+
+                { searchText && searchResult?.Titulos.length !== 0 && (
+                    <View>
+                        <ProductCard products={searchResult?.Titulos}/>
+                    </View>
+                )}
+                
                 { !searchText && (
-                    <AsistenSearch />
+                    <View>    
+                        <AsistenSearch />
+                    </View>
                 )}
             </View>
-        </View>
         </ScrollView>
     </KeyboardAvoidingView>
   )

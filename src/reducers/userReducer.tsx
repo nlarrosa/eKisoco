@@ -56,7 +56,10 @@ export const userReducer = ( state: UserState, action: UserAction):UserState  =>
         break;
     
         default:
-            break;
+            return {
+                ...state,
+            }
+        break;
     }
 
 

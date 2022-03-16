@@ -1,6 +1,7 @@
 export interface ProductState {
 
     messageProduct: string,
+    quantityReposity: string,
 }
 
 
@@ -18,7 +19,7 @@ export const productReducer = ( state: ProductState, action: ProductAction) : Pr
         case "addMessageProduct":
             return {
                 ...state,
-                messageProduct: '',
+                messageProduct: action.payload,
             }
         break;
 
@@ -30,7 +31,10 @@ export const productReducer = ( state: ProductState, action: ProductAction) : Pr
         break;
     
         default:
-            break;
+            return {
+                ...state,
+            }
+        break;
     }
 
 }

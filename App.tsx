@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { AuthProvider } from './src/context/AuthContext';
 import { UserProvider } from './src/context/UserContext';
 import { ProductProvider } from './src/context/ProductContext';
+import { CartProvider } from './src/context/CartContext';
 // import { DrawerNavigator } from './src/navigator/DrawerNavigator';
 // import { TabBottomNavigator } from './src/navigator/TabBottomNavigator';
 
@@ -14,7 +15,9 @@ const AppState = ({ children}: any ) => {
     <AuthProvider>
       <UserProvider>
         <ProductProvider>
-          {children}
+          <CartProvider>
+            {children}
+          </CartProvider>
         </ProductProvider>
       </UserProvider>
     </AuthProvider>
