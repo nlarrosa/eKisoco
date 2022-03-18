@@ -6,7 +6,6 @@ import { Card } from 'react-native-elements';
 import { ProductoData } from '../interfaces/reposicionesInterface';
 import { styleProduct } from '../theme/productTheme';
 import { stylesGral } from '../theme/generalTheme';
-import { Picker } from '@react-native-picker/picker';
 import { AddQuantityCart } from './AddQuantityCart';
 import { CartContext } from '../context/CartContext';
 import { CartData } from '../interfaces/cartInterfaces';
@@ -44,9 +43,9 @@ export const ProductCard = ({ products }: Props ) => {
   
   
 
-  const addToCartHandler = (selectedProduct: CartData, quantity: string) => {
+  const addToCartHandler = (selectedProduct: CartData, idProdLogistica: string, quantity: string) => {
 
-      addToCart(selectedProduct, quantity);
+      addToCart(selectedProduct, idProdLogistica, quantity);
   }
 
   if( isLoading ){
@@ -84,7 +83,7 @@ export const ProductCard = ({ products }: Props ) => {
             <View style={{ marginHorizontal: 30}}>
               <TouchableOpacity 
                 style={{ ...styleProduct.glButton }}
-                onPress={() => addToCartHandler( producto, selectedQuantity ) }  
+                onPress={() => addToCartHandler( producto, producto.IdProductoLogistica, selectedQuantity ) }  
               >
                   <Text style={ stylesGral.glButtonText }>Agregar al Carrito</Text>
               </TouchableOpacity>

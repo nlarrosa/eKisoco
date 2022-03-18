@@ -6,7 +6,7 @@ import { ProfileScreen } from '../screens/user/ProfileScreen';
 import { AccountScreen } from '../screens/user/AccountScreen';
 import { ProductScreen } from '../screens/reposiciones/ProductScreen';
 import { AuthContext } from '../context/AuthContext';
-import { CartScreen } from '../screens/CartScreen';
+import { CartScreen } from '../screens/cart/CartScreen';
 
 
 export type rootDrawParams = {

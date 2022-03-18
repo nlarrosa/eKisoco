@@ -14,7 +14,7 @@ type ProductContextProps = {
 
     messageProduct: string,
     isLoading: boolean,
-    quantityReposity: Number,
+    quantityReposity: number,
     getProductTipo:    () => Promise<TipoProductosData[] | undefined>,
     getSearchByText:   (texto: string) => Promise<ProductSearchData | undefined> ,
     getFamiliaByTipo:  (tipo: string) => Promise<FamiliasProductoData[] | undefined>,

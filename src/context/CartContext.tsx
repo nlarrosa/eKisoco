@@ -10,7 +10,7 @@ type CartcontextProps = {
     messageCart: string,
     isLoading: boolean,
     productsCart: CartData[] | undefined,
-    addToCart: ( selectedProduct: CartData, quantity: string ) => void,
+    addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: string ) => void,
     removeToCart: () => void,
     addQuantityProduct: () => void,
     sumCart: () => void,
@@ -34,7 +34,7 @@ export const CartProvider = ({ children }: any ) => {
     const [productsCart, setProductsCart] = useState<CartData[]>([]);
 
 
-    const addToCart = async( selectedProduct: CartData, quantity: string ) => 
+    const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: string ) => 
     {
         const userData = await AsyncStorage.getItem('userData');
         const { userId } = JSON.parse(userData || '{}');
@@ -43,7 +43,7 @@ export const CartProvider = ({ children }: any ) => {
             Autor: selectedProduct.Autor,
             Descripcion: selectedProduct.Descripcion,
             Edicion: selectedProduct.Edicion,
-            idProductoLogistica: selectedProduct.idProductoLogistica,
+            idProductoLogistica,
             Precio: selectedProduct.Precio,
             IdCanilla:userId,
             Cantidad: quantity,
