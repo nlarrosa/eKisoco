@@ -9,6 +9,9 @@ import { stylesGral } from '../theme/generalTheme';
 import { Picker } from '@react-native-picker/picker';
 import { AddQuantityCart } from './AddQuantityCart';
 import { CartContext } from '../context/CartContext';
+import { CartData } from '../interfaces/cartInterfaces';
+import { Loading } from './Loading';
+import { ActivityIndicator } from 'react-native-paper';
 
 
 
@@ -19,32 +22,36 @@ interface Props {
 
 export const ProductCard = ({ products }: Props ) => {
 
-  const { addToCart, messageCart, productsCart } = useContext(CartContext);
-  const [selectedQuantity, setSelectedQuantity] = useState<string>();
+  const { addToCart, messageCart, productsCart, isLoading } = useContext(CartContext);
+  const [selectedQuantity, setSelectedQuantity] = useState<string>('');
  
 
   useEffect(() => {
     
-    if(messageCart.length === 0)
-    return;
+    console.log(productsCart);
+  //   if(messageCart.length === 0)
+  //   return;
 
-    Alert.alert(
-      'Agregar Productos',
-      messageCart,
-      [ { text: "Salir",  style: "destructive", onPress: () => console.log('Nico')} ],
-    )
+  //   Alert.alert(
+  //     'Agregar Productos',
+  //     messageCart,
+  //     [ { text: "Salir",  style: "destructive", onPress: () => console.log('mensaje de alerta')} ],
+  //   )
 
-  }, [messageCart]);
+  }, [productsCart]);
 
 
   
   
 
-  const addToCartHandler = (selectedProduct: ProductoData, quantity: string) => {
+  const addToCartHandler = (selectedProduct: CartData, quantity: string) => {
 
       addToCart(selectedProduct, quantity);
   }
 
+  if( isLoading ){
+    return( <Loading />)
+  }
 
   return (
     <>
@@ -58,6 +65,7 @@ export const ProductCard = ({ products }: Props ) => {
             <Card.Divider />
             <Card.Image style={ styleProduct.imageProduct }
               source={{ uri: producto.URLImagen }}
+              PlaceholderContent={ <ActivityIndicator /> }
             />
 
             <Text style={ styleProduct.title }>{ producto.Descripcion.toUpperCase().split("-")[1] }</Text>

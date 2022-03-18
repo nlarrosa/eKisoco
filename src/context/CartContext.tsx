@@ -1,19 +1,16 @@
-import { createContext, useReducer, useState } from "react";
-import { State } from "react-native-gesture-handler";
-import { ProductoData } from "../interfaces/reposicionesInterface";
+import { createContext, useReducer, useState, useContext } from "react";
+import { ProductoData, ProductSearchData } from '../interfaces/reposicionesInterface';
 import { cartReducer, CartState } from '../reducers/cartReducer';
-import { AddQuantityCart } from '../components/AddQuantityCart';
-import { ProductCard } from '../components/ProductCard';
-import { ActionSheetIOS } from "react-native";
+import { CartData } from "../interfaces/cartInterfaces";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 type CartcontextProps = {
 
     messageCart: string,
     isLoading: boolean,
-    quantity: string,
-    productsCart: ProductoData[] | undefined,
-    addToCart: ( selectedProduct: ProductoData, quantity: string ) => void,
+    productsCart: CartData[] | undefined,
+    addToCart: ( selectedProduct: CartData, quantity: string ) => void,
     removeToCart: () => void,
     addQuantityProduct: () => void,
     sumCart: () => void,
@@ -22,7 +19,6 @@ type CartcontextProps = {
 const CartInitialState: CartState = {
 
     messageCart: '',
-    quantity: '',
     productsCart: undefined,
 }
 
@@ -35,23 +31,36 @@ export const CartProvider = ({ children }: any ) => {
 
     const [ state, dispatch ] = useReducer(cartReducer, CartInitialState)
     const [isLoading, setIsLoading] = useState(false);
-    const [productsCart, setProductsCart] = useState();
+    const [productsCart, setProductsCart] = useState<CartData[]>([]);
 
 
-    const addToCart = ( selectedProduct: ProductoData[], quantity: string ) => 
+    const addToCart = async( selectedProduct: CartData, quantity: string ) => 
     {
+        const userData = await AsyncStorage.getItem('userData');
+        const { userId } = JSON.parse(userData || '{}');
 
-    
+        let cart = {
+            Autor: selectedProduct.Autor,
+            Descripcion: selectedProduct.Descripcion,
+            Edicion: selectedProduct.Edicion,
+            idProductoLogistica: selectedProduct.idProductoLogistica,
+            Precio: selectedProduct.Precio,
+            IdCanilla:userId,
+            Cantidad: quantity,
+        };
+
+        setProductsCart([
+            ...productsCart,
+            cart
+        ])
+
+
          dispatch({
              type: 'addToCart',
              payload: {
-                 quantity: '1',
-                 productsCart: selectedProduct,
-                 messageCart: ' Se agrego el producto al carrito',
+                 productsCart: productsCart,
              }
          });
-
-
     }
 
 

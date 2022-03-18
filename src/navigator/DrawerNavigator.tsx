@@ -6,6 +6,7 @@ import { ProfileScreen } from '../screens/user/ProfileScreen';
 import { AccountScreen } from '../screens/user/AccountScreen';
 import { ProductScreen } from '../screens/reposiciones/ProductScreen';
 import { AuthContext } from '../context/AuthContext';
+import { CartScreen } from '../screens/CartScreen';
 
 
 export type rootDrawParams = {
@@ -13,6 +14,7 @@ export type rootDrawParams = {
     ProfileScreen: undefined,
     AccountScreen: undefined,
     ProductScreen: undefined,
+    CartScreen: undefined,
 }
 
 const Drawer =  createDrawerNavigator<rootDrawParams>();
@@ -45,6 +47,13 @@ export const  DrawerNavigator = () => {
         component ={ProductScreen} 
         options = {{
           title: 'Pedidos'
+        }}
+      />
+      <Drawer.Screen 
+        name ="CartScreen" 
+        component ={CartScreen} 
+        options = {{
+          title: 'Carrito de Compra'
         }}
       />
     </Drawer.Navigator>

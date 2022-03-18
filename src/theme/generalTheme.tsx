@@ -92,7 +92,8 @@ export const stylesGral = StyleSheet.create({
 
     glScrollView: {
         marginHorizontal: 3,
-        borderColor: constColor.green
+        borderColor: constColor.green,
+        paddingVertical: 20,
     },
 
     glLabel: {

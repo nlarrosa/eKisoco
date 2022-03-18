@@ -8,11 +8,10 @@ export const styleProfile = StyleSheet.create({
 
     headerBanner: {
         textAlign: 'center',
-        marginBottom: 20,
         backgroundColor: '#f0f0f0',
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 20,
+        paddingVertical: 25,
     },
 
     headerTitleText: {
@@ -37,7 +36,7 @@ export const styleProfile = StyleSheet.create({
     },
 
     avatarContent: {
-        width: '25%',
+        width: '30%',
         justifyContent: 'center',
         alignItems: 'center',
     },

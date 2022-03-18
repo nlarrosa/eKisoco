@@ -1,15 +1,15 @@
+import { CartData } from '../interfaces/cartInterfaces';
 import { ProductoData } from '../interfaces/reposicionesInterface';
 
 
 export interface CartState {
     messageCart: string,
-    quantity: string,
-    productsCart: ProductoData[] | undefined,
+    productsCart: CartData[] | undefined,
 };
 
 
 type CartAction = 
-    |{ type: 'addToCart', payload:{ quantity: string, productsCart: ProductoData, messageCart: string }}
+    |{ type: 'addToCart', payload:{ productsCart: CartData[] }}
     |{ type: 'removeProductToCart', payload:{ product: ProductoData }}
     |{ type: 'addQuantitytoProduct', payload:{ quantity: string }}
     |{ type: 'errorCart', payload:string }
@@ -19,12 +19,12 @@ type CartAction =
 export const cartReducer = (state: CartState, action: CartAction):  CartState => {
 
     switch (action.type) {
+        
         case 'addToCart':
             return {
                 ...state,
-                quantity: '1',
                 productsCart: action.payload.productsCart,
-                messageCart: action.payload.messageCart,
+                messageCart: '',
             }   
         break;
         

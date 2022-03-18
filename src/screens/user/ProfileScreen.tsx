@@ -104,7 +104,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
       <View style={ styleProfile.headerBanner }>
           <View style={ styleProfile.avatarContent }>
             <Avatar
-              size={54}
+              size={64}
               rounded
               title = { insigne }
               containerStyle={{ 

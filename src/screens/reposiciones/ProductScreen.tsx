@@ -11,6 +11,7 @@ import { ProductContext } from '../../context/ProductContext';
 import { useNavigation } from '@react-navigation/native';
 import { ProductSearchData } from '../../interfaces/reposicionesInterface';
 import { ProductCard } from '../../components/ProductCard';
+import { Loading } from '../../components/Loading';
 
 
 
@@ -74,6 +75,7 @@ export const ProductScreen = () => {
     }
 
 
+    (isLoading) && (<Loading />)
 
   return (
 
