@@ -5,6 +5,8 @@ import { ProductoData } from '../interfaces/reposicionesInterface';
 export interface CartState {
     messageCart: string,
     productsCart: CartData[] | undefined,
+    totalQuantity: number,
+    totalPrice: number,
 };
 
 

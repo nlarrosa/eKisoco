@@ -12,7 +12,7 @@ export const styleCart = StyleSheet.create({
     },
 
     crTitleEdicion: {
-        fontSize: 15, 
+        fontSize: 14, 
         fontWeight: 'bold',
     },
 
@@ -24,8 +24,15 @@ export const styleCart = StyleSheet.create({
     crPrecio: {
         fontSize: 18, 
         fontWeight: 'bold', 
-        marginVertical: 8, 
+        marginBottom: 8, 
         color: constColor.green,
+    },
+
+    crSubPrecio: {
+        fontSize: 12, 
+        fontWeight: 'normal', 
+        color: constColor.greyDark,
+        marginTop: 10,
     },
 
     crButtonDelete: {

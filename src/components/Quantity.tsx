@@ -37,8 +37,8 @@ export const Quantity = ({ initValue, max, buttonColor }:Props ) => {
     return (
         
         <View style={{ flex: 1 }}>
-            <Text >Cantidad</Text>
-            <View style={{ alignItems: 'center', flexDirection: 'row'}}>
+            <Text>Cantidad</Text>
+            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
                 <Button
                     title="-"
                     onPress={ () => validateQuantityAssigned(quantity - 1) }

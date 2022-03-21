@@ -14,7 +14,7 @@ import { AuthContext } from '../../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
 import { UserContext } from '../../context/UserContext';
 import { Loading } from '../../components/Loading';
-import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 
 

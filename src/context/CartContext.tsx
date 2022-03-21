@@ -10,16 +10,20 @@ type CartcontextProps = {
     messageCart: string,
     isLoading: boolean,
     productsCart: CartData[] | undefined,
+    totalQuantity: number,
+    totalPrice: number,
     addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: string ) => void,
     removeToCart: () => void,
     addQuantityProduct: () => void,
-    sumCart: () => void,
+    sumCart: (price:number, quantity: number) => Promise<number>,
 }
 
 const CartInitialState: CartState = {
 
     messageCart: '',
     productsCart: undefined,
+    totalQuantity: 0,
+    totalPrice: 0,
 }
 
 
@@ -32,6 +36,8 @@ export const CartProvider = ({ children }: any ) => {
     const [ state, dispatch ] = useReducer(cartReducer, CartInitialState)
     const [isLoading, setIsLoading] = useState(false);
     const [productsCart, setProductsCart] = useState<CartData[]>([]);
+    const [totalQuantity, setTotalQuantity] = useState<number>(0);
+    const [totalPrice, setTotalPrice] = useState<number>(0)
 
 
     const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: string ) => 
@@ -39,15 +45,22 @@ export const CartProvider = ({ children }: any ) => {
         const userData = await AsyncStorage.getItem('userData');
         const { userId } = JSON.parse(userData || '{}');
 
+        const precioSum = Number(selectedProduct.Precio) * Number(quantity);
+
         let cart = {
             Autor: selectedProduct.Autor,
             Descripcion: selectedProduct.Descripcion,
             Edicion: selectedProduct.Edicion,
             idProductoLogistica,
             Precio: selectedProduct.Precio,
+            PrecioSum: precioSum,
             IdCanilla:userId,
             Cantidad: quantity,
         };
+
+
+        setTotalQuantity( totalQuantity + Number(quantity) );
+        setTotalPrice( totalPrice + precioSum);
 
         setProductsCart([
             ...productsCart,
@@ -70,9 +83,9 @@ export const CartProvider = ({ children }: any ) => {
     }
 
 
-    const sumCart = async () => 
+    const sumCart = async (price: number, quantity: number) => 
     {
-
+        
     }
 
 
@@ -88,6 +101,8 @@ export const CartProvider = ({ children }: any ) => {
         <CartContext.Provider value={{
             ...state,
             isLoading,
+            totalPrice,
+            totalQuantity,
             addToCart,
             removeToCart,
             productsCart,

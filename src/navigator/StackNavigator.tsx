@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 
+
 import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
 import { ForgotScreen } from '../screens/auth/ForgotScreen';
@@ -10,7 +11,6 @@ import { ProfileScreen } from '../screens/user/ProfileScreen';
 import { AccountScreen } from '../screens/user/AccountScreen';
 import { DrawerNavigator } from './DrawerNavigator';
 import { Loading } from '../components/Loading';
-import { Button, Icon } from 'react-native-elements';
 
 
 
@@ -37,20 +37,12 @@ export const StackNavigator = () => {
 
     <Stack.Navigator
         initialRouteName='LoginScreen'
-        screenOptions={{
-            contentStyle: {
-                backgroundColor: 'white',
-            },
-            headerStyle: {
-                backgroundColor: 'white',
-            },
-        }}
     >
         { ( status !== 'authenticated') 
         
         ? (
             <>
-                <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
+                <Stack.Screen name="RegisterScreen" component={RegisterScreen} options={{ title: 'Registro de Usuario' }} />
                 <Stack.Screen name="LoginScreen"    component={LoginScreen} options={{ title: 'Login' }}/>
                 <Stack.Screen name="ForgotScreen"   component={ForgotScreen} options={{ title: 'Recuperar Clave' }} />
             </>

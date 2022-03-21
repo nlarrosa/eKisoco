@@ -5,6 +5,7 @@ export interface CartData {
     Edicion: string,
     idProductoLogistica: string,
     Precio: string,
+    PrecioSum: number,
     IdCanilla: string,
     Cantidad: string
 }
