@@ -13,9 +13,9 @@ type CartcontextProps = {
     totalQuantity: number,
     totalPrice: number,
     addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: string ) => void,
-    removeToCart: () => void,
+    removeToCart: ( idProducto: string ) => void,
     addQuantityProduct: () => void,
-    sumCart: (price:number, quantity: number) => Promise<number>,
+    sumCart: (price:number, quantity: number) => void,
 }
 
 const CartInitialState: CartState = {
@@ -37,7 +37,7 @@ export const CartProvider = ({ children }: any ) => {
     const [isLoading, setIsLoading] = useState(false);
     const [productsCart, setProductsCart] = useState<CartData[]>([]);
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
-    const [totalPrice, setTotalPrice] = useState<number>(0)
+    const [totalPrice, setTotalPrice] = useState<number>(0);
 
 
     const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: string ) => 
@@ -45,9 +45,11 @@ export const CartProvider = ({ children }: any ) => {
         const userData = await AsyncStorage.getItem('userData');
         const { userId } = JSON.parse(userData || '{}');
 
+
         const precioSum = Number(selectedProduct.Precio) * Number(quantity);
 
         let cart = {
+            id: selectedProduct.Edicion,
             Autor: selectedProduct.Autor,
             Descripcion: selectedProduct.Descripcion,
             Edicion: selectedProduct.Edicion,
@@ -58,14 +60,13 @@ export const CartProvider = ({ children }: any ) => {
             Cantidad: quantity,
         };
 
-
         setTotalQuantity( totalQuantity + Number(quantity) );
         setTotalPrice( totalPrice + precioSum);
 
         setProductsCart([
             ...productsCart,
             cart
-        ])
+        ]);
 
 
          dispatch({
@@ -77,9 +78,20 @@ export const CartProvider = ({ children }: any ) => {
     }
 
 
-    const removeToCart = async () => 
+
+    
+    const removeToCart = ( idProducto: string ) => 
     {
 
+        let cartProducts = productsCart.filter((item) => item.id !== idProducto);
+        let product = productsCart.filter((item) => item.id === idProducto); 
+        
+        setTotalQuantity( totalQuantity - Number(product[0].Cantidad) );
+        setTotalPrice( totalPrice - (Number(product[0].Precio) * Number(product[0].Cantidad)));
+        
+        setProductsCart(
+            cartProducts
+        );
     }
 
 

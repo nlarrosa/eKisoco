@@ -75,6 +75,7 @@ export const AuthProvider = ({ children }: any ) => {
             }
         });
 
+
         AsyncStorage.removeItem('userData');
 
         await AsyncStorage.setItem('userData', 

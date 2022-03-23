@@ -1,5 +1,5 @@
 export interface CartData {
-
+    id: string,
     Autor: string,
     Descripcion: string,
     Edicion: string,

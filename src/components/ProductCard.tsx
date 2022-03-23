@@ -27,7 +27,6 @@ export const ProductCard = ({ products }: Props ) => {
 
   useEffect(() => {
     
-    console.log(productsCart);
   //   if(messageCart.length === 0)
   //   return;
 

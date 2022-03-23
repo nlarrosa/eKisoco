@@ -14,7 +14,7 @@ import { stylesGral } from '../../theme/generalTheme';
 
 export const CartScreen = () => 
 {
-    const { productsCart, totalPrice, totalQuantity } = useContext(CartContext)
+    const { productsCart, totalPrice, totalQuantity, removeToCart } = useContext(CartContext)
     const { quantityReposity } = useContext(ProductContext);
 
     
@@ -88,14 +88,16 @@ export const CartScreen = () =>
 
                 </View>
                 <View style={ styleCart.crButtonDelete }>
-                    <Icon 
-                        raised
-                        reverse
-                        type='ionicon' 
-                        name='trash' 
-                        color={constColor.danger} 
-                        size={20}
-                    />
+                    <TouchableOpacity onPress={ () => removeToCart(product.Edicion)}>
+                        <Icon 
+                            raised
+                            reverse
+                            type='ionicon' 
+                            name='trash' 
+                            color={constColor.danger} 
+                            size={20}
+                        />
+                    </TouchableOpacity>
                 </View>
             </View>
             ))}
