@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
-import { Text, KeyboardAvoidingView, Platform, View, ScrollView, TouchableOpacity } from 'react-native';
-import { Icon, Button } from 'react-native-elements';
+import React, { useContext, useEffect, useState } from 'react'
+import { Text, KeyboardAvoidingView, Platform, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { Icon } from 'react-native-elements';
 
 
 import { Quantity } from '../../components/Quantity';
@@ -8,15 +8,16 @@ import { ProductContext } from '../../context/ProductContext';
 import { CartContext } from '../../context/CartContext';
 import { styleCart } from '../../theme/cartTheme';
 import constColor from '../../constants/color';
-import { stylesGral } from '../../theme/generalTheme';
+
 
 
 
 export const CartScreen = () => 
 {
-    const { productsCart, totalPrice, totalQuantity, removeToCart } = useContext(CartContext)
+    const { productsCart, totalPrice, removeToCart } = useContext(CartContext)
     const { quantityReposity } = useContext(ProductContext);
-
+    const [selectedQuantity, setSelectedQuantity] = useState<number>(0);
+    
     
   
     return (
@@ -73,7 +74,7 @@ export const CartScreen = () =>
         </View>
         <ScrollView>
             { productsCart?.map( (product, index) => (
-            <View key={ index } style={ styleCart.crContainer}>
+            <View key={ product.Edicion } style={ styleCart.crContainer}>
                 <View style={{ width: '75%'}}>
                     <Text style={ styleCart.crTitleEdicion }>Familia: { product.idProductoLogistica} - Edicion: { product.Edicion }</Text>
                     <Text style={ styleCart.crTitle }>{ product.Descripcion.toUpperCase().split("-")[1] }</Text>
@@ -81,9 +82,10 @@ export const CartScreen = () =>
                     <Text style={ styleCart.crPrecio }>$ { product.PrecioSum.toFixed(2) }</Text>
 
                     <Quantity 
-                        initValue={Number(product.Cantidad)} 
-                        max={quantityReposity} 
-                        buttonColor={ constColor.green}
+                        initValue={ Number( product.Cantidad ) }
+                        max={ quantityReposity } 
+                        buttonColor={ constColor.green }
+                        title={ 'Cantidad Seleccionada' }
                     />
 
                 </View>

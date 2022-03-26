@@ -3,19 +3,21 @@ import { ProductoData, ProductSearchData } from '../interfaces/reposicionesInter
 import { cartReducer, CartState } from '../reducers/cartReducer';
 import { CartData } from "../interfaces/cartInterfaces";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from "react-native";
 
 
-type CartcontextProps = {
+type CartContextProps = {
 
     messageCart: string,
     isLoading: boolean,
     productsCart: CartData[] | undefined,
     totalQuantity: number,
     totalPrice: number,
-    addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: string ) => void,
+    addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => void,
     removeToCart: ( idProducto: string ) => void,
-    addQuantityProduct: () => void,
-    sumCart: (price:number, quantity: number) => void,
+    addQuantityProduct: ( idProducto: string, quantity:number ) => void,
+    sumCart: ( price:number, quantity: number ) => void,
+    removeError: () => void,
 }
 
 const CartInitialState: CartState = {
@@ -28,7 +30,7 @@ const CartInitialState: CartState = {
 
 
 
-export const CartContext = createContext({} as CartcontextProps);
+export const CartContext = createContext({} as CartContextProps);
 
 
 export const CartProvider = ({ children }: any ) => {
@@ -40,13 +42,21 @@ export const CartProvider = ({ children }: any ) => {
     const [totalPrice, setTotalPrice] = useState<number>(0);
 
 
-    const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: string ) => 
+    const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => 
     {
         const userData = await AsyncStorage.getItem('userData');
         const { userId } = JSON.parse(userData || '{}');
 
 
-        const precioSum = Number(selectedProduct.Precio) * Number(quantity);
+        /** Validamos si ya existe el producto
+         * que se quiere agregar al carrito
+         */
+        const validProduct = productsCart.filter( (product) => product.id === selectedProduct.Edicion );
+        if(validProduct.length > 0)
+        return Alert.alert('PRODUCTO EXISTENTE', 'El producto seleccionado ya fue agregado al carrito');
+
+
+        const precioSum = Number(selectedProduct.Precio) * quantity;
 
         let cart = {
             id: selectedProduct.Edicion,
@@ -60,7 +70,7 @@ export const CartProvider = ({ children }: any ) => {
             Cantidad: quantity,
         };
 
-        setTotalQuantity( totalQuantity + Number(quantity) );
+        setTotalQuantity( totalQuantity + quantity );
         setTotalPrice( totalPrice + precioSum);
 
         setProductsCart([
@@ -73,6 +83,7 @@ export const CartProvider = ({ children }: any ) => {
              type: 'addToCart',
              payload: {
                  productsCart: productsCart,
+                 messageCart: 'El producto se agrego al carrito',
              }
          });
     }
@@ -95,16 +106,37 @@ export const CartProvider = ({ children }: any ) => {
     }
 
 
+
+
+    const addQuantityProduct = async (idProducto: string, quantity:number) => 
+    {
+        let product = productsCart.filter((item) => item.id === idProducto);
+        setTotalQuantity( totalQuantity + Number(product[0].Cantidad) );
+        setTotalPrice( totalPrice + (Number(product[0].Precio) * Number(product[0].Cantidad)));
+    }
+
+
+
+
     const sumCart = async (price: number, quantity: number) => 
     {
         
     }
 
 
-    const addQuantityProduct = async () => 
-    {
 
-    }
+
+    /** Remuevo el error para que vuelva a funcionar
+     * la alerta del buscador de productos
+     */
+     const removeError = () => {
+
+        dispatch({
+            type: 'removeError',
+        });
+    };
+
+
 
 
 
@@ -120,6 +152,7 @@ export const CartProvider = ({ children }: any ) => {
             productsCart,
             addQuantityProduct,
             sumCart,
+            removeError,
         }}>
 
         { children}

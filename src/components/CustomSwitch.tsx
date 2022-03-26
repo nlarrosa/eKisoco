@@ -4,8 +4,6 @@ import { Platform, Switch } from 'react-native';
 import  constColor  from '../constants/color';
 
 
-
-
 interface Props {
     isOn: boolean,
     onChange: (value: boolean) => void,

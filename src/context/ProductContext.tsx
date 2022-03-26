@@ -15,11 +15,13 @@ type ProductContextProps = {
     messageProduct: string,
     isLoading: boolean,
     quantityReposity: number,
+    quantity: number,
     getProductTipo:    () => Promise<TipoProductosData[] | undefined>,
     getSearchByText:   (texto: string) => Promise<ProductSearchData | undefined> ,
     getFamiliaByTipo:  (tipo: string) => Promise<FamiliasProductoData[] | undefined>,
     getAutorByFamilia: (idProductoLogistica: string) => Promise<AutorProductData[] | undefined>,
     getTitulosByAutor:  (idProductoLogistica: string, autor: string) => Promise<ProductoData[] | undefined>,
+    getQuantityProduct: (quantity: number) => void,
     removeError: () => void,
 }
 
@@ -38,9 +40,10 @@ export const ProductProvider = ({ children }: any ) => {
 
     
 
-    const [ state, dispatch ] =  useReducer(productReducer, ProductInitialState)
+    const [ state, dispatch ] =  useReducer(productReducer, ProductInitialState);
     const [isLoading, setIsLoading] = useState(false);
-    const [quantityReposity, setQuantityReposity] = useState<Number>(0)
+    const [quantityReposity, setQuantityReposity] = useState<number>(0);
+    const [quantity, setQuantity] = useState<number>(1);
 
 
     useEffect(() => {
@@ -273,6 +276,13 @@ export const ProductProvider = ({ children }: any ) => {
 
 
 
+
+    const getQuantityProduct = (quantity: number) => {
+
+        setQuantity(1);
+         setQuantity(quantity);
+    }
+
     /** Remuevo el error para que vuelva a funcionar
      * la alerta del buscador de productos
      */
@@ -292,11 +302,13 @@ export const ProductProvider = ({ children }: any ) => {
             ...state,
             isLoading,
             quantityReposity,
+            quantity,
             getProductTipo,
             getFamiliaByTipo,
             getSearchByText,
             getAutorByFamilia,
             getTitulosByAutor,
+            getQuantityProduct,
             removeError
         }}>
         

@@ -11,10 +11,11 @@ export interface CartState {
 
 
 type CartAction = 
-    |{ type: 'addToCart', payload:{ productsCart: CartData[] }}
+    |{ type: 'addToCart', payload:{ productsCart: CartData[], messageCart: string }}
     |{ type: 'removeProductToCart', payload:{ product: ProductoData }}
     |{ type: 'addQuantitytoProduct', payload:{ quantity: string }}
     |{ type: 'errorCart', payload:string }
+    |{ type: 'removeError' }
  
 
 
@@ -26,7 +27,7 @@ export const cartReducer = (state: CartState, action: CartAction):  CartState =>
             return {
                 ...state,
                 productsCart: action.payload.productsCart,
-                messageCart: '',
+                messageCart: action.payload.messageCart,
             }   
         break;
         
@@ -48,6 +49,13 @@ export const cartReducer = (state: CartState, action: CartAction):  CartState =>
         case 'errorCart':
             return {
                 ...state,
+            }
+        break;
+
+        case 'removeError':
+            return {
+                ...state,
+                messageCart: '',
             }
         break;
 

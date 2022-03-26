@@ -14,7 +14,7 @@ import { ProductCard } from './ProductCard';
 
 export const AsistenSearch = () => {
 
-  const { getProductTipo, getFamiliaByTipo, isLoading, getAutorByFamilia, getTitulosByAutor } = useContext(ProductContext)
+  const { getProductTipo, getFamiliaByTipo, isLoading, getAutorByFamilia, getTitulosByAutor, quantityReposity } = useContext(ProductContext)
   const [tipoProducts, setTipoProducts] = useState<TipoProductosData[]>();
   const [familiaProducts, setFamiliaProducts] = useState<FamiliasProductoData[]>();
   const [titulosProductos, setTitulosProductos] = useState<ProductoData[]>();
@@ -64,11 +64,12 @@ export const AsistenSearch = () => {
    */
   useEffect(() => {
     
-    setProductFilter(
-      titulosProductos?.filter(
-        ( product ) => product.Descripcion.toLowerCase()
-        .includes(selectedTitulo.toLowerCase()))
-    );
+    const product = titulosProductos?.filter(
+      ( product ) => product.Descripcion.toLowerCase()
+      .includes(selectedTitulo.toLowerCase()));
+
+    setProductFilter( product );
+
   }, [selectedTitulo]);
   
 
@@ -153,7 +154,7 @@ export const AsistenSearch = () => {
           >
               <Picker.Item label='Seleccionar Autor *' value='' />
           { autorProducts?.map((autor: AutorProductData, index: number) => (
-              <Picker.Item key={ index } label={ autor } value={ autor } />
+              <Picker.Item key={ index } label={ autor.toString() } value={ autor } />
           ))}
           </Picker>
         </View>
@@ -180,7 +181,13 @@ export const AsistenSearch = () => {
 
       { Boolean(selectedTitulo) && (
         <View style={{ marginVertical: 50}}>
-          <ProductCard products={ productFilter }/>
+          { productFilter?.map( product => (
+            <ProductCard 
+              key={ product.Edicion}
+              quantityRepository={ quantityReposity}   
+              producto={ product }
+            />
+          ))}
         </View>
       )} 
     </View>

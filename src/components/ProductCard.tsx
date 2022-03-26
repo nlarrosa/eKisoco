@@ -1,97 +1,78 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { Alert, FlatList, Text, TouchableOpacity, View } from 'react-native';
+import React, { useContext } from 'react'
+import { Text, TouchableOpacity, View } from 'react-native';
 import { Card } from 'react-native-elements';
 
 
 import { ProductoData } from '../interfaces/reposicionesInterface';
 import { styleProduct } from '../theme/productTheme';
 import { stylesGral } from '../theme/generalTheme';
-import { AddQuantityCart } from './AddQuantityCart';
+import { ActivityIndicator } from 'react-native-paper';
+import { Quantity } from './Quantity';
+import constColor from '../constants/color';
 import { CartContext } from '../context/CartContext';
 import { CartData } from '../interfaces/cartInterfaces';
-import { Loading } from './Loading';
-import { ActivityIndicator } from 'react-native-paper';
+import { ProductContext } from '../context/ProductContext';
 
 
 
 
 interface Props {
-  products: ProductoData[] | undefined,
+  producto: ProductoData | undefined,
+  quantityRepository: number,
 }
 
-export const ProductCard = ({ products }: Props ) => {
+export const ProductCard = ({ producto, quantityRepository }: Props ) => {
 
-  const { addToCart, messageCart, productsCart, isLoading } = useContext(CartContext);
-  const [selectedQuantity, setSelectedQuantity] = useState<string>('');
- 
-
-  useEffect(() => {
-    
-  //   if(messageCart.length === 0)
-  //   return;
-
-  //   Alert.alert(
-  //     'Agregar Productos',
-  //     messageCart,
-  //     [ { text: "Salir",  style: "destructive", onPress: () => console.log('mensaje de alerta')} ],
-  //   )
-
-  }, [productsCart]);
+  const { addToCart } = useContext(CartContext);
+  const { quantity } = useContext(ProductContext);
 
 
-  
-  
-
-  const addToCartHandler = (selectedProduct: CartData, idProdLogistica: string, quantity: string) => {
+  const addToCartHandler = (selectedProduct: CartData, idProdLogistica: string, quantity: number) => {
 
       addToCart(selectedProduct, idProdLogistica, quantity);
   }
 
-  if( isLoading ){
-    return( <Loading />)
-  }
 
   return (
-    <>
-      { products?.map(( producto ) => (
-        <View 
-          key={producto.Edicion}
-          style={{ marginBottom: 20}}
-        >
-          <Card>
-            <Card.Title> { producto.IdProductoLogistica } - Edicion { producto.Edicion} </Card.Title>
-            <Card.Divider />
-            <Card.Image style={ styleProduct.imageProduct }
-              source={{ uri: producto.URLImagen }}
-              PlaceholderContent={ <ActivityIndicator /> }
-            />
-
-            <Text style={ styleProduct.title }>{ producto.Descripcion.toUpperCase().split("-")[1] }</Text>
-            <Text style={ styleProduct.description}>Autor: { producto.Autor }</Text>
-            <Text style={ styleProduct.description}>Familia: { producto.Familia }</Text>
-            <Text style={ styleProduct.precio}>PVP: $ { producto.Precio.toFixed(2) }</Text>
-
-            <Text style={ styleProduct.title }>Cantidad a Solicitar</Text>
-            <View style={{ justifyContent: 'center', alignItems: 'center'}}>
-              <AddQuantityCart 
-                selectedQuantity={selectedQuantity}
-                onChange={ (value) => setSelectedQuantity(value) }   
-              />
-            </View>
-            
-            <View style={{ marginHorizontal: 30}}>
-              <TouchableOpacity 
-                style={{ ...styleProduct.glButton }}
-                onPress={() => addToCartHandler( producto, producto.IdProductoLogistica, selectedQuantity ) }  
-              >
-                  <Text style={ stylesGral.glButtonText }>Agregar al Carrito</Text>
-              </TouchableOpacity>
-            </View>
-          </Card>
-        </View>
-      ))}
-    </>
-        
     
+      <View 
+        key={producto?.Edicion}
+        style={{ marginBottom: 20}}
+      >
+
+        <Card>
+          <Card.Title> { producto?.IdProductoLogistica } - Edicion { producto?.Edicion} </Card.Title>
+          <Card.Divider />
+          <Card.Image style={ styleProduct.imageProduct }
+            source={{ uri: producto?.URLImagen }}
+            PlaceholderContent={ <ActivityIndicator /> }
+          />
+
+          <Text style={ styleProduct.title }>{ producto?.Descripcion?.toUpperCase().split("-")[1] }</Text>
+          <Text style={ styleProduct.description}>Autor: { producto?.Autor }</Text>
+          <Text style={ styleProduct.description}>Familia: { producto?.Familia }</Text>
+          <Text style={ styleProduct.precio}>PVP: $ { producto?.Precio?.toFixed(2) }</Text>
+
+          {/* <Text style={ styleProduct.title }>Cantidad a Solicitar</Text> */}
+          <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+            <Quantity 
+                initValue={ 1 }
+                max={ quantityRepository } 
+                buttonColor={ constColor.green}
+                title={'Cantidad a Solicitar'}
+            />
+          </View>
+          
+          <View style={{ marginHorizontal: 30}}>
+            <TouchableOpacity 
+              style={{ ...styleProduct.glButton }}
+              onPress={() => addToCartHandler( producto, producto?.IdProductoLogistica, quantity) }  
+            >
+                <Text style={ stylesGral.glButtonText }>Agregar al Carrito</Text>
+            </TouchableOpacity>
+          </View>
+        </Card>
+
+      </View>
   )
 }

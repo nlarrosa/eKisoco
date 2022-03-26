@@ -12,6 +12,8 @@ import { useNavigation } from '@react-navigation/native';
 import { ProductSearchData } from '../../interfaces/reposicionesInterface';
 import { ProductCard } from '../../components/ProductCard';
 import { Loading } from '../../components/Loading';
+import { onChange } from 'react-native-reanimated';
+import { CartContext } from '../../context/CartContext';
 
 
 
@@ -20,7 +22,8 @@ import { Loading } from '../../components/Loading';
 
 export const ProductScreen = () => {
 
-    const { messageProduct, quantityReposity, removeError, getSearchByText, isLoading } = useContext(ProductContext)
+    const { messageProduct, removeError, getSearchByText, isLoading, quantityReposity } = useContext(ProductContext);
+    const { messageCart } = useContext(CartContext);
     const [search, setSearch] = useState('');
     const [searchText, setSearchText] = useState(true);
     const [titleAsistida, setTitleAsistida] = useState('BUSQUEDA ASISTIDA');
@@ -40,6 +43,22 @@ export const ProductScreen = () => {
             [ { text: "Salir",  style: "destructive", onPress: removeError} ],
         );
     }, [messageProduct])
+
+
+
+
+    useEffect(() => {
+      
+        if(messageCart.length === 0)
+        return;
+
+        Alert.alert(
+            'Exito!',
+            messageCart,
+            [{ text: 'Aceptar', onPress: removeError}]
+        );
+        
+    }, [messageCart])
 
 
 
@@ -128,7 +147,13 @@ export const ProductScreen = () => {
 
                 { searchText && searchResult?.Titulos.length !== 0 && (
                     <View>
-                        <ProductCard products={searchResult?.Titulos}/>
+                        { searchResult?.Titulos.map( product => (
+                            <ProductCard 
+                                key={ product.Edicion }
+                                quantityRepository={ quantityReposity}
+                                producto={ product }
+                            />
+                        ))}
                     </View>
                 )}
                 

@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react'
+import React from 'react'
 import { Text, TextInput, View } from 'react-native'
 import { Button } from 'react-native-elements'
+import { useQuantity } from '../hooks/useQuantity';
 
 
 
@@ -8,43 +9,29 @@ type Props = {
     initValue: number,
     max: number,
     buttonColor: string,
+    title: string | null,
 }
 
 
-export const Quantity = ({ initValue, max, buttonColor }:Props ) => {
+export const Quantity = ({ initValue, max, buttonColor, title }:Props ) => {
  
 
-    const [quantity, setQuantity] = useState<number>(initValue);
+    const { counter, increaseBy } = useQuantity({ initValue, max });
+   
 
-
-    const validateQuantityAssigned = (cant: number) => {
-
-        if(cant <= 1){
-            setQuantity(1);
-            return;
-        }
-
-        if(cant > max){
-            setQuantity(max);
-            return;
-        }
-
-        setQuantity(cant);
-
-    }
-
- 
     return (
         
         <View style={{ flex: 1 }}>
-            <Text>Cantidad</Text>
-            <View style={{ alignItems: 'center', flexDirection: 'row' }}>
+            <Text style={{ marginTop: 15, fontWeight: '700'}}>{ title }</Text>
+            <View style={{ alignItems: 'center', flexDirection: 'row'}}>
                 <Button
                     title="-"
-                    onPress={ () => validateQuantityAssigned(quantity - 1) }
+                    onPress={ () => increaseBy( -1 ) }
                     titleStyle={{ fontWeight: '800' }}
                     buttonStyle={{
                         backgroundColor: buttonColor,
+                        borderTopLeftRadius: 10,
+                        borderBottomLeftRadius: 10,
                         height: 40,
                     }}
                     containerStyle={{
@@ -52,10 +39,9 @@ export const Quantity = ({ initValue, max, buttonColor }:Props ) => {
                         width: 45,
                         height: 45,
                         marginVertical: 10,
-                        // borderWidth: 2
                     }}
                 />
-                <TextInput value={ quantity.toString() }
+                <TextInput value={ counter.toString() }
                     textAlign='center'
                     keyboardType='numeric'
                     autoCapitalize='none'
@@ -72,10 +58,12 @@ export const Quantity = ({ initValue, max, buttonColor }:Props ) => {
                     />
                 <Button
                     title="+"
-                    onPress={ () => validateQuantityAssigned(quantity + 1) }
+                    onPress={ () => increaseBy( +1 ) }
                     titleStyle={{ fontWeight: '900' }}
                     buttonStyle={{
                         backgroundColor: buttonColor,
+                        borderTopRightRadius: 10,
+                        borderBottomRightRadius: 10,
                         height: 40,
                     }}
                     containerStyle={{
@@ -83,7 +71,6 @@ export const Quantity = ({ initValue, max, buttonColor }:Props ) => {
                         width: 45,
                         height: 45,
                         marginVertical: 10,
-                        // borderWidth: 2
                     }}
                     />
             </View>
