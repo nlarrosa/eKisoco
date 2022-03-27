@@ -29,7 +29,7 @@ export const styleCart = StyleSheet.create({
     },
 
     crSubPrecio: {
-        fontSize: 12, 
+        fontSize: 14, 
         fontWeight: 'normal', 
         color: constColor.greyDark,
         marginTop: 10,

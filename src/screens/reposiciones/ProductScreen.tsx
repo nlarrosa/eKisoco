@@ -22,8 +22,8 @@ import { CartContext } from '../../context/CartContext';
 
 export const ProductScreen = () => {
 
-    const { messageProduct, removeError, getSearchByText, isLoading, quantityReposity } = useContext(ProductContext);
-    const { messageCart } = useContext(CartContext);
+    const { messageProduct, titleMessage:title ,removeError, getSearchByText, quantityReposity } = useContext(ProductContext);
+    const { messageCart, removeMessageCart, titleMessage} = useContext(CartContext);
     const [search, setSearch] = useState('');
     const [searchText, setSearchText] = useState(true);
     const [titleAsistida, setTitleAsistida] = useState('BUSQUEDA ASISTIDA');
@@ -38,24 +38,27 @@ export const ProductScreen = () => {
         return;
 
         Alert.alert(
-            'Atención',
+            title,
             messageProduct,
-            [ { text: "Salir",  style: "destructive", onPress: removeError} ],
+            [ { text: "Salir", onPress: removeError} ],
         );
+
     }, [messageProduct])
 
 
 
-
+    /** Alertas generadas desde el contexto 
+     * del carrito cuando agregamos productos
+     */
     useEffect(() => {
       
         if(messageCart.length === 0)
         return;
 
         Alert.alert(
-            'Exito!',
+            titleMessage,
             messageCart,
-            [{ text: 'Aceptar', onPress: removeError}]
+            [{ text: 'Aceptar', style: "destructive", onPress: removeMessageCart}]
         );
         
     }, [messageCart])
@@ -94,9 +97,7 @@ export const ProductScreen = () => {
     }
 
 
-    (isLoading) && (<Loading />)
-
-  return (
+    return (
 
     <KeyboardAvoidingView
         style={ stylesGral.glSafeArea }
@@ -165,7 +166,7 @@ export const ProductScreen = () => {
             </View>
         </ScrollView>
     </KeyboardAvoidingView>
-  )
+    )
 }
 
 

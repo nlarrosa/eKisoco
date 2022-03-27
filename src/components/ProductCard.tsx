@@ -60,6 +60,7 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
                 max={ quantityRepository } 
                 buttonColor={ constColor.green}
                 title={'Cantidad a Solicitar'}
+                productId={String(producto?.Edicion)}
             />
           </View>
           

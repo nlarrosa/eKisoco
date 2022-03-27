@@ -7,11 +7,13 @@ import Sgdi from "../api/Sgdi";
 import { TipoProductosData, FamiliasProductoData, ProductoData, AutorProductData, ProductSearchData } from '../interfaces/reposicionesInterface';
 import { productReducer, ProductState } from '../reducers/productReducer';
 import constantsGl from '../constants/globals';
+import { Alert } from "react-native";
 
 
 
 type ProductContextProps = {
 
+    titleMessage: string,
     messageProduct: string,
     isLoading: boolean,
     quantityReposity: number,
@@ -28,6 +30,7 @@ type ProductContextProps = {
 
 const  ProductInitialState: ProductState = {
 
+    titleMessage: '',
     messageProduct: '',
     quantityReposity: '',
 }
@@ -98,10 +101,25 @@ export const ProductProvider = ({ children }: any ) => {
                 }
             });
 
+
+            /** Validamos si se obtienen resultados en la 
+             * busqueda si no mostramos alerta
+             */
+            if(searchProduct.data.Titulos.length === 0 )
+            dispatch({
+                type: 'addMessageProduct',
+                payload:{
+                    titleMessage: 'Atencion!',
+                    messageProduct: constantsGl.productNoData,
+                }
+            })
+            
+            
             setIsLoading(false);
             return searchProduct.data;
 
         } catch (error) {
+
             
         }
     }
@@ -130,8 +148,10 @@ export const ProductProvider = ({ children }: any ) => {
             const err = error as AxiosError;
             dispatch({
                 type: 'addMessageProduct',
-                payload:  err.response?.data
-
+                payload:{
+                    titleMessage: 'Atencion!',
+                    messageProduct: err.response?.data,
+                }
             });
             
         }
@@ -163,7 +183,10 @@ export const ProductProvider = ({ children }: any ) => {
                 {
                     dispatch({
                         type: 'addMessageProduct',
-                        payload: constantsGl.productNoData,
+                        payload:{
+                            titleMessage: 'Atencion!',
+                            messageProduct: constantsGl.productNoData,
+                        }
                     });
                 }
 
@@ -176,7 +199,10 @@ export const ProductProvider = ({ children }: any ) => {
             const err = error as AxiosError;
             dispatch({
                 type: 'addMessageProduct',
-                payload:  err.response?.data
+                payload:{
+                    titleMessage: 'Atencion!',
+                    messageProduct: err.response?.data,
+                }
 
             });
         }
@@ -209,7 +235,10 @@ export const ProductProvider = ({ children }: any ) => {
                 {
                     dispatch({
                         type: 'addMessageProduct',
-                        payload: constantsGl.productNoData,
+                        payload:{
+                            titleMessage: 'Atencion!',
+                            messageProduct: constantsGl.productNoData,
+                        }
                     });
                 }
 
@@ -222,7 +251,10 @@ export const ProductProvider = ({ children }: any ) => {
             const err = error as AxiosError;
             dispatch({
                 type: 'addMessageProduct',
-                payload:  err.response?.data
+                payload:{
+                    titleMessage: 'Atencion!',
+                    messageProduct: err.response?.data,
+                }
 
             });
         }
@@ -255,7 +287,10 @@ export const ProductProvider = ({ children }: any ) => {
                 {
                     dispatch({
                         type: 'addMessageProduct',
-                        payload: constantsGl.productNoData,
+                        payload:{
+                            titleMessage: 'Atencion!',
+                            messageProduct: constantsGl.productNoData,
+                        }
                     });
                 }
 
@@ -268,7 +303,10 @@ export const ProductProvider = ({ children }: any ) => {
             const err = error as AxiosError;
             dispatch({
                 type: 'addMessageProduct',
-                payload:  err.response?.data
+                payload:{
+                    titleMessage: 'Atencion!',
+                    messageProduct: err.response?.data,
+                }
 
             });
         }
@@ -280,8 +318,10 @@ export const ProductProvider = ({ children }: any ) => {
     const getQuantityProduct = (quantity: number) => {
 
         setQuantity(1);
-         setQuantity(quantity);
+        setQuantity(quantity);
     }
+
+
 
     /** Remuevo el error para que vuelva a funcionar
      * la alerta del buscador de productos

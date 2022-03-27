@@ -1,5 +1,6 @@
 export interface ProductState {
 
+    titleMessage: string,
     messageProduct: string,
     quantityReposity: string,
 }
@@ -7,7 +8,7 @@ export interface ProductState {
 
 type ProductAction = 
 
-|{ type: 'addMessageProduct',  payload: string }
+|{ type: 'addMessageProduct',  payload:{ messageProduct: string, titleMessage: string }}
 |{ type: 'removeMessageProduct' }
 
 
@@ -19,7 +20,8 @@ export const productReducer = ( state: ProductState, action: ProductAction) : Pr
         case "addMessageProduct":
             return {
                 ...state,
-                messageProduct: action.payload,
+                titleMessage: action.payload.titleMessage,
+                messageProduct: action.payload.messageProduct,
             }
         break;
 
@@ -27,6 +29,7 @@ export const productReducer = ( state: ProductState, action: ProductAction) : Pr
             return {
                 ...state,
                 messageProduct: '',
+                titleMessage: '',
             }
         break;
     

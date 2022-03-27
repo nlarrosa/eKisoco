@@ -10,13 +10,14 @@ type Props = {
     max: number,
     buttonColor: string,
     title: string | null,
+    productId: string,
 }
 
 
-export const Quantity = ({ initValue, max, buttonColor, title }:Props ) => {
+export const Quantity = ({ initValue, max, buttonColor, title, productId }:Props ) => {
  
 
-    const { counter, increaseBy } = useQuantity({ initValue, max });
+    const { counter, increaseBy } = useQuantity({ initValue, max, productId });
    
 
     return (

@@ -8,17 +8,27 @@ import { ProductContext } from '../../context/ProductContext';
 import { CartContext } from '../../context/CartContext';
 import { styleCart } from '../../theme/cartTheme';
 import constColor from '../../constants/color';
+import { LogoEmptyCart } from '../../components/LogoEmptyCart';
+
 
 
 
 
 export const CartScreen = () => 
 {
-    const { productsCart, totalPrice, removeToCart } = useContext(CartContext)
+    const { productsCart, totalPrice, removeToCart, totalQuantity } = useContext(CartContext)
     const { quantityReposity } = useContext(ProductContext);
-    const [selectedQuantity, setSelectedQuantity] = useState<number>(0);
+
     
-    
+
+
+    if( totalQuantity <= 0){ 
+        return ( 
+            <LogoEmptyCart 
+                subTitle='El carrito se encuentra vacio.' 
+            />
+        );
+    }
   
     return (
     
@@ -29,7 +39,9 @@ export const CartScreen = () =>
         <View style={{ 
             // justifyContent: 'flex-end',
             width: '100%', 
-            height: 110,
+            height: 120,
+            paddingTop: 15,
+            paddingBottom: 15,
             borderBottomWidth: 4,
             borderBottomColor: constColor.green,
             backgroundColor: constColor.green,
@@ -44,32 +56,36 @@ export const CartScreen = () =>
         }}>
             <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 20, flexDirection: 'row'}}>
                 <View>
-                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'white'}}>Importe Total:</Text>
-                    <Text style={{ fontSize: 19, fontWeight: 'bold', color: 'white'}}>$ { totalPrice.toFixed(2) }</Text>
+                    <Text style={{ fontSize: 15, color: 'white', marginBottom: 5}}>Total Artículos: { totalQuantity }</Text>
+                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white'}}>Total PVP:</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white'}}>$ { totalPrice.toFixed(2) }</Text>
                 </View>
-                <View>
-                    <TouchableOpacity style={{ 
-                        backgroundColor: 'white',
-                        padding: 12,
-                        borderRadius: 10,
-                        shadowColor: "#000",
-                        shadowOffset: {
-                            width: 0,
-                            height: 3,
-                        },
-                        shadowOpacity: 0.29,
-                        shadowRadius: 4.65,
-                        elevation: 7,
-                    }}>
-                        <Text style={{ 
-                            color: constColor.green,
-                            fontSize: 15,
-                            fontWeight: 'bold'
+
+                { totalQuantity > 0 && 
+                    <View>
+                        <TouchableOpacity style={{ 
+                            backgroundColor: 'white',
+                            padding: 12,
+                            borderRadius: 10,
+                            shadowColor: "#000",
+                            shadowOffset: {
+                                width: 0,
+                                height: 3,
+                            },
+                            shadowOpacity: 0.29,
+                            shadowRadius: 4.65,
+                            elevation: 7,
                         }}>
-                            Confirmar
-                        </Text>
-                    </TouchableOpacity>
-                </View>
+                            <Text style={{ 
+                                color: constColor.green,
+                                fontSize: 15,
+                                fontWeight: 'bold'
+                            }}>
+                                Confirmar
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                }
             </View>
         </View>
         <ScrollView>
@@ -86,6 +102,7 @@ export const CartScreen = () =>
                         max={ quantityReposity } 
                         buttonColor={ constColor.green }
                         title={ 'Cantidad Seleccionada' }
+                        productId={String(product?.Edicion)}
                     />
 
                 </View>

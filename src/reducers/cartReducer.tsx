@@ -3,6 +3,7 @@ import { ProductoData } from '../interfaces/reposicionesInterface';
 
 
 export interface CartState {
+    titleMessage: string
     messageCart: string,
     productsCart: CartData[] | undefined,
     totalQuantity: number,
@@ -11,11 +12,11 @@ export interface CartState {
 
 
 type CartAction = 
-    |{ type: 'addToCart', payload:{ productsCart: CartData[], messageCart: string }}
+    |{ type: 'addToCart', payload:{ productsCart: CartData[], messageCart: string, titleMessage: string }}
     |{ type: 'removeProductToCart', payload:{ product: ProductoData }}
     |{ type: 'addQuantitytoProduct', payload:{ quantity: string }}
-    |{ type: 'errorCart', payload:string }
-    |{ type: 'removeError' }
+    |{ type: 'errorCart', payload:{ titleMessage:string, messageCart: string }}
+    |{ type: 'removeMessageCart' }
  
 
 
@@ -27,6 +28,7 @@ export const cartReducer = (state: CartState, action: CartAction):  CartState =>
             return {
                 ...state,
                 productsCart: action.payload.productsCart,
+                titleMessage: action.payload.titleMessage,
                 messageCart: action.payload.messageCart,
             }   
         break;
@@ -49,12 +51,15 @@ export const cartReducer = (state: CartState, action: CartAction):  CartState =>
         case 'errorCart':
             return {
                 ...state,
+                titleMessage: action.payload.titleMessage,
+                messageCart: action.payload.messageCart,
             }
         break;
 
-        case 'removeError':
+        case 'removeMessageCart':
             return {
                 ...state,
+                titleMessage: '',
                 messageCart: '',
             }
         break;

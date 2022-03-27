@@ -103,7 +103,7 @@ export const  DrawerNavigator = () => {
         name ="CartScreen" 
         component ={CartScreen} 
         options = {{
-          title: 'Reposiciones'
+          title: 'Carrito'
         }}
       />
     </Drawer.Navigator>
