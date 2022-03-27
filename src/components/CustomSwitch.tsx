@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { Platform, Switch } from 'react-native';
+import { Switch } from 'react-native';
 
 import  constColor  from '../constants/color';
 

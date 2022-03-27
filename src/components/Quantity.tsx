@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Text, TextInput, View } from 'react-native'
 import { Button } from 'react-native-elements'
-import { useQuantity } from '../hooks/useQuantity';
+import { CartContext } from '../context/CartContext';
+
 
 
 
@@ -17,7 +18,22 @@ type Props = {
 export const Quantity = ({ initValue, max, buttonColor, title, productId }:Props ) => {
  
 
-    const { counter, increaseBy } = useQuantity({ initValue, max, productId });
+    const { addQuantityProduct }  = useContext(CartContext);
+    const [ counter, setCounter ] = useState<number>(0);
+
+
+    useEffect(() => {
+        setCounter(initValue);
+    },[]);
+
+
+
+    const increaseBy = ( value: number ) => {
+
+        const newValue =  Math.min(max, Math.max( counter + value, 1 ))
+        setCounter( newValue );
+        addQuantityProduct( productId, newValue );
+    }
    
 
     return (

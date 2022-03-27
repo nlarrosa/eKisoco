@@ -11,8 +11,6 @@ import { ProductContext } from '../../context/ProductContext';
 import { useNavigation } from '@react-navigation/native';
 import { ProductSearchData } from '../../interfaces/reposicionesInterface';
 import { ProductCard } from '../../components/ProductCard';
-import { Loading } from '../../components/Loading';
-import { onChange } from 'react-native-reanimated';
 import { CartContext } from '../../context/CartContext';
 
 

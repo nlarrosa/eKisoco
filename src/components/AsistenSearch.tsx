@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View } from 'react-native';
 
 import { stylesGral } from '../theme/generalTheme';
 import { Picker } from '@react-native-picker/picker';

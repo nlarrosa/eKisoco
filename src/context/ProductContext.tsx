@@ -7,7 +7,7 @@ import Sgdi from "../api/Sgdi";
 import { TipoProductosData, FamiliasProductoData, ProductoData, AutorProductData, ProductSearchData } from '../interfaces/reposicionesInterface';
 import { productReducer, ProductState } from '../reducers/productReducer';
 import constantsGl from '../constants/globals';
-import { Alert } from "react-native";
+
 
 
 

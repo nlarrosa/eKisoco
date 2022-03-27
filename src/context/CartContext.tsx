@@ -1,9 +1,7 @@
 import { createContext, useReducer, useState, useContext } from "react";
-import { ProductoData, ProductSearchData } from '../interfaces/reposicionesInterface';
 import { cartReducer, CartState } from '../reducers/cartReducer';
 import { CartData } from "../interfaces/cartInterfaces";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from "react-native";
 import { ProductContext } from './ProductContext';
 
 
@@ -18,7 +16,6 @@ type CartContextProps = {
     addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => void,
     removeToCart: ( idProducto: string ) => void,
     addQuantityProduct: ( idProducto: string, quantity:number ) => void,
-    sumCart: ( price:number, quantity: number ) => void,
     removeMessageCart: () => void,
 }
 
@@ -133,38 +130,26 @@ export const CartProvider = ({ children }: any ) => {
         let cantidad: number = 0;
         let total: number = 0;
 
-        if(productsCart.length > 0){
-
-            productsCart.map((item) => {
+        productsCart.map((item) => {
+            
+            if(Number(item.id) === Number(idProducto)){
                 
-                if(Number(item.id) === Number(idProducto)){
-                    
-                    item.Cantidad = quantity;
-                    item.PrecioSum = quantity * Number(item.Precio);
-                }
+                item.Cantidad = quantity;
+                item.PrecioSum = quantity * Number(item.Precio);
+            }
 
-                cantidad = cantidad + item.Cantidad;
-                total = total + item.PrecioSum;
-            });
+            cantidad = cantidad + item.Cantidad;
+            total = total + item.PrecioSum;
+        });
 
-            setTotalQuantity(cantidad);
-            setTotalPrice(total);
-        }
-        
+        setTotalQuantity(cantidad);
+        setTotalPrice(total);
         getQuantityProduct(quantity);
 
         setProductsCart([
             ...productsCart,
         ]);
 
-    }
-
-
-
-
-    const sumCart = async (price: number, quantity: number) => 
-    {
-        
     }
 
 
@@ -195,7 +180,6 @@ export const CartProvider = ({ children }: any ) => {
             removeToCart,
             productsCart,
             addQuantityProduct,
-            sumCart,
             removeMessageCart,
         }}>
 
