@@ -12,10 +12,11 @@ type Props = {
     buttonColor: string,
     title: string | null,
     productId: string,
+    cartAction?: boolean,
 }
 
 
-export const Quantity = ({ initValue, max, buttonColor, title, productId }:Props ) => {
+export const Quantity = ({ initValue, max, buttonColor, title, productId, cartAction=false }:Props ) => {
  
 
     const { addQuantityProduct }  = useContext(CartContext);
@@ -32,7 +33,7 @@ export const Quantity = ({ initValue, max, buttonColor, title, productId }:Props
 
         const newValue =  Math.min(max, Math.max( counter + value, 1 ))
         setCounter( newValue );
-        addQuantityProduct( productId, newValue );
+        addQuantityProduct( productId, newValue, cartAction );
     }
    
 

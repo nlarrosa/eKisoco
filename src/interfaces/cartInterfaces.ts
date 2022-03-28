@@ -6,6 +6,6 @@ export interface CartData {
     idProductoLogistica: string,
     Precio: string,
     PrecioSum: number,
-    IdCanilla: string,
+    IdCanilla?: string,
     Cantidad: number
 }

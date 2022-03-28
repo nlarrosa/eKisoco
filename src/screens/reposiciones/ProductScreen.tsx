@@ -32,7 +32,7 @@ export const ProductScreen = () => {
 
     useEffect(() => {
 
-        if(messageProduct.length === 0)
+        if(messageProduct?.length === 0)
         return;
 
         Alert.alert(
@@ -50,7 +50,7 @@ export const ProductScreen = () => {
      */
     useEffect(() => {
       
-        if(messageCart.length === 0)
+        if(messageCart?.length === 0)
         return;
 
         Alert.alert(

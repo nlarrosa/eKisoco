@@ -6,6 +6,7 @@ export interface CartState {
     titleMessage: string
     messageCart: string,
     productsCart: CartData[] | undefined,
+    quantity: number,
     totalQuantity: number,
     totalPrice: number,
 };

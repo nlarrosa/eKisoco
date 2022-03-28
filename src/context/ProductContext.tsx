@@ -314,7 +314,7 @@ export const ProductProvider = ({ children }: any ) => {
 
 
 
-
+    
     const getQuantityProduct = (quantity: number) => {
 
         setQuantity(1);

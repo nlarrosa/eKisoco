@@ -23,8 +23,8 @@ interface Props {
 
 export const ProductCard = ({ producto, quantityRepository }: Props ) => {
 
-  const { addToCart } = useContext(CartContext);
-  const { quantity } = useContext(ProductContext);
+  const { addToCart, quantity } = useContext(CartContext);
+  // const { quantity } = useContext(ProductContext);
 
 
   const addToCartHandler = (selectedProduct: CartData, idProdLogistica: string, quantity: number) => {

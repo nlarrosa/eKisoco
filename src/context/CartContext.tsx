@@ -1,8 +1,8 @@
 import { createContext, useReducer, useState, useContext } from "react";
 import { cartReducer, CartState } from '../reducers/cartReducer';
 import { CartData } from "../interfaces/cartInterfaces";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ProductContext } from './ProductContext';
+import { AuthContext } from './AuthContext';
 
 
 type CartContextProps = {
@@ -11,11 +11,13 @@ type CartContextProps = {
     messageCart: string,
     isLoading: boolean,
     productsCart: CartData[] | undefined,
+    quantity: number,
     totalQuantity: number,
     totalPrice: number,
     addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => void,
     removeToCart: ( idProducto: string ) => void,
-    addQuantityProduct: ( idProducto: string, quantity:number ) => void,
+    addQuantityProduct: ( idProducto: string, quantity:number, actionCart:boolean ) => void,
+    generateOrder: (products: CartData[]) => void,
     removeMessageCart: () => void,
 }
 
@@ -24,6 +26,7 @@ const CartInitialState: CartState = {
     titleMessage: '',
     messageCart: '',
     productsCart: undefined,
+    quantity: 0,
     totalQuantity: 0,
     totalPrice: 0,
 }
@@ -35,19 +38,18 @@ export const CartContext = createContext({} as CartContextProps);
 
 export const CartProvider = ({ children }: any ) => {
 
+    const { userId } = useContext(AuthContext);
     const { getQuantityProduct } = useContext(ProductContext);
     const [ state, dispatch ] = useReducer(cartReducer, CartInitialState)
     const [isLoading, setIsLoading] = useState(false);
     const [productsCart, setProductsCart] = useState<CartData[]>([]);
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
     const [totalPrice, setTotalPrice] = useState<number>(0);
+    const [quantity, setQuantity] = useState<number>(0);
 
 
     const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => 
     {
-        const userData = await AsyncStorage.getItem('userData');
-        const { userId } = JSON.parse(userData || '{}');
-
 
         /** Validamos si ya existe el producto
          * que se quiere agregar al carrito
@@ -76,7 +78,7 @@ export const CartProvider = ({ children }: any ) => {
             idProductoLogistica,
             Precio: selectedProduct.Precio,
             PrecioSum: precioSum,
-            IdCanilla:userId,
+            IdCanilla: userId || undefined,
             Cantidad: quantity,
         };
 
@@ -99,7 +101,7 @@ export const CartProvider = ({ children }: any ) => {
          });
 
          /** Limpio a cero el contador de cantidades */
-         getQuantityProduct(1);
+         setQuantity(1);
     }
 
 
@@ -125,31 +127,42 @@ export const CartProvider = ({ children }: any ) => {
      * o desde el carrito, esta ligado al Hook UseQuantity
      * donde se ejecuta este metodo
      */
-    const addQuantityProduct = async (idProducto: string, quantity:number) => 
+    const addQuantityProduct = async (idProducto: string, quantity:number, actionCart:boolean) => 
     {
         let cantidad: number = 0;
         let total: number = 0;
 
-        productsCart.map((item) => {
-            
-            if(Number(item.id) === Number(idProducto)){
+        if(actionCart) {
+
+            productsCart.map((item) => {
                 
-                item.Cantidad = quantity;
-                item.PrecioSum = quantity * Number(item.Precio);
-            }
+                if(Number(item.id) === Number(idProducto)){
+                    
+                    item.Cantidad = quantity;
+                    item.PrecioSum = quantity * Number(item.Precio);
+                }
+    
+                cantidad = cantidad + item.Cantidad;
+                total = total + item.PrecioSum;
+            });
+    
+            setTotalQuantity(cantidad);
+            setTotalPrice(total);
+        }
 
-            cantidad = cantidad + item.Cantidad;
-            total = total + item.PrecioSum;
-        });
-
-        setTotalQuantity(cantidad);
-        setTotalPrice(total);
-        getQuantityProduct(quantity);
+        setQuantity(quantity)
 
         setProductsCart([
             ...productsCart,
         ]);
 
+    }
+
+
+
+    const generateOrder = (products: CartData[]) => {
+
+        
     }
 
 
@@ -176,11 +189,13 @@ export const CartProvider = ({ children }: any ) => {
             isLoading,
             totalPrice,
             totalQuantity,
+            quantity,
             addToCart,
             removeToCart,
             productsCart,
             addQuantityProduct,
             removeMessageCart,
+            generateOrder,
         }}>
 
         { children}

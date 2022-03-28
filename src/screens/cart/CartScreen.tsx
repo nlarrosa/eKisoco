@@ -9,6 +9,7 @@ import { CartContext } from '../../context/CartContext';
 import { styleCart } from '../../theme/cartTheme';
 import constColor from '../../constants/color';
 import { LogoEmptyCart } from '../../components/LogoEmptyCart';
+import { CartData } from '../../interfaces/cartInterfaces';
 
 
 
@@ -16,10 +17,32 @@ import { LogoEmptyCart } from '../../components/LogoEmptyCart';
 
 export const CartScreen = () => 
 {
-    const { productsCart, totalPrice, removeToCart, totalQuantity } = useContext(CartContext)
+    const { productsCart, totalPrice, removeToCart, totalQuantity, generateOrder } = useContext(CartContext)
     const { quantityReposity } = useContext(ProductContext);
 
     
+    const confirmRemoveProduct = (productId: string) => {
+
+        Alert.alert(
+          "Atencion!",
+          "Desea borrar el producto seleccionado?",
+          [ { text: "SI", onPress: () => { removeToCart(productId) }},
+            { text: "NO"},
+          ]
+        );
+    };
+
+
+    const confirmGenerateOrder = (products: CartData[]) => {
+
+        Alert.alert(
+          "Atencion!",
+          "Desea confirmar el pedido?",
+          [ { text: "SI", onPress: () => { generateOrder(products) }},
+            { text: "NO"},
+          ]
+        );
+    };
 
 
     if( totalQuantity <= 0){ 
@@ -63,7 +86,9 @@ export const CartScreen = () =>
 
                 { totalQuantity > 0 && 
                     <View>
-                        <TouchableOpacity style={{ 
+                        <TouchableOpacity 
+                        onPress={ () => confirmGenerateOrder(productsCart || []) }
+                        style={{ 
                             backgroundColor: 'white',
                             padding: 12,
                             borderRadius: 10,
@@ -103,11 +128,12 @@ export const CartScreen = () =>
                         buttonColor={ constColor.green }
                         title={ 'Cantidad Seleccionada' }
                         productId={String(product?.Edicion)}
+                        cartAction={true}
                     />
 
                 </View>
                 <View style={ styleCart.crButtonDelete }>
-                    <TouchableOpacity onPress={ () => removeToCart(product.Edicion)}>
+                    <TouchableOpacity onPress={ () => confirmRemoveProduct(product.Edicion)}>
                         <Icon 
                             raised
                             reverse

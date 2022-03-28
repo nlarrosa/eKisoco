@@ -244,11 +244,11 @@ export const AuthProvider = ({ children }: any ) => {
      */
     const logOut = () => {
 
-        AsyncStorage.removeItem('userData');
+        // AsyncStorage.removeItem('userData');
 
-        dispatch({ 
-            type: 'logout' 
-        });
+        // dispatch({ 
+        //     type: 'logout' 
+        // });
     };
 
 

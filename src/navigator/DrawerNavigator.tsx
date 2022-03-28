@@ -14,6 +14,7 @@ import { CartContext } from '../context/CartContext';
 import { StackScreenProps } from '@react-navigation/stack';
 import { rootStackParams } from './StackNavigator';
 import { useNavigation } from '@react-navigation/native';
+import { OrdersScreen } from '../screens/cart/OrdersScreen';
 
 
 export type rootDrawParams = {
@@ -22,6 +23,7 @@ export type rootDrawParams = {
     AccountScreen: undefined,
     ProductScreen: undefined,
     CartScreen: undefined,
+    OrdersScreen: undefined,
 }
 
 const Drawer =  createDrawerNavigator<rootDrawParams>();
@@ -106,6 +108,13 @@ export const  DrawerNavigator = () => {
           title: 'Carrito'
         }}
       />
+      <Drawer.Screen 
+        name ="OrdersScreen" 
+        component ={OrdersScreen} 
+        options = {{
+          title: 'Mis Ordenes'
+        }}
+      />
     </Drawer.Navigator>
   );
 }
@@ -119,7 +128,7 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        <DrawerItem label="Cerrar Sesion" onPress={logOut} />
+        {/* <DrawerItem label="Cerrar Sesion" onPress={logOut} /> */}
       </DrawerContentScrollView>
     )
 }
