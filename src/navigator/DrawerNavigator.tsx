@@ -54,14 +54,16 @@ export const  DrawerNavigator = () => {
               color={ constColor.green }
               size={ 30 }
             />
-            <Badge
-            value={ totalQuantity }
-              status="error"
-              containerStyle={{ 
-                position: 'absolute', 
-                top: 1, 
-                left: 20 }}
-            />
+            { totalQuantity > 0 && (
+              <Badge
+              value={ totalQuantity }
+                status="error"
+                containerStyle={{ 
+                  position: 'absolute', 
+                  top: 1, 
+                  left: 20 }}
+              />
+            )}
           </TouchableOpacity>
         ),
         headerTitleAlign: 'center',

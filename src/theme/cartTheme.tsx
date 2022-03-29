@@ -7,8 +7,17 @@ export const styleCart = StyleSheet.create({
         flexDirection: 'row',
         borderBottomWidth: 2,
         borderBottomColor: constColor.grey,
-        paddingVertical: 20,
+        paddingVertical: 25,
         paddingLeft: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+
+        elevation: 2,
     },
 
     crTitleEdicion: {

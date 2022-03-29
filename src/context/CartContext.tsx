@@ -176,13 +176,17 @@ export const CartProvider = ({ children }: any ) => {
     
             const SendOrder = await Sgdi.post('/Reposiciones', JSON.stringify(order));
 
-            return dispatch({
+            dispatch({
                 type: 'errorCart',
                 payload: {
                     titleMessage: 'Atención!',
                     messageCart: 'Pedido generado correctamente',
                 }
             });
+
+            setProductsCart({});
+            setTotalPrice(0);
+            setTotalQuantity(0);
 
 
         } catch (error) {
@@ -216,7 +220,7 @@ export const CartProvider = ({ children }: any ) => {
 
             return orders;
 
-            
+
         } catch (error) {
             
             const err = error as AxiosError;

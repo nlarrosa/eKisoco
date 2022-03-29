@@ -1,6 +1,7 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Text, KeyboardAvoidingView, Platform, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+
 
 
 import { Quantity } from '../../components/Quantity';
@@ -10,6 +11,7 @@ import { styleCart } from '../../theme/cartTheme';
 import constColor from '../../constants/color';
 import { LogoEmptyCart } from '../../components/LogoEmptyCart';
 import { CartData } from '../../interfaces/cartInterfaces';
+import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -17,8 +19,13 @@ import { CartData } from '../../interfaces/cartInterfaces';
 
 export const CartScreen = () => 
 {
-    const { productsCart, totalPrice, removeToCart, totalQuantity, generateOrder } = useContext(CartContext)
+    const { productsCart, totalPrice, removeToCart, totalQuantity, 
+            generateOrder, messageCart, titleMessage 
+    } = useContext(CartContext)
+
+    const navigation = useNavigation();
     const { quantityReposity } = useContext(ProductContext);
+
 
     
     const confirmRemoveProduct = (productId: string) => {
