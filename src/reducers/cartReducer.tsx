@@ -5,7 +5,7 @@ import { ProductoData } from '../interfaces/reposicionesInterface';
 export interface CartState {
     titleMessage: string
     messageCart: string,
-    productsCart: CartData[] | undefined,
+    productsCart: { [key:string]:CartData } ,
     quantity: number,
     totalQuantity: number,
     totalPrice: number,
@@ -13,7 +13,7 @@ export interface CartState {
 
 
 type CartAction = 
-    |{ type: 'addToCart', payload:{ productsCart: CartData[], messageCart: string, titleMessage: string }}
+    |{ type: 'addToCart', payload:{ productsCart:{ [key:string]:CartData }, messageCart: string, titleMessage: string }}
     |{ type: 'removeProductToCart', payload:{ product: ProductoData }}
     |{ type: 'addQuantitytoProduct', payload:{ quantity: string }}
     |{ type: 'errorCart', payload:{ titleMessage:string, messageCart: string }}

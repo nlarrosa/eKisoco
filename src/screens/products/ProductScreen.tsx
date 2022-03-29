@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ProductSearchData } from '../../interfaces/reposicionesInterface';
 import { ProductCard } from '../../components/ProductCard';
 import { CartContext } from '../../context/CartContext';
+import { Loading } from '../../components/Loading';
 
 
 
@@ -20,7 +21,7 @@ import { CartContext } from '../../context/CartContext';
 
 export const ProductScreen = () => {
 
-    const { messageProduct, titleMessage:title ,removeError, getSearchByText, quantityReposity } = useContext(ProductContext);
+    const { messageProduct, titleMessage:title ,removeError, getSearchByText, quantityReposity, isLoading } = useContext(ProductContext);
     const { messageCart, removeMessageCart, titleMessage} = useContext(CartContext);
     const [search, setSearch] = useState('');
     const [searchText, setSearchText] = useState(true);
@@ -94,6 +95,7 @@ export const ProductScreen = () => {
         setSearchResult(undefined);
     }
 
+    
 
     return (
 
@@ -129,15 +131,15 @@ export const ProductScreen = () => {
                 <View>
                     { !search ? 
                         <TouchableOpacity 
-                            style={ styleProduct.buttonChangeSearch }
-                            onPress={ searchAsistidaHandler }
+                        style={ styleProduct.buttonChangeSearch }
+                        onPress={ searchAsistidaHandler }
                         >
                             <Text style={ styleProduct.textChangeSearch }>{ titleAsistida }</Text>
                         </TouchableOpacity>
                     :
                         <TouchableOpacity 
-                            style={styleProduct.glButton }
-                            onPress={ serachTextHandler }
+                        style={styleProduct.glButton }
+                        onPress={ serachTextHandler }
                         >
                             <Text style={ stylesGral.glButtonText }>Buscar</Text>
                         </TouchableOpacity>
@@ -148,11 +150,11 @@ export const ProductScreen = () => {
                     <View>
                         { searchResult?.Titulos.map( product => (
                             <ProductCard 
-                                key={ product.Edicion }
-                                quantityRepository={ quantityReposity}
-                                producto={ product }
+                            key={ product.Edicion }
+                            quantityRepository={ quantityReposity}
+                            producto={ product }
                             />
-                        ))}
+                            ))}
                     </View>
                 )}
                 
@@ -161,7 +163,12 @@ export const ProductScreen = () => {
                         <AsistenSearch />
                     </View>
                 )}
+
             </View>
+            
+            { isLoading && (
+                <Loading />
+            )}
         </ScrollView>
     </KeyboardAvoidingView>
     )

@@ -1,8 +1,10 @@
 import { createContext, useReducer, useState, useContext } from "react";
 import { cartReducer, CartState } from '../reducers/cartReducer';
-import { CartData } from "../interfaces/cartInterfaces";
+import { CartData, OrdersData } from '../interfaces/cartInterfaces';
 import { ProductContext } from './ProductContext';
 import { AuthContext } from './AuthContext';
+import Sgdi from "../api/Sgdi";
+import { AxiosError } from 'axios';
 
 
 type CartContextProps = {
@@ -10,14 +12,15 @@ type CartContextProps = {
     titleMessage: string,
     messageCart: string,
     isLoading: boolean,
-    productsCart: CartData[] | undefined,
+    productsCart: { [key:string]: CartData } | {},
     quantity: number,
     totalQuantity: number,
     totalPrice: number,
     addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => void,
     removeToCart: ( idProducto: string ) => void,
     addQuantityProduct: ( idProducto: string, quantity:number, actionCart:boolean ) => void,
-    generateOrder: (products: CartData[]) => void,
+    generateOrder: (products: { [key:string]: CartData } ) => void,
+    getOrderByUser: (idCanilla: string, hojaActual: number) => void;
     removeMessageCart: () => void,
 }
 
@@ -25,7 +28,7 @@ const CartInitialState: CartState = {
 
     titleMessage: '',
     messageCart: '',
-    productsCart: undefined,
+    productsCart: {},
     quantity: 0,
     totalQuantity: 0,
     totalPrice: 0,
@@ -38,25 +41,20 @@ export const CartContext = createContext({} as CartContextProps);
 
 export const CartProvider = ({ children }: any ) => {
 
-    const { userId } = useContext(AuthContext);
+    const { userId, token } = useContext(AuthContext);
     const { getQuantityProduct } = useContext(ProductContext);
     const [ state, dispatch ] = useReducer(cartReducer, CartInitialState)
     const [isLoading, setIsLoading] = useState(false);
-    const [productsCart, setProductsCart] = useState<CartData[]>([]);
+    const [productsCart, setProductsCart] = useState<{[key:string]:CartData}>({});
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
     const [totalPrice, setTotalPrice] = useState<number>(0);
-    const [quantity, setQuantity] = useState<number>(0);
+    const [quantity, setQuantity] = useState<number>(1);
 
 
     const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => 
     {
 
-        /** Validamos si ya existe el producto
-         * que se quiere agregar al carrito
-         */
-        const validProduct = productsCart.filter( (product) => product.id === selectedProduct.Edicion );
-
-        if(validProduct.length > 0){
+        if(Boolean(productsCart[selectedProduct.Edicion])){
 
             return dispatch({
                 type: 'errorCart',
@@ -70,27 +68,25 @@ export const CartProvider = ({ children }: any ) => {
 
         const precioSum = Number(selectedProduct.Precio) * quantity;
 
-        let cart = {
-            id: selectedProduct.Edicion,
-            Autor: selectedProduct.Autor,
-            Descripcion: selectedProduct.Descripcion,
-            Edicion: selectedProduct.Edicion,
-            idProductoLogistica,
-            Precio: selectedProduct.Precio,
-            PrecioSum: precioSum,
-            IdCanilla: userId || undefined,
-            Cantidad: quantity,
-        };
 
         setTotalQuantity( totalQuantity + quantity );
         setTotalPrice( totalPrice + precioSum);
 
-        setProductsCart([
-            ...productsCart,
-            cart
-        ]);
+        setProductsCart( oldProductCart => {
+            return {
+                ...oldProductCart,
+                [selectedProduct.Edicion]: { 
+                    ...selectedProduct,  
+                    idProductoLogistica,
+                    PrecioSum: precioSum,
+                    IdCanilla: userId || undefined,
+                    Cantidad: quantity,
+                },
+            }
+        });
 
-
+        setQuantity(1);
+        
          dispatch({
              type: 'addToCart',
              payload: {
@@ -101,24 +97,23 @@ export const CartProvider = ({ children }: any ) => {
          });
 
          /** Limpio a cero el contador de cantidades */
-         setQuantity(1);
     }
 
 
 
-    
+    /** Elimino el producto del articulo y genero las
+     * nuevas cantidades e importes totales
+     */
     const removeToCart = ( idProducto: string ) => 
     {
 
-        let cartProducts = productsCart.filter((item) => item.id !== idProducto);
-        let product = productsCart.filter((item) => item.id === idProducto); 
-        
-        setTotalQuantity( totalQuantity - Number(product[0].Cantidad) );
-        setTotalPrice( totalPrice - (Number(product[0].Precio) * Number(product[0].Cantidad)));
-        
-        setProductsCart(
-            cartProducts
-        );
+        setTotalQuantity( totalQuantity - Number(productsCart[idProducto].Cantidad) );
+        setTotalPrice( totalPrice - (Number(productsCart[idProducto].Precio) * Number(productsCart[idProducto].Cantidad)));
+        delete productsCart[idProducto];
+
+        setProductsCart({
+            ...productsCart
+        });
     }
 
 
@@ -134,37 +129,106 @@ export const CartProvider = ({ children }: any ) => {
 
         if(actionCart) {
 
-            productsCart.map((item) => {
+            Object.entries(productsCart).map(([ key, product]) => {
                 
-                if(Number(item.id) === Number(idProducto)){
+                if(Number(product.Edicion) === Number(idProducto)){
                     
-                    item.Cantidad = quantity;
-                    item.PrecioSum = quantity * Number(item.Precio);
+                    product.Cantidad = quantity;
+                    product.PrecioSum = quantity * Number(product.Precio);
                 }
     
-                cantidad = cantidad + item.Cantidad;
-                total = total + item.PrecioSum;
+                cantidad = cantidad + product.Cantidad;
+                total = total + product.PrecioSum;
             });
     
             setTotalQuantity(cantidad);
             setTotalPrice(total);
+            setQuantity(1);
+        } else {
+
+            setQuantity(quantity);
         }
 
-        setQuantity(quantity)
 
-        setProductsCart([
-            ...productsCart,
-        ]);
+        setProductsCart({
+            ...productsCart
+        });
 
     }
 
 
 
-    const generateOrder = (products: CartData[]) => {
+    const generateOrder = async (products: {[key: string]: CartData} ) => {
 
+        try {
+            
+            const order = Object.entries(products).map(( [ key, product] ) => {
+    
+                return {
+                    Token: token,
+                    Descripcion: product.Descripcion,
+                    Idcanilla: product.IdCanilla,
+                    IdProductoLogistica: product.idProductoLogistica,
+                    Edicion: product.Edicion,
+                    Cantidad: product.Cantidad
+                };
+            })
+    
+            const SendOrder = await Sgdi.post('/Reposiciones', JSON.stringify(order));
+
+            return dispatch({
+                type: 'errorCart',
+                payload: {
+                    titleMessage: 'Atención!',
+                    messageCart: 'Pedido generado correctamente',
+                }
+            });
+
+
+        } catch (error) {
+
+            const err = error as AxiosError;
+            dispatch({
+                type: 'errorCart',
+                payload: {
+                    titleMessage: 'Error!',
+                    messageCart: err.response?.data || 'Error del sistema',
+                }
+            });
+        }
         
+
     }
 
+
+
+    const getOrderByUser = async ( idCanilla: string, hojaActual: number) => {
+
+        try {
+            
+            const orders = await Sgdi.get('/Reposiciones', {
+                params: {
+                    token,
+                    idCanilla,
+                    hojaActual
+                }
+            });
+
+            return orders;
+
+            
+        } catch (error) {
+            
+            const err = error as AxiosError;
+            dispatch({
+                type: 'errorCart',
+                payload: {
+                    titleMessage: 'Error!',
+                    messageCart: err.response?.data || 'Error del sistema',
+                }
+            });
+        }
+    }
 
 
 
@@ -196,6 +260,7 @@ export const CartProvider = ({ children }: any ) => {
             addQuantityProduct,
             removeMessageCart,
             generateOrder,
+            getOrderByUser,
         }}>
 
         { children}

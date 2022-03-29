@@ -16,6 +16,7 @@ export const Loading = () => {
         <ActivityIndicator 
             size={ 50 }
             color={ constColor.green }
+            
         />
     </View>
   )

@@ -33,7 +33,7 @@ export const CartScreen = () =>
     };
 
 
-    const confirmGenerateOrder = (products: CartData[]) => {
+    const confirmGenerateOrder = (products: {[key: string] : CartData} ) => {
 
         Alert.alert(
           "Atencion!",
@@ -114,7 +114,7 @@ export const CartScreen = () =>
             </View>
         </View>
         <ScrollView>
-            { productsCart?.map( (product, index) => (
+            { Object.entries(productsCart).map( ([ key, product] ) => (
             <View key={ product.Edicion } style={ styleCart.crContainer}>
                 <View style={{ width: '75%'}}>
                     <Text style={ styleCart.crTitleEdicion }>Familia: { product.idProductoLogistica} - Edicion: { product.Edicion }</Text>

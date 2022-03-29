@@ -6,7 +6,7 @@ import constColor from '../constants/color';
 
 import { ProfileScreen } from '../screens/user/ProfileScreen';
 import { AccountScreen } from '../screens/user/AccountScreen';
-import { ProductScreen } from '../screens/reposiciones/ProductScreen';
+import { ProductScreen } from '../screens/products/ProductScreen';
 import { AuthContext } from '../context/AuthContext';
 import { CartScreen } from '../screens/cart/CartScreen';
 import { TouchableOpacity } from 'react-native';

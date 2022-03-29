@@ -9,3 +9,26 @@ export interface CartData {
     IdCanilla?: string,
     Cantidad: number
 }
+
+
+
+export interface OrdersData {
+    CantidadReposiciones: number;
+    HojaActual:           number;
+    reposiciones:         Reposicione[];
+}
+
+export interface Reposicione {
+    IdCanilla:          string;
+    FechaCreacion:      string;
+    PrecioTotal:        number;
+    PrecioUnidad:       number;
+    IdReposicion:       number;
+    Estado:             string;
+    Titulo:             string;
+    CantidadSolicitada: number;
+    CantidadAsignada:   number;
+    Familia:            string;
+    Edicion:            number;
+    Autor:              string;
+}

@@ -56,7 +56,7 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
           {/* <Text style={ styleProduct.title }>Cantidad a Solicitar</Text> */}
           <View style={{ justifyContent: 'center', alignItems: 'center'}}>
             <Quantity 
-                initValue={ 1 }
+                initValue={ quantity }
                 max={ quantityRepository } 
                 buttonColor={ constColor.green}
                 title={'Cantidad a Solicitar'}
