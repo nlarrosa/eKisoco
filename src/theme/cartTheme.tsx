@@ -51,6 +51,42 @@ export const styleCart = StyleSheet.create({
         width: '25%',
     },
 
+    crStatus: {
+        flexDirection: 'row', 
+        justifyContent:'space-between', 
+        alignItems: 'center' 
+    },
+
+    crBadge: {
+        color: 'orange', 
+        fontWeight: 'bold', 
+        fontSize: 14,
+        borderWidth: 2,
+        borderColor: 'orange',
+        padding: 5,
+        borderRadius: 10,
+        textAlign: 'center'
+    },
+
+    crBtnDetail: {
+        width: 150,
+        marginTop: 20,
+        backgroundColor: constColor.green,
+        borderColor: constColor.green,
+        borderWidth: 1,
+        padding: 5,
+        alignItems: 'center',
+        borderRadius: 10,
+        shadowColor: constColor.dark,
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
+    }
+
 
 
 

@@ -1,18 +1,43 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { Text, View, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
 import { Badge } from 'react-native-elements';
 import color from '../../constants/color';
 
 import constColor from '../../constants/color';
 import { styleCart } from '../../theme/cartTheme';
+import { CartContext } from '../../context/CartContext';
+import { AuthContext } from '../../context/AuthContext';
+import { OrdersData, Reposiciones } from '../../interfaces/cartInterfaces';
+import { Loading } from '../../components/Loading';
+
 
 
 
 
 export const OrdersScreen = () => {
 
+  const { userId } = useContext(AuthContext);
+  const { getOrderByUser, isLoading } = useContext(CartContext);
   const [btnDetails, setBtnDetails] = useState<boolean>(false);
+  const [orders, setOrders] = useState<OrdersData>();
 
+
+  useEffect(() => {
+    initOrders();
+    
+  }, []);
+  
+  const initOrders = async () => {
+    
+    const dataOrders = await getOrderByUser( 0 );
+    setOrders(dataOrders);
+    // console.log(dataOrders?.reposiciones);
+  }
+  
+
+  if( isLoading ){
+    return <Loading />
+  }
 
   return (
     
@@ -21,78 +46,43 @@ export const OrdersScreen = () => {
     behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
     >
       <ScrollView>
-
-          <View style={ styleCart.crContainer}>
-              <View style={{ width: '75%'}}>
-                  <View style={ styleCart.crTitle }>
-                    <Text >
-                        Fecha Pedido:  2022-03-29
-                    </Text>
-                  </View>
-
-                  <View style={{ ...styleCart.crTitleEdicion, flexDirection: 'row', }}>
-                    <Text >
-                      Pedido: 876765 - <Text style={{ color: 'orange', fontWeight: 'bold'}}>Pendiente</Text>
-                    </Text>
+        { orders?.reposiciones.map( (order) => (
+          <View key={ order.IdReposicion } style={{ ...styleCart.crContainer, paddingRight:30}}>
+              <View style={{ width: '100%'}}>
+                  <View style={{ ...styleCart.crTitleEdicion, ...styleCart.crStatus}}>
+                    <View >
+                      <Text>Fecha Pedido:  { order.FechaCreacion.split('T')[0] }</Text>
+                      <Text>Pedido: { order.IdReposicion }</Text>
+                    </View> 
+                    <Text style={ styleCart.crBadge }>{ order.Estado }</Text>
                   </View>
 
                   <View style={{ ...styleCart.crTitleEdicion, marginTop: 15 }}>
-                    <Text style={{ fontWeight: 'bold', fontSize: 17}}>Colorado Kid</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 17}}>{ order.Titulo }</Text>
                   </View>
 
                   <View>
                     <Text style={ styleCart.crSubPrecio }> 
-                      PVP.: <Text style={ styleCart.crPrecio }>$ 8786.89</Text>
+                      PVP.: <Text style={ styleCart.crPrecio }>$ { order.PrecioTotal.toFixed(2) }</Text>
                     </Text>
                   </View>
+
                   <View style={{ ...styleCart.crTitle }}>
-                    <Text >Cant. Solicitada: 13 - Cant. Asignada: 13</Text>
+                    <Text >Cant. Solicitada: { order.CantidadSolicitada} - Cant. Asignada: { order.CantidadAsignada }</Text>
                   </View>
 
                   { btnDetails && (
-                    <View style={{ marginTop: 20}}>
-                      <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 13
-                      }}>
-                        Nro. Familia: 110903 - Sthepen King
-                      </Text>
-                      <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 13
-                      }}>
-                        Edicion: 3434
-                      </Text>
-                      <Text style={{
-                        fontWeight: 'bold',
-                        fontSize: 13
-                      }}>
-                        Sthepen King
-                      </Text>
+                    <View style={{ marginTop: 20 }}>
+                      <Text>Nro. Familia: { order.Familia }</Text>
+                      <Text>Edicion: { order.Edicion }</Text>
+                      <Text>{ order.Autor }</Text>
                     </View>
                   )}
 
                   <View>
                     <TouchableOpacity 
-                    onPress={ () => setBtnDetails(!btnDetails) }
-                    style={{
-                      width: 150,
-                      marginTop: 20,
-                      backgroundColor: constColor.green,
-                      borderColor: constColor.green,
-                      borderWidth: 1,
-                      padding: 5,
-                      alignItems: 'center',
-                      borderRadius: 10,
-                      shadowColor: constColor.dark,
-                      shadowOffset: {
-                          width: 0,
-                          height: 2,
-                      },
-                      shadowOpacity: 0.25,
-                      shadowRadius: 3.84,
-                      elevation: 5,
-                    }}>
+                      onPress={ () => setBtnDetails(!btnDetails) }
+                      style={ styleCart.crBtnDetail }>
                       <Text style={{ color: 'white'}}>
                         { btnDetails ? 'Ocultar Detalles' : 'Mostrar Detalles' }
                       </Text>
@@ -100,8 +90,8 @@ export const OrdersScreen = () => {
                   </View>
               </View>
           </View>
+        ))}
       </ScrollView>
-
     </KeyboardAvoidingView>
   )
 }

@@ -15,10 +15,10 @@ export interface CartData {
 export interface OrdersData {
     CantidadReposiciones: number;
     HojaActual:           number;
-    reposiciones:         Reposicione[];
+    reposiciones:         Reposiciones[];
 }
 
-export interface Reposicione {
+export interface Reposiciones {
     IdCanilla:          string;
     FechaCreacion:      string;
     PrecioTotal:        number;

@@ -1,6 +1,6 @@
 import { createContext, useReducer, useState, useContext } from "react";
 import { cartReducer, CartState } from '../reducers/cartReducer';
-import { CartData, OrdersData } from '../interfaces/cartInterfaces';
+import { CartData, OrdersData, Reposiciones } from '../interfaces/cartInterfaces';
 import { ProductContext } from './ProductContext';
 import { AuthContext } from './AuthContext';
 import Sgdi from "../api/Sgdi";
@@ -20,7 +20,7 @@ type CartContextProps = {
     removeToCart: ( idProducto: string ) => void,
     addQuantityProduct: ( idProducto: string, quantity:number, actionCart:boolean ) => void,
     generateOrder: (products: { [key:string]: CartData } ) => void,
-    getOrderByUser: (idCanilla: string, hojaActual: number) => void;
+    getOrderByUser: (hojaActual: number) => Promise<OrdersData | undefined>;
     removeMessageCart: () => void,
 }
 
@@ -206,19 +206,22 @@ export const CartProvider = ({ children }: any ) => {
 
 
 
-    const getOrderByUser = async ( idCanilla: string, hojaActual: number) => {
+    const getOrderByUser = async ( hojaActual: number) => {
 
         try {
             
-            const orders = await Sgdi.get('/Reposiciones', {
+            setIsLoading(true);
+
+            const orders = await Sgdi.get<OrdersData>('/Reposiciones', {
                 params: {
                     token,
-                    idCanilla,
+                    IdCanilla: userId,
                     hojaActual
                 }
             });
 
-            return orders;
+            setIsLoading(false);
+            return orders.data;
 
 
         } catch (error) {
