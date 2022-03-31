@@ -8,7 +8,7 @@ export const styleAccount = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
-        paddingHorizontal: 20,
+        paddingHorizontal: 30,
         height: 54,
     },
 

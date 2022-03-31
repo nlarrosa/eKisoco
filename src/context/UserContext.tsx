@@ -1,4 +1,4 @@
-import { createContext, useReducer, useState } from "react"
+import { createContext, useReducer, useState, useContext } from "react"
 import { AxiosError } from 'axios';
 
 import { ProfileModify, CuentasMadresData, CuentasHijasData, ProfileData, AccountData } from '../interfaces/userInterfaces';
@@ -6,6 +6,7 @@ import { userReducer, UserState } from '../reducers/userReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Sgdi from "../api/Sgdi";
 import constantes from '../constants/globals';
+import { AuthContext } from './AuthContext';
 
 
 
@@ -19,12 +20,14 @@ type UserContextProps = {
     messageProfile: string,
     cuentasMadresData: CuentasMadresData | null,
     cuentasHijasData: CuentasHijasData | null,
+    houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}},
     editProfile: (ProfileModify : ProfileModify, grupoCuenta:string) => void,
     removeErrorProfile: () => void,
     getCuentasMadres: (region: string) => void,
     getCuentasHijas:  (idCuentaMadre: string) => void,
     getProfile: (token:string, idCanilla:string) => Promise<ProfileData>,
-    getAccount: (token:string, idCanilla:string) => Promise<AccountData>,
+    getAccount: () => Promise<AccountData>,
+    asignHouersDays: (houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => void;
 }
 
 
@@ -42,11 +45,13 @@ export const UserContext = createContext( {} as UserContextProps );
 
 export const UserProvider = ( { children }: any ) => {
 
+    const { userId, token } = useContext(AuthContext);
     const [ state, dispatch ]   = useReducer( userReducer, userInitialState);
     const [isLoading, setIsLoading] = useState(false);
     const [profile, setProfile] = useState<ProfileData>();   
     const [account, setAccount] = useState<AccountData>()
     const [insigne, setInsigne] = useState(''); 
+    const [houersDays, setHouersDays] = useState<{[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}>({});
 
 
     /** Devuelve los datos del Canilla lofueado */
@@ -72,14 +77,14 @@ export const UserProvider = ( { children }: any ) => {
     /** Retorna los datos de la cuenta del canilla con horarios
      * dias de reparto, tipos de servicios
      */
-    const getAccount = async(token: string, idCanilla:string) => {
+    const getAccount = async() => {
 
         setIsLoading(true);
 
         const resp = await Sgdi.get<AccountData>('/Canillas/ObtenerCanillaAdicional', {
             params: { 
                 token, 
-                idCanilla
+                idCanilla: userId
             }
         });
 
@@ -275,18 +280,28 @@ export const UserProvider = ( { children }: any ) => {
     }
 
 
+
+
+    const asignHouersDays = ( houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => {
+
+        setHouersDays(houersDays);
+    }
+
+
     return(
         <UserContext.Provider value = {{
             ...state,
             isLoading,
             profile,
             insigne,
+            houersDays,
             getProfile,
             getAccount,
             editProfile,
             removeErrorProfile,
             getCuentasMadres,
             getCuentasHijas,
+            asignHouersDays
         }}>
 
             { children }

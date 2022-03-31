@@ -22,9 +22,10 @@ export const stylesGral = StyleSheet.create({
         backgroundColor : constColor.green,
         color : "white",
         textAlign : "center",
-        paddingVertical : 5,
+        paddingVertical : 10,
         marginBottom : 10,
-        marginTop : 30,
+        marginTop : 10,
+        fontWeight: 'bold'
     },
 
     glContainerLogo: {
@@ -124,5 +125,30 @@ export const stylesGral = StyleSheet.create({
         color: '#879191',
         marginBottom: 10
     },
+
+    glModalCenterView: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 22,
+        backgroundColor: constColor.green
+      },
+
+      glModalView: {
+        // marginVertical: 50,
+        backgroundColor: "white",
+        borderRadius: 20,
+        paddingVertical: 40,
+        paddingHorizontal: 10,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: {
+          width: 0,
+          height: 2
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+      },
 
 });

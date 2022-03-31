@@ -31,7 +31,6 @@ export const OrdersScreen = () => {
     
     const dataOrders = await getOrderByUser( 0 );
     setOrders(dataOrders);
-    // console.log(dataOrders?.reposiciones);
   }
   
 
