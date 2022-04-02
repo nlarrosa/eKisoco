@@ -39,15 +39,13 @@ export const  DrawerNavigator = () => {
   return (
     <Drawer.Navigator
       initialRouteName='ProductScreen'
-      screenOptions={{
-        headerTitleStyle: {
-          fontSize: 17,
-        },
+      screenOptions={{ headerTitleStyle: { fontSize: 18 },
         headerRight:  () => (
           <TouchableOpacity
             onPress={ () =>  navigation.navigate('CartScreen' as never)}
           >
             <Icon
+              tvParallaxProperties
               type='ionicon'
               name='cart'
               style={{ marginRight: 20 }}
@@ -83,38 +81,84 @@ export const  DrawerNavigator = () => {
       drawerContent={  (props)  => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen 
-        name ="ProfileScreen" 
-        component ={ProfileScreen} 
-        options = {{
-          title: 'Mi Perfil'
-        }}
-      />
-      <Drawer.Screen 
-        name ="AccountScreen" 
-        component ={AccountScreen} 
-        options = {{
-          title: 'Mi cuenta'
-        }}
-      />
-      <Drawer.Screen 
         name ="ProductScreen" 
         component ={ProductScreen} 
         options = {{
-          title: 'Pedidos'
+          title: 'Productos',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='newspaper-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
         }}
       />
       <Drawer.Screen 
         name ="CartScreen" 
         component ={CartScreen} 
         options = {{
-          title: 'Carrito'
+          title: 'Carrito',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='cart-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
         }}
       />
+      <Drawer.Screen 
+        name ="ProfileScreen" 
+        component ={ProfileScreen} 
+        options = {{
+          title: 'Mi Perfil',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='person-circle-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name ="AccountScreen" 
+        component ={AccountScreen} 
+        options = {{
+          title: 'Mi cuenta',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='settings-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
+        }}
+      />
+      
       <Drawer.Screen 
         name ="OrdersScreen" 
         component ={OrdersScreen} 
         options = {{
-          title: 'Mis Ordenes'
+          title: 'Mis Ordenes',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='document-text-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
         }}
       />
     </Drawer.Navigator>

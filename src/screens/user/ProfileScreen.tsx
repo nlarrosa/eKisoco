@@ -13,7 +13,7 @@ import constGlobal from '../../constants/globals';
 import { AuthContext } from '../../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
 import { UserContext } from '../../context/UserContext';
-import { Loading } from '../../components/Loading';
+import { Loading } from '../../components/ui/Loading';
 
 
 
@@ -122,8 +122,9 @@ export const ProfileScreen = ({ navigation }: Props ) => {
       <KeyboardAvoidingView 
         style={{ ...stylesGral.glSafeArea, flex: 1 }}
         behavior={ (Platform.OS === 'ios') ? 'padding' : 'height' }
+        keyboardVerticalOffset={ 100 }
       >
-        <ScrollView style={ stylesGral.glScrollView }>
+        <ScrollView style={ stylesGral.glScrollView } keyboardShouldPersistTaps='handled'>
           <View style={ stylesGral.formControl }>
             <Text style={ stylesGral.glLabel }>Cambiar Clave *</Text>
             <TextInput 

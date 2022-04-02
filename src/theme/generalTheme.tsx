@@ -8,8 +8,8 @@ export const stylesGral = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         justifyContent: 'center',
-        height: 600,
-        marginBottom: 50
+        height: 700,
+        paddingTop: 20
     },
 
     glCenterContainer: {

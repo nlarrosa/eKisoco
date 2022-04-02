@@ -17,7 +17,7 @@ export const ModalHouers = ( { status }: Props ) => {
   const {  asignHouersDays } = useContext(UserContext);
   const [days, setDays] = useState<{ [key: string]: { desde:string, hasta:string, status:boolean, color: string, name: string} }>({});
   const [counter, setCounter] = useState<string[]>([]);
-  const [modalStatus, setModalStatus] = useState<boolean>(false);
+  const [modalStatus, setModalStatus] = useState<boolean>(!status);
   const [desdeCount, setDesdeCount] = useState<number>(0);
   const [hastaCount, setHastaCount] = useState<number>(0);
   const [arrDays, setArrDays] = useState<string[]>([]);

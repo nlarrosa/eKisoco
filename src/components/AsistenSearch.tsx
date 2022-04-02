@@ -7,7 +7,7 @@ import colors from '../constants/color';
 import { Divider } from 'react-native-elements';
 import { ProductContext } from '../context/ProductContext';
 import { TipoProductosData, FamiliasProductoData, AutorProductData, ProductoData } from '../interfaces/reposicionesInterface';
-import { Loading } from './Loading';
+import { Loading } from './ui/Loading';
 import { ProductCard } from './ProductCard';
 
 

@@ -2,9 +2,9 @@ import React from 'react'
 import { View, Image, Text } from 'react-native';
 
 
-import { stylesGral } from '../theme/generalTheme';
-import  constGeneral  from '../constants/globals';
-import constColor from '../constants/color';
+import { stylesGral } from '../../theme/generalTheme';
+import  constGeneral  from '../../constants/globals';
+import constColor from '../../constants/color';
 import { Icon } from 'react-native-elements';
 
 interface Props {
@@ -24,6 +24,7 @@ const logoUrl = constGeneral.logoComplete;
     }}>
 
         <Icon
+            tvParallaxProperties={undefined}
             name='cart'
             type='ionicon'
             size={70}

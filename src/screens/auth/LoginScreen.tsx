@@ -8,7 +8,7 @@ import { styleLogin } from '../../theme/loginTheme';
 import  constColor  from '../../constants/color';
 import { useForm } from '../../hooks/useForm';
 import { AuthContext } from '../../context/AuthContext';
-import { LogoHeader } from '../../components/LogoHeader';
+import { LogoHeader } from '../../components/ui/LogoHeader';
 import { Icon, Input } from 'react-native-elements';
 
 

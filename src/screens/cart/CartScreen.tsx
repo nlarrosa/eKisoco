@@ -9,7 +9,7 @@ import { ProductContext } from '../../context/ProductContext';
 import { CartContext } from '../../context/CartContext';
 import { styleCart } from '../../theme/cartTheme';
 import constColor from '../../constants/color';
-import { LogoEmptyCart } from '../../components/LogoEmptyCart';
+import { LogoEmptyCart } from '../../components/ui/LogoEmptyCart';
 import { CartData } from '../../interfaces/cartInterfaces';
 import { useNavigation } from '@react-navigation/native';
 
@@ -142,6 +142,7 @@ export const CartScreen = () =>
                 <View style={ styleCart.crButtonDelete }>
                     <TouchableOpacity onPress={ () => confirmRemoveProduct(product.Edicion)}>
                         <Icon 
+                            tvParallaxProperties
                             raised
                             reverse
                             type='ionicon' 

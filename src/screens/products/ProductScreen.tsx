@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import { ProductSearchData } from '../../interfaces/reposicionesInterface';
 import { ProductCard } from '../../components/ProductCard';
 import { CartContext } from '../../context/CartContext';
-import { Loading } from '../../components/Loading';
+import { Loading } from '../../components/ui/Loading';
 
 
 
@@ -102,8 +102,9 @@ export const ProductScreen = () => {
     <KeyboardAvoidingView
         style={ stylesGral.glSafeArea }
         behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
+        keyboardVerticalOffset={ 50 }
     >
-        <ScrollView nestedScrollEnabled={true}>
+        <ScrollView  nestedScrollEnabled={true} keyboardShouldPersistTaps='handled'>
             <View style={ styleProduct.container }>
                 { searchText && (
                     <View>

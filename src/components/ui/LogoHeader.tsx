@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Image, Text } from 'react-native';
 
 
-import { stylesGral } from '../theme/generalTheme';
-import  constGeneral  from '../constants/globals';
+import { stylesGral } from '../../theme/generalTheme';
+import  constGeneral  from '../../constants/globals';
 
 interface Props {
   subTitle: string,

@@ -8,7 +8,7 @@ import { styleCart } from '../../theme/cartTheme';
 import { CartContext } from '../../context/CartContext';
 import { AuthContext } from '../../context/AuthContext';
 import { OrdersData, Reposiciones } from '../../interfaces/cartInterfaces';
-import { Loading } from '../../components/Loading';
+import { Loading } from '../../components/ui/Loading';
 
 
 

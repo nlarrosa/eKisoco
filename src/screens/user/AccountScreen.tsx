@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from 'react'
-import { Text, ScrollView, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, Modal, Alert } from 'react-native';
-import { Divider, Switch, Button, Icon } from 'react-native-elements';
+import React, { useState, useContext, useEffect, useRef } from 'react'
+import { Text, ScrollView, View, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform} from 'react-native';
+import { Divider, Switch, Icon, Input } from 'react-native-elements';
 
 
 import { stylesGral } from '../../theme/generalTheme';
@@ -11,6 +11,9 @@ import { ProvinciasPicker } from '../../components/ProvinciasPicker';
 import { UserContext } from '../../context/UserContext';
 import constColor from '../../constants/color';
 import { ModalHouers } from '../../components/ui/ModalHouers';
+import { Value } from 'react-native-reanimated';
+
+
 
 
 
@@ -28,10 +31,9 @@ export const AccountScreen = () => {
   const [cargaRevista, setCargaRevista] = useState(false);
   const [cargaOpcionales, setCargaOpcionales] = useState(false);
   const [modalStatus, setModalStatus] = useState(false);
- 
-  
 
-  const { onChange, formData, setFormValue} = useForm({
+
+  const { onChange, formData, setFormValue, resetField} = useForm({
     Dni: '', Cuit: '', Provincia: '', Calles: '', 
     reparto, entregaDiario, entregaRevista, cargaDiario, cargaRevista, cargaOpcionales,
     calle1: '', calle2: '', calle3: '', calle4: '', calle5: '', calle6: '', calle7: '', calle8: '', calle9: '', calle10: '',
@@ -60,28 +62,10 @@ export const AccountScreen = () => {
     setCargaRevista(account.CargaRevista);
     setCargaOpcionales(account.CargaOpcionales);
     
-
     setFormValue({
-      Dni: account.DNI,
-      Cuit: account.CUIT,
-      Provincia: account.Provincia,
-      Calles: account.EntrecallesPuesto,
-      reparto,
-      entregaDiario,
-      entregaRevista,
-      cargaDiario,
-      cargaRevista,
-      cargaOpcionales,
-      calle1: '',
-      calle2: '',
-      calle3: '',
-      calle4: '',
-      calle5: '',
-      calle6: '',
-      calle7: '',
-      calle8: '',
-      calle9: '',
-      calle10: '',
+      Dni: account.DNI, Cuit: account.CUIT, Provincia: account.Provincia, Calles: account.EntrecallesPuesto, 
+      reparto, entregaDiario, entregaRevista, cargaDiario, cargaRevista, cargaOpcionales, 
+      calle1: '', calle2: '', calle3: '', calle4: '', calle5: '', calle6: '', calle7: '', calle8: '', calle9: '', calle10: '',
     });
 
   }
@@ -99,8 +83,6 @@ export const AccountScreen = () => {
       cargaRevista,
       cargaOpcionales,
     });
-
-    console.log(formData)
   }
 
 
@@ -109,8 +91,9 @@ export const AccountScreen = () => {
     <KeyboardAvoidingView
         style={{ ...stylesGral.glSafeArea, flex: 1 }}
         behavior={ (Platform.OS === 'ios') ? 'padding' : 'height' }
+        keyboardVerticalOffset={ 100 }
     >
-        <ScrollView style={ stylesGral.glScrollView }>
+        <ScrollView style={ stylesGral.glScrollView } keyboardShouldPersistTaps='handled'>
 
           <View style={ stylesGral.formControl }>
             <Text style={ stylesGral.glLabel }>DNI</Text>
@@ -152,7 +135,6 @@ export const AccountScreen = () => {
             />
           </View>
 
-          
           <View style={{ ...styleAccount.checkContainer, marginTop: 20 }}>
             <TouchableOpacity>
                 <Text style={ styleRegister.ckeckText }>¿Tiene Reparto?</Text>
@@ -175,7 +157,6 @@ export const AccountScreen = () => {
             />
           </View>
           
-
           <View style={ styleAccount.checkContainer }>
             <TouchableOpacity>
                 <Text style={ styleRegister.ckeckText }>¿Entrega suscripciones de revistas?</Text>
@@ -186,7 +167,6 @@ export const AccountScreen = () => {
               onValueChange={ (value) => setEntregaRevista(value) }
             />
           </View>
-
 
           <View style={ styleAccount.checkContainer }>
             <TouchableOpacity>
@@ -199,7 +179,6 @@ export const AccountScreen = () => {
             />
           </View>
 
-
           <View style={ styleAccount.checkContainer }>
             <TouchableOpacity>
                 <Text style={ styleRegister.ckeckText }>¿Carga revista?</Text>
@@ -210,7 +189,6 @@ export const AccountScreen = () => {
               onValueChange={ (value) => setCargaRevista(value) } 
               />
           </View>
-
 
           <View style={ styleAccount.checkContainer }>
             <TouchableOpacity>
@@ -227,93 +205,166 @@ export const AccountScreen = () => {
           <Text style={ stylesGral.dividerHeader }>ZONA DE REPARTO</Text>
           <View style={{ ...stylesGral.formControl, marginTop: 20 }}>
             <Text style={ stylesGral.glLabel }>Poligono / Hasta 10 calles</Text>
-                <TextInput 
-                style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                placeholder='Calle N°1'
-                keyboardType='default'
-                value={ formData.calle1 }
-                onChangeText={ (value) => onChange(value, 'calle1')}
+                <Input 
+                  placeholder='Calle N°1'
+                  keyboardType='default'
+                  value={ formData.calle1 }
+                  onChangeText={ (value) => onChange(value, 'calle1')}
+                  rightIcon={
+                    <Icon 
+                      tvParallaxProperties={undefined}
+                      type='ionicon'
+                      name={ 'close-circle-outline'}
+                      onPress={ () => resetField( '', 'calle1') }
+                    />
+                  }
                 />
                 { formData.calle1.length > 0 && (
-                  <TextInput 
-                  style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                  placeholder='Calle N°2'
-                  keyboardType='default'
-                  value={ formData.calle2 }
-                  onChangeText={ (value) => onChange(value, 'calle2')}
+                  <Input 
+                    
+                    placeholder='Calle N°2'
+                    keyboardType='default'
+                    value={ formData.calle2 }
+                    onChangeText={ (value) => onChange(value, 'calle2')}
+                    rightIcon={
+                      <Icon 
+                        tvParallaxProperties={undefined}
+                        type='ionicon'
+                        name={ 'close-circle-outline'}
+                        onPress={ () => resetField( '', 'calle2') }
+                      />
+                    }
                   />
                 )}
                 { formData.calle2.length > 0 && (
-                  <TextInput 
-                  style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                  placeholder='Calle N°3'
-                  keyboardType='default'
-                  value={ formData.calle3 }
-                  onChangeText={ (value) => onChange(value, 'calle3')}
+                  <Input 
+                    style={{ marginBottom: 10,}}
+                    placeholder='Calle N°3'
+                    keyboardType='default'
+                    value={ formData.calle3 }
+                    onChangeText={ (value) => onChange(value, 'calle3')}
+                    rightIcon={
+                      <Icon 
+                        tvParallaxProperties={undefined}
+                        type='ionicon'
+                        name={ 'close-circle-outline'}
+                        onPress={ () => resetField( '', 'calle3') }
+                      />
+                    }
                   />
                 )}
                 { formData.calle3.length > 0 && (
-                  <TextInput 
-                  style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                  placeholder='Calle N°4'
-                  keyboardType='default'
-                  value={ formData.calle4 }
-                  onChangeText={ (value) => onChange(value, 'calle4')}
+                  <Input 
+                    style={{ marginBottom: 10,}}
+                    placeholder='Calle N°4'
+                    keyboardType='default'
+                    value={ formData.calle4 }
+                    onChangeText={ (value) => onChange(value, 'calle4')}
+                    rightIcon={
+                      <Icon 
+                        tvParallaxProperties={undefined}
+                        type='ionicon'
+                        name={ 'close-circle-outline'}
+                        onPress={ () => resetField( '', 'calle4') }
+                      />
+                    }
                   />
                 )}
                 { formData.calle4.length > 0 && (
-                <TextInput 
-                style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                placeholder='Calle N°5'
-                keyboardType='default'
-                value={ formData.calle5 }
-                onChangeText={ (value) => onChange(value, 'calle5')}
+                <Input 
+                  placeholder='Calle N°5'
+                  keyboardType='default'
+                  value={ formData.calle5 }
+                  onChangeText={ (value) => onChange(value, 'calle5')}
+                  rightIcon={
+                    <Icon 
+                      tvParallaxProperties={undefined}
+                      type='ionicon'
+                      name={ 'close-circle-outline'}
+                      onPress={ () => resetField( '', 'calle5') }
+                    />
+                  }
                 />
                 )}
                 { formData.calle5.length > 0 && (
-                <TextInput 
-                style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                placeholder='Calle N°6'
-                keyboardType='default'
-                value={ formData.calle6 }
-                onChangeText={ (value) => onChange(value, 'calle6')}
-                />
+                  <Input 
+                  placeholder='Calle N°6'
+                  keyboardType='default'
+                  value={ formData.calle6 }
+                  onChangeText={ (value) => onChange(value, 'calle6')}
+                  rightIcon={
+                    <Icon 
+                      tvParallaxProperties={undefined}
+                      type='ionicon'
+                      name={ 'close-circle-outline'}
+                      onPress={ () => resetField( '', 'calle6') }
+                    />
+                  }
+                  />
                 )}
                 { formData.calle6.length > 0 && (
-                <TextInput 
-                style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                placeholder='Calle N°7'
-                keyboardType='default'
-                value={ formData.calle7 }
-                onChangeText={ (value) => onChange(value, 'calle7')}
-                />
+                  <Input 
+                  placeholder='Calle N°7'
+                  keyboardType='default'
+                  value={ formData.calle7 }
+                  onChangeText={ (value) => onChange(value, 'calle7')}
+                  rightIcon={
+                    <Icon 
+                      tvParallaxProperties={undefined}
+                      type='ionicon'
+                      name={ 'close-circle-outline'}
+                      onPress={ () => resetField( '', 'calle7') }
+                    />
+                  }
+                  />
                 )}
                 { formData.calle7.length > 0 && (
-                <TextInput 
-                style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                placeholder='Calle N°8'
-                keyboardType='default'
-                value={ formData.calle8 }
-                onChangeText={ (value) => onChange(value, 'calle8')}
-                />
+                  <Input 
+                  placeholder='Calle N°8'
+                  keyboardType='default'
+                  value={ formData.calle8 }
+                  onChangeText={ (value) => onChange(value, 'calle8')}
+                  rightIcon={
+                    <Icon 
+                      tvParallaxProperties={undefined}
+                      type='ionicon'
+                      name={ 'close-circle-outline'}
+                      onPress={ () => resetField( '', 'calle8') }
+                    />
+                  }
+                  />
                 )}
                 { formData.calle8.length > 0 && (
-                <TextInput 
-                style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                placeholder='Calle N°9'
-                keyboardType='default'
-                value={ formData.calle9 }
-                onChangeText={ (value) => onChange(value, 'calle9')}
-                />
+                  <Input 
+                  placeholder='Calle N°9'
+                  keyboardType='default'
+                  value={ formData.calle9 }
+                  onChangeText={ (value) => onChange(value, 'calle9')}
+                  rightIcon={
+                    <Icon 
+                      tvParallaxProperties={undefined}
+                      type='ionicon'
+                      name={ 'close-circle-outline'}
+                      onPress={ () => resetField( '', 'calle9') }
+                    />
+                  }
+                  />
                 )}
                 { formData.calle9.length > 0 && (
-                <TextInput 
-                style={{ ...stylesGral.glTextInputLine, marginBottom: 20,}}
-                placeholder='Calle N°10'
-                keyboardType='default'
-                value={ formData.calle10 }
-                onChangeText={ (value) => onChange(value, 'calle10')}
-                />
+                  <Input 
+                  placeholder='Calle N°10'
+                  keyboardType='default'
+                  value={ formData.calle10 }
+                  onChangeText={ (value) => onChange(value, 'calle10')}
+                  rightIcon={
+                    <Icon 
+                      tvParallaxProperties={undefined}
+                      type='ionicon'
+                      name={ 'close-circle-outline'}
+                      onPress={ () => resetField( '', 'calle10') }
+                    />
+                  }
+                  />
                 )}
           </View>
           
@@ -362,6 +413,7 @@ export const AccountScreen = () => {
 
                 <TouchableOpacity>
                   <Icon 
+                    tvParallaxProperties={undefined}
                     name='trash'
                     type='ionicon'
                     color={ constColor.green}
@@ -379,16 +431,17 @@ export const AccountScreen = () => {
               marginHorizontal: 80,
               padding: 10,
               borderRadius: 10,
-              height: 55,
-              marginVertical: 30,
+              height: 65,
+              marginBottom: 30,
               justifyContent: 'center'
             }}>
               
               <Icon 
+                tvParallaxProperties={undefined}
                 name='time-outline'
                 type='ionicon'
                 color={ constColor.green}
-                size={ 30}
+                size={ 40}
               />
               <Text style={{ 
                 color: constColor.green,

@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Switch } from 'react-native';
 
-import  constColor  from '../constants/color';
+import  constColor  from '../../constants/color';
 
 
 interface Props {

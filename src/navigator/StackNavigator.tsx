@@ -10,7 +10,7 @@ import { AuthContext } from '../context/AuthContext';
 import { ProfileScreen } from '../screens/user/ProfileScreen';
 import { AccountScreen } from '../screens/user/AccountScreen';
 import { DrawerNavigator } from './DrawerNavigator';
-import { Loading } from '../components/Loading';
+import { Loading } from '../components/ui/Loading';
 
 
 

@@ -2,7 +2,7 @@ import React from 'react'
 import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
-import constColor from '../constants/color';
+import constColor from '../../constants/color';
 
 export const Loading = () => {
 
