@@ -66,7 +66,10 @@ export const ProductProvider = ({ children }: any ) => {
         if(!enabledReposity)
         return dispatch({ 
             type: 'addMessageProduct', 
-            payload: 'Usuario deshabilitado para carga de reposiciones, comuníquese con su distribuidor'
+            payload: {
+                titleMessage: 'Atención!',
+                messageProduct: 'Usuario deshabilitado para carga de reposiciones, comuníquese con su distribuidor'
+            } 
         })
         
 

@@ -25,6 +25,7 @@ export interface Reposiciones {
     PrecioUnidad:       number;
     IdReposicion:       number;
     Estado:             string;
+    EstadoColor:        string | undefined,
     Titulo:             string;
     CantidadSolicitada: number;
     CantidadAsignada:   number;

@@ -58,11 +58,9 @@ export const styleCart = StyleSheet.create({
     },
 
     crBadge: {
-        color: 'orange', 
         fontWeight: 'bold', 
         fontSize: 14,
         borderWidth: 2,
-        borderColor: 'orange',
         padding: 5,
         borderRadius: 10,
         textAlign: 'center'

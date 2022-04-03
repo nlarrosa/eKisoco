@@ -84,10 +84,17 @@ export const ModalHouers = ( { status }: Props ) => {
   const daysChangeHandler = (key: string, status: boolean) => {
 
     days[key].status = status;
-    days[key].color = constColor.green;
     
     if(!arrDays.includes(key)){
+
+      days[key].color = constColor.green;
       setArrDays([ ...arrDays, key ]);
+
+    } else {
+
+      days[key].color = constColor.grey;
+      const newDays: string[] = arrDays.filter( (item) => item !== key);
+      setArrDays( newDays );
     }
 
     setDays({ ...days });

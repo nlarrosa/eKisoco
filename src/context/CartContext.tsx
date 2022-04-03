@@ -16,11 +16,12 @@ type CartContextProps = {
     quantity: number,
     totalQuantity: number,
     totalPrice: number,
+    orders: Reposiciones[],
     addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => void,
     removeToCart: ( idProducto: string ) => void,
     addQuantityProduct: ( idProducto: string, quantity:number, actionCart:boolean ) => void,
     generateOrder: (products: { [key:string]: CartData } ) => void,
-    getOrderByUser: (hojaActual: number) => Promise<OrdersData | undefined>;
+    getOrderByUser: (hojaActual: number) => void;
     removeMessageCart: () => void,
 }
 
@@ -49,6 +50,7 @@ export const CartProvider = ({ children }: any ) => {
     const [totalQuantity, setTotalQuantity] = useState<number>(0);
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [quantity, setQuantity] = useState<number>(1);
+    const [orders, setOrders] = useState<Reposiciones[]>([]);
 
 
     const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => 
@@ -184,6 +186,7 @@ export const CartProvider = ({ children }: any ) => {
                 }
             });
 
+            getOrderByUser(0);
             setProductsCart({});
             setTotalPrice(0);
             setTotalQuantity(0);
@@ -200,8 +203,6 @@ export const CartProvider = ({ children }: any ) => {
                 }
             });
         }
-        
-
     }
 
 
@@ -220,9 +221,33 @@ export const CartProvider = ({ children }: any ) => {
                 }
             });
 
-            setIsLoading(false);
-            return orders.data;
 
+            const dataOrders: Reposiciones[] = orders.data.reposiciones.map( (order) => {
+                
+                if(order.Estado === 'Pendiente'){  order.EstadoColor = 'orange' };
+                if(order.Estado === 'Sin Stock'){  order.EstadoColor = 'red' };
+                if(order.Estado === 'Entregado'){  order.EstadoColor = 'green' };
+
+                return {
+                    IdCanilla:  order.IdCanilla,           
+                    FechaCreacion: order.FechaCreacion,      
+                    PrecioTotal: order.PrecioTotal,        
+                    PrecioUnidad: order.PrecioUnidad,       
+                    IdReposicion: order.IdReposicion,      
+                    Estado: order.Estado,             
+                    EstadoColor: order.EstadoColor,       
+                    Titulo: order.Titulo,             
+                    CantidadSolicitada: order.CantidadSolicitada,
+                    CantidadAsignada: order.CantidadAsignada,
+                    Familia: order.Familia,            
+                    Edicion: order.Edicion,         
+                    Autor: order.Autor,   
+                };           
+            });
+
+            setOrders(dataOrders);
+            setIsLoading(false);
+            
 
         } catch (error) {
             
@@ -268,6 +293,7 @@ export const CartProvider = ({ children }: any ) => {
             removeMessageCart,
             generateOrder,
             getOrderByUser,
+            orders,
         }}>
 
         { children}

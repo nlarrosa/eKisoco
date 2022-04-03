@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "eKiosco",
-    "slug": "eKiosco",
+    "name": "E-Kiosco",
+    "slug": "e-kiosco",
+    "privacy": "public",
     "version": "2.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -17,13 +18,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.duoaap.EKiosco"
     },
     "android": {
+      "package": "com.duoaap.EKiosco",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

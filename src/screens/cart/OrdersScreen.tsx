@@ -17,9 +17,9 @@ import { Loading } from '../../components/ui/Loading';
 export const OrdersScreen = () => {
 
   const { userId } = useContext(AuthContext);
-  const { getOrderByUser, isLoading } = useContext(CartContext);
+  const { getOrderByUser, isLoading, orders } = useContext(CartContext);
   const [btnDetails, setBtnDetails] = useState<boolean>(false);
-  const [orders, setOrders] = useState<OrdersData>();
+  // const [orders, setOrders] = useState<Reposiciones[]>();
 
 
   useEffect(() => {
@@ -29,8 +29,8 @@ export const OrdersScreen = () => {
   
   const initOrders = async () => {
     
-    const dataOrders = await getOrderByUser( 0 );
-    setOrders(dataOrders);
+    await getOrderByUser( 0 );
+
   }
   
 
@@ -45,7 +45,7 @@ export const OrdersScreen = () => {
     behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
     >
       <ScrollView>
-        { orders?.reposiciones.map( (order) => (
+        { orders?.map(( order ) => (
           <View key={ order.IdReposicion } style={{ ...styleCart.crContainer, paddingRight:30}}>
               <View style={{ width: '100%'}}>
                   <View style={{ ...styleCart.crTitleEdicion, ...styleCart.crStatus}}>
@@ -53,7 +53,13 @@ export const OrdersScreen = () => {
                       <Text>Fecha Pedido:  { order.FechaCreacion.split('T')[0] }</Text>
                       <Text>Pedido: { order.IdReposicion }</Text>
                     </View> 
-                    <Text style={ styleCart.crBadge }>{ order.Estado }</Text>
+                    <Text style={{
+                      ...styleCart.crBadge,
+                      borderColor:  order.EstadoColor,
+                      color: order.EstadoColor
+                    }}>
+                      { order.Estado }
+                    </Text>
                   </View>
 
                   <View style={{ ...styleCart.crTitleEdicion, marginTop: 15 }}>

@@ -11,7 +11,7 @@ import { ProvinciasPicker } from '../../components/ProvinciasPicker';
 import { UserContext } from '../../context/UserContext';
 import constColor from '../../constants/color';
 import { ModalHouers } from '../../components/ui/ModalHouers';
-import { Value } from 'react-native-reanimated';
+
 
 
 

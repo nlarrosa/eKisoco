@@ -23,26 +23,26 @@ export const ProductScreen = () => {
 
     const { messageProduct, titleMessage:title ,removeError, getSearchByText, quantityReposity, isLoading } = useContext(ProductContext);
     const { messageCart, removeMessageCart, titleMessage} = useContext(CartContext);
-    const [search, setSearch] = useState('');
-    const [searchText, setSearchText] = useState(true);
-    const [titleAsistida, setTitleAsistida] = useState('BUSQUEDA ASISTIDA');
+    const [search, setSearch] = useState<string>('');
+    const [searchText, setSearchText] = useState<boolean>(true);
+    const [titleAsistida, setTitleAsistida] = useState<string>('BUSQUEDA ASISTIDA');
     const [searchResult, setSearchResult] = useState<ProductSearchData>();
     const navigation = useNavigation();
 
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        if(messageProduct?.length === 0)
-        return;
+    //     if(messageProduct?.length === 0)
+    //     return;
 
-        Alert.alert(
-            title,
-            messageProduct,
-            [ { text: "Salir", onPress: removeError} ],
-        );
+    //     Alert.alert(
+    //         title,
+    //         messageProduct,
+    //         [ { text: "Salir", onPress: removeError} ],
+    //     );
 
-    }, [messageProduct])
+    // }, [messageProduct])
 
 
 

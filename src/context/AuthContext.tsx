@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }: any ) => {
     const validToken = async() => {
         
         const userData = await AsyncStorage.getItem('userData');
-        const { token, userId, enabledReposity, dataUser} = JSON.parse(userData || '{}');
+        const { token, userId, enabledReposity} = JSON.parse(userData || '{}');
 
         if(!token) 
         return dispatch({ type: 'NoAuthenticated' });
@@ -133,6 +133,17 @@ export const AuthProvider = ({ children }: any ) => {
                 }
             });
 
+            
+
+            await AsyncStorage.setItem('userData', 
+                JSON.stringify({
+                    token: data.Token,
+                    userId: data.IdCanilla,
+                    dataUser: response.data,
+                    enabledReposity: response.data.HabilitadoRepo,
+                })
+            );
+
 
             dispatch({ 
                 type: 'signIn', 
@@ -143,16 +154,6 @@ export const AuthProvider = ({ children }: any ) => {
                     enabledReposity: response.data.HabilitadoRepo,
                 }
             });
-
-
-            await AsyncStorage.setItem('userData', 
-                JSON.stringify({
-                    token: data.Token,
-                    userId: data.IdCanilla,
-                    dataUser: response.data,
-                    enabledReposity: response.data.HabilitadoRepo,
-                })
-            );
 
 
         } catch (error) {
@@ -244,11 +245,11 @@ export const AuthProvider = ({ children }: any ) => {
      */
     const logOut = () => {
 
-        // AsyncStorage.removeItem('userData');
+        AsyncStorage.removeItem('userData');
 
-        // dispatch({ 
-        //     type: 'logout' 
-        // });
+        dispatch({ 
+            type: 'logout' 
+        });
     };
 
 

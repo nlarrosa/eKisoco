@@ -113,6 +113,22 @@ export const  DrawerNavigator = () => {
         }}
       />
       <Drawer.Screen 
+        name ="OrdersScreen" 
+        component ={OrdersScreen} 
+        options = {{
+          title: 'Mis Ordenes',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='document-text-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen 
         name ="ProfileScreen" 
         component ={ProfileScreen} 
         options = {{
@@ -144,23 +160,6 @@ export const  DrawerNavigator = () => {
           ),
         }}
       />
-      
-      <Drawer.Screen 
-        name ="OrdersScreen" 
-        component ={OrdersScreen} 
-        options = {{
-          title: 'Mis Ordenes',
-          drawerIcon: () => (
-            <Icon 
-              tvParallaxProperties
-              type='ionicon' 
-              name='document-text-outline' 
-              color={constColor.greyDark} 
-              size={20}
-            />
-          ),
-        }}
-      />
     </Drawer.Navigator>
   );
 }
@@ -174,7 +173,18 @@ const CustomDrawerContent = (props: DrawerContentComponentProps) => {
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
-        {/* <DrawerItem label="Cerrar Sesion" onPress={logOut} /> */}
+        <DrawerItem 
+          label="Cerrar Sesion" 
+          onPress={logOut} 
+          icon={() => <Icon 
+              tvParallaxProperties
+              type='ionicon'
+              name='log-out-outline'
+              color={constColor.green} 
+              size={20} 
+              /> 
+          }
+        />
       </DrawerContentScrollView>
     )
 }
