@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, Alert } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, Alert, Modal, Pressable } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Picker } from '@react-native-picker/picker';
 import { Icon, Input } from 'react-native-elements';
@@ -14,6 +14,7 @@ import { UserContext } from '../../context/UserContext';
 import { CuentasMadresData, CuentasHijasData } from '../../interfaces/userInterfaces';
 import { useForm } from '../../hooks/useForm';
 import { AuthContext } from '../../context/AuthContext';
+import constGral from '../../constants/globals';
 
 
 
@@ -26,6 +27,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   const colorGreen        = constColor.green;
   const colorGreenLight   = constColor.greenLight;
   const goToLogin         = () => navigation.navigate('LoginScreen');
+  const goToForgot        = () => navigation.navigate('ForgotScreen');
 
   const { getCuentasMadres, getCuentasHijas, cuentasMadresData, cuentasHijasData } = useContext(UserContext);
   const { signUp, errorSignup, removeError } = useContext(AuthContext);
@@ -37,6 +39,8 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   const [regionStatus, setRegionStatus] = useState(false);
   const [showPass, setShowPass] = useState(false);
   const { isActive } = basesStatus;
+  const [modalVisible, setModalVisible] = useState(true)
+  
 
 
   const zona = [
@@ -76,7 +80,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
     return;
 
     Alert.alert(
-      'Error de Registro', 
+      'Atención!', 
       errorSignup, 
       [{ text: 'Aceptar', onPress: removeError}]
     );
@@ -119,12 +123,32 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   }, [selectedCuenta])
   
 
+  /** Confirmar antes de guardar el distribuidor
+   * y la localidad del usuario
+   */
+  const confirmDataDistri = () => {
+
+    if(basesStatus.isActive){
+
+      const distri = cuentasMadresData?.filter(( item:CuentasMadresData ) => item.IdCuentaMadre === selectedCuenta);
+      const loca = cuentasHijasData?.filter( (item:CuentasHijasData) => item.IdCuentaHija === selectedCuentaHija);
+
+      if(selectedRegion === constGral.regionInterior)
+      {
+      }
+      
+      setModalVisible(!modalVisible);
+    } else {
+
+      saveRegisterHandler();
+    }
+  }
 
   /** actualiza el valor de los campos
    * input del formulario
    */
   const saveRegisterHandler = () => {
-    signUp(formData, selectedRegion, selectedCuenta, selectedCuentaHija, basesStatus.isActive);
+    // signUp(formData, selectedRegion, selectedCuenta, selectedCuentaHija, basesStatus.isActive);
   }
   
     
@@ -282,17 +306,40 @@ export const RegisterScreen = ( {navigation}: Props ) => {
           <View style={ stylesGral.glFooterContainer }>
               <TouchableOpacity 
                 style={ stylesGral.glButton }
-                onPress={ saveRegisterHandler }
+                onPress={ confirmDataDistri }
               >
                 <Text style={ stylesGral.glButtonText }>Registrate</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={ goToLogin }>
                 <Text style={ stylesGral.glTextLink }>Ingresar</Text>
               </TouchableOpacity>
-              <TouchableOpacity onPress={ goToLogin }>
+              <TouchableOpacity onPress={ goToForgot }>
                 <Text style={ stylesGral.glTextLink }>Olvidaste tu clave?</Text>
               </TouchableOpacity>
           </View>
+
+
+          <Modal
+            animationType="fade"
+            transparent={false}
+            visible={modalVisible}
+            onRequestClose={() => {
+              Alert.alert("Modal has been closed.");
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View>
+              <View>
+                <View>
+                  <Text>Confirme los datos de su Dsitrubuidor y su localidad</Text>
+                </View>
+                <Pressable onPress={() => setModalVisible(!modalVisible)} >
+                  <Text>Hide Modal</Text>
+                </Pressable>
+              </View>
+            </View>
+      </Modal>
+
         </ScrollView>
       </KeyboardAvoidingView>
    

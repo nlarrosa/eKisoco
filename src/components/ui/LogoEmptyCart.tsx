@@ -32,7 +32,7 @@ const logoUrl = constGeneral.logoComplete;
         />
 
         <Image style={stylesGral.glLogo } source={logoUrl} />
-        <Text style={ stylesGral.glSubtitle }>{ subTitle }</Text>
+        <Text style={{ textAlign: 'center', fontSize: 17, marginTop: 20, marginHorizontal: 50}}>{ subTitle }</Text>
     </View>
 
   )

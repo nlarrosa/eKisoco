@@ -62,12 +62,14 @@ export const styleCart = StyleSheet.create({
         fontSize: 14,
         borderWidth: 2,
         padding: 5,
-        borderRadius: 10,
-        textAlign: 'center'
+        borderRadius: 50,
+        textAlign: 'center',
+        width: 100,
+        marginBottom: 5
     },
 
     crBtnDetail: {
-        width: 150,
+        width: 120,
         marginTop: 20,
         backgroundColor: constColor.green,
         borderColor: constColor.green,

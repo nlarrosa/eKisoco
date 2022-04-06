@@ -104,7 +104,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
       <View style={ styleProfile.headerBanner }>
           <View style={ styleProfile.avatarContent }>
             <Avatar
-              size={64}
+              size={70}
               rounded
               title = { insigne }
               containerStyle={{ 
@@ -114,6 +114,8 @@ export const ProfileScreen = ({ navigation }: Props ) => {
           </View>
           <View>
             <Text style={ styleProfile.headerNameText }>{ dataUser?.Nombre } { dataUser?.Apellido }</Text>
+            <Text style={ styleProfile.headerTitleText }>Canilla n°:</Text>
+            <Text style={ styleProfile.headerSubtitleText}>{ dataUser?.IdCanilla }</Text>
             <Text style={ styleProfile.headerTitleText }>Distribuidor:</Text>
             <Text style={ styleProfile.headerSubtitleText}>{ dataUser?.MedioDeEntregaPadre }</Text>
           </View>

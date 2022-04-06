@@ -1,4 +1,4 @@
-import { createContext, useEffect, useReducer, useState } from "react";
+import { createContext, useContext, useEffect, useReducer, useState } from "react";
 import AsyncStorage from '@react-native-async-storage/async-storage';                               
 import { AxiosError } from "axios";
 
@@ -7,6 +7,7 @@ import Sgdi from "../api/Sgdi";
 import { TipoProductosData, FamiliasProductoData, ProductoData, AutorProductData, ProductSearchData } from '../interfaces/reposicionesInterface';
 import { productReducer, ProductState } from '../reducers/productReducer';
 import constantsGl from '../constants/globals';
+import { AuthContext } from './AuthContext';
 
 
 
@@ -18,6 +19,7 @@ type ProductContextProps = {
     isLoading: boolean,
     quantityReposity: number,
     quantity: number,
+    getUserQuantityReposity: () => void,
     getProductTipo:    () => Promise<TipoProductosData[] | undefined>,
     getSearchByText:   (texto: string) => Promise<ProductSearchData | undefined> ,
     getFamiliaByTipo:  (tipo: string) => Promise<FamiliasProductoData[] | undefined>,
@@ -44,34 +46,17 @@ export const ProductProvider = ({ children }: any ) => {
     
 
     const [ state, dispatch ] =  useReducer(productReducer, ProductInitialState);
+    const { token, enabledReposity} = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(false);
     const [quantityReposity, setQuantityReposity] = useState<number>(0);
     const [quantity, setQuantity] = useState<number>(1);
 
 
-    useEffect(() => {
-      validateEnabledReposity();
-    }, [])
-    
 
     /** Validamos si el usuario esta habilitado
      * para generar reposiciones
      */
-    const validateEnabledReposity = async() => {
-
-        const userData  =  await AsyncStorage.getItem('userData');
-        const { token, enabledReposity } = JSON.parse(userData || '{}');
-
-
-        if(!enabledReposity)
-        return dispatch({ 
-            type: 'addMessageProduct', 
-            payload: {
-                titleMessage: 'Atención!',
-                messageProduct: 'Usuario deshabilitado para carga de reposiciones, comuníquese con su distribuidor'
-            } 
-        })
-        
+    const getUserQuantityReposity = async() => {
 
         const quantity = await Sgdi.get('/Reposiciones/ObtenerCantidadDisponibleParaReposiciones', {
             params: {
@@ -92,9 +77,6 @@ export const ProductProvider = ({ children }: any ) => {
         try {
             
             setIsLoading(true);
-            const userData  = await AsyncStorage.getItem('userData');
-            const { token } = JSON.parse(userData || '{}');
-
 
             const searchProduct = await Sgdi.get<ProductSearchData>('/Productos/BusquedaGeneral', {
                 params: {
@@ -134,9 +116,7 @@ export const ProductProvider = ({ children }: any ) => {
 
         try {
             setIsLoading(true);
-            const userData  = await AsyncStorage.getItem('userData');
-            const { token } = JSON.parse(userData || '{}');
-            
+
             const tipos =  await Sgdi.get<TipoProductosData[]>('/Productos/ObtenerTipos', {
                 params: {
                     token, 
@@ -172,8 +152,6 @@ export const ProductProvider = ({ children }: any ) => {
             if(Boolean(tipo))
             {
                 setIsLoading(true);
-                const userData  = await AsyncStorage.getItem('userData');
-                const { token } = JSON.parse(userData || '{}');
 
                 const familia = await Sgdi.get<FamiliasProductoData[]>('/Productos/ObtenerFamiliasProducto', {
                     params: {
@@ -223,8 +201,6 @@ export const ProductProvider = ({ children }: any ) => {
             if(Boolean(idProductoLogistica)){
 
                 setIsLoading(true);
-                const userData  = await AsyncStorage.getItem('userData');
-                const { token } = JSON.parse(userData || '{}');
 
                 const autor = await Sgdi.get<AutorProductData[]>('/Productos/ObtenerProductosLogistica', {
                     params: {
@@ -275,8 +251,6 @@ export const ProductProvider = ({ children }: any ) => {
             if(Boolean(idProductoLogistica) && Boolean(autor)){
 
                 setIsLoading(true);
-                const userData  = await AsyncStorage.getItem('userData');
-                const { token } = JSON.parse(userData || '{}');
 
                 const products = await Sgdi.get<ProductoData[]>('/Productos/ObtenerTituloEdiciones', {
                     params: {
@@ -352,7 +326,8 @@ export const ProductProvider = ({ children }: any ) => {
             getAutorByFamilia,
             getTitulosByAutor,
             getQuantityProduct,
-            removeError
+            removeError,
+            getUserQuantityReposity
         }}>
         
         { children }

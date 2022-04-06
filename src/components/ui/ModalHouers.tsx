@@ -9,15 +9,16 @@ import { UserContext } from '../../context/UserContext';
 
 interface Props {
    status: boolean,
+   onClose: () => void,
 }
 
 
-export const ModalHouers = ( { status }: Props ) => {
+export const ModalHouers = ( { status, onClose }: Props ) => {
 
   const {  asignHouersDays } = useContext(UserContext);
   const [days, setDays] = useState<{ [key: string]: { desde:string, hasta:string, status:boolean, color: string, name: string} }>({});
   const [counter, setCounter] = useState<string[]>([]);
-  const [modalStatus, setModalStatus] = useState<boolean>(!status);
+  const [modalStatus, setModalStatus] = useState<boolean>(status);
   const [desdeCount, setDesdeCount] = useState<number>(0);
   const [hastaCount, setHastaCount] = useState<number>(0);
   const [arrDays, setArrDays] = useState<string[]>([]);
@@ -161,8 +162,8 @@ export const ModalHouers = ( { status }: Props ) => {
   const HouersChangeSave = () => {
 
     asignHouersDays(days);
-    setModalStatus(false);
     clearDaysData();
+    setModalStatus(false);
 }
 
 
@@ -184,8 +185,9 @@ export const ModalHouers = ( { status }: Props ) => {
               backgroundColor: 'white',
               borderRadius: 100
             }}>
-          <TouchableOpacity onPress={ () => setModalStatus(!modalStatus)}>
+          <TouchableOpacity onPress={ onClose }>
             <Icon 
+              tvParallaxProperties={ undefined }
               name='close-circle-outline'
               type='ionicon'
               color={ constColor.green}
@@ -228,6 +230,7 @@ export const ModalHouers = ( { status }: Props ) => {
               <View style={{ justifyContent: 'center', alignItems: 'center'}}>
                   <TouchableOpacity onPress={ () => increaseDesde( +2 ) }>
                     <Icon 
+                      tvParallaxProperties={undefined}
                       name='chevron-up-outline'
                       type='ionicon'
                       color={ constColor.green}
@@ -256,6 +259,7 @@ export const ModalHouers = ( { status }: Props ) => {
                   />
                   <TouchableOpacity onPress={ () => increaseDesde( -2 ) }>
                     <Icon 
+                      tvParallaxProperties={undefined}
                       name='chevron-down-outline'
                       type='ionicon'
                       color={ constColor.green}
@@ -273,6 +277,7 @@ export const ModalHouers = ( { status }: Props ) => {
               <View>
                 <TouchableOpacity onPress={ () => increaseHasta( +2 ) }>
                   <Icon 
+                    tvParallaxProperties={undefined}
                     name='chevron-up-outline'
                     type='ionicon'
                     color={ constColor.green}
@@ -300,6 +305,7 @@ export const ModalHouers = ( { status }: Props ) => {
                 />
                 <TouchableOpacity onPress={ () => increaseHasta( -2 ) }>
                   <Icon 
+                    tvParallaxProperties={undefined}
                     name='chevron-down-outline'
                     type='ionicon'
                     color={ constColor.green}

@@ -76,16 +76,16 @@ export const AuthProvider = ({ children }: any ) => {
         });
 
 
-        AsyncStorage.removeItem('userData');
+        // AsyncStorage.removeItem('userData');
 
-        await AsyncStorage.setItem('userData', 
-            JSON.stringify({
-                token: data.Token,
-                userId: data.IdCanilla,
-                dataUser: data,
-                enabledReposity: data.HabilitadoRepo,
-            })
-        );
+        // AsyncStorage.setItem('userData', 
+        //     JSON.stringify({
+        //         token: data.Token,
+        //         userId: data.IdCanilla,
+        //         dataUser: data,
+        //         enabledReposity: data.HabilitadoRepo,
+        //     })
+        // );
 
         
         dispatch({ 
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }: any ) => {
                 token: data.Token,
                 userId: data.IdCanilla,
                 dataUser: data,
-                enabledReposity,
+                enabledReposity: data.HabilitadoRepo,
             }
         });
     }
@@ -133,9 +133,8 @@ export const AuthProvider = ({ children }: any ) => {
                 }
             });
 
-            
 
-            await AsyncStorage.setItem('userData', 
+            AsyncStorage.setItem('userData', 
                 JSON.stringify({
                     token: data.Token,
                     userId: data.IdCanilla,
@@ -143,7 +142,6 @@ export const AuthProvider = ({ children }: any ) => {
                     enabledReposity: response.data.HabilitadoRepo,
                 })
             );
-
 
             dispatch({ 
                 type: 'signIn', 
@@ -192,7 +190,6 @@ export const AuthProvider = ({ children }: any ) => {
             let ctaHija;
             (region === constantes.regionInterior) ? ctaHija = cuentaHija : ctaHija = distribuidor;
             
-            console.log(cuentaHija);
 
             const { data } = await Sgdi.post<LoginResponse>('/Canillas', null, {
                 params: {
@@ -321,7 +318,7 @@ export const AuthProvider = ({ children }: any ) => {
 
                         validate = {
                             status: false,
-                            msg: 'Complete los campos obligatorios',
+                            msg: 'Complete los campos obligatorios (*)',
                         };
                     }
 

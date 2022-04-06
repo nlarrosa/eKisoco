@@ -4,6 +4,7 @@ import { ActivityIndicator } from 'react-native-paper';
 
 import constColor from '../../constants/color';
 
+
 export const Loading = () => {
 
 
@@ -16,7 +17,6 @@ export const Loading = () => {
         <ActivityIndicator 
             size={ 50 }
             color={ constColor.green }
-            
         />
     </View>
   )

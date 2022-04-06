@@ -13,6 +13,8 @@ import { ProductSearchData } from '../../interfaces/reposicionesInterface';
 import { ProductCard } from '../../components/ProductCard';
 import { CartContext } from '../../context/CartContext';
 import { Loading } from '../../components/ui/Loading';
+import { AuthContext } from '../../context/AuthContext';
+import { DisabledReposity } from '../../components/products/DisabledReposity';
 
 
 
@@ -21,7 +23,8 @@ import { Loading } from '../../components/ui/Loading';
 
 export const ProductScreen = () => {
 
-    const { messageProduct, titleMessage:title ,removeError, getSearchByText, quantityReposity, isLoading } = useContext(ProductContext);
+    const { enabledReposity } = useContext(AuthContext);
+    const { messageProduct, titleMessage:title ,removeError, getSearchByText, quantityReposity, isLoading, getUserQuantityReposity } = useContext(ProductContext);
     const { messageCart, removeMessageCart, titleMessage} = useContext(CartContext);
     const [search, setSearch] = useState<string>('');
     const [searchText, setSearchText] = useState<boolean>(true);
@@ -29,20 +32,26 @@ export const ProductScreen = () => {
     const [searchResult, setSearchResult] = useState<ProductSearchData>();
     const navigation = useNavigation();
 
+    useEffect(() => {
+        if(enabledReposity){
+            console.log(enabledReposity);
+            getUserQuantityReposity();
+        }
+    }, [messageProduct])
 
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     if(messageProduct?.length === 0)
-    //     return;
+        if(messageProduct?.length === 0)
+        return;
 
-    //     Alert.alert(
-    //         title,
-    //         messageProduct,
-    //         [ { text: "Salir", onPress: removeError} ],
-    //     );
+        Alert.alert(
+            title,
+            messageProduct,
+            [ { text: "Salir", onPress: removeError} ],
+        );
 
-    // }, [messageProduct])
+    }, [messageProduct])
 
 
 
@@ -95,7 +104,10 @@ export const ProductScreen = () => {
         setSearchResult(undefined);
     }
 
-    
+
+    if(!enabledReposity){
+        return <DisabledReposity />
+    }
 
     return (
 

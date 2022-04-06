@@ -85,6 +85,7 @@ export const AccountScreen = () => {
     });
   }
 
+  
 
   return (
     
@@ -464,6 +465,7 @@ export const AccountScreen = () => {
 
         <ModalHouers 
           status={ modalStatus }
+          onClose={ () => setModalStatus(!modalStatus) }
         />
     </KeyboardAvoidingView>
   )

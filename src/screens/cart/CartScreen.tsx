@@ -20,9 +20,8 @@ import { useNavigation } from '@react-navigation/native';
 export const CartScreen = () => 
 {
     const { productsCart, totalPrice, removeToCart, totalQuantity, generateOrder } = useContext(CartContext)
-
-    const navigation = useNavigation();
     const { quantityReposity } = useContext(ProductContext);
+    const navigation = useNavigation();
 
 
     

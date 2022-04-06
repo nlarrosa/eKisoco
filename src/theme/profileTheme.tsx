@@ -26,7 +26,7 @@ export const styleProfile = StyleSheet.create({
         fontSize: 17,
         textAlign: 'left',
         color: constColor.dark,
-        marginBottom: 3,
+        marginBottom: 7,
     },
 
     headerSubtitleText: {
