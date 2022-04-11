@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect, useState } from "react";
 import {AxiosError} from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -22,13 +22,13 @@ type AuthContextProps = {
     dataUser: ProfileData | null,
     token: string | null,
     enabledReposity: boolean,
+    validateComplete: boolean,
     status: 'checking' | 'authenticated' | 'no-authenticated' | null,
     signIn:  (loginData : loginData) => void,
-    signUp:  (datauser : RegisterData, region: string, distribuidor: string, cuentaHija: string, bases: boolean) => void,
+    signUp:  (datauser : RegisterData, region: string, distribuidor: string, cuentaHija: string, bases: boolean ) => void,
     logOut:  () => void,
     removeError: () => void,
     forgotPassword: (forgotPass: forgotPass) => void,
-    
 }
 
 
@@ -41,6 +41,7 @@ const authInitialState: AuthState = {
     token: null,
     enabledReposity: false,
     status: 'checking',
+    validateComplete: false,
 }
 
 
@@ -53,6 +54,8 @@ export const AuthContext = createContext( {} as AuthContextProps );
 export const AuthProvider = ({ children }: any ) => {
     
     const [state, dispatch] = useReducer(authReducer, authInitialState)
+    const [validCuentas, setValidCuentas] = useState(false);
+
     
     useEffect(() => {
         validToken();
@@ -74,18 +77,6 @@ export const AuthProvider = ({ children }: any ) => {
                 idCanilla: userId,
             }
         });
-
-
-        // AsyncStorage.removeItem('userData');
-
-        // AsyncStorage.setItem('userData', 
-        //     JSON.stringify({
-        //         token: data.Token,
-        //         userId: data.IdCanilla,
-        //         dataUser: data,
-        //         enabledReposity: data.HabilitadoRepo,
-        //     })
-        // );
 
         
         dispatch({ 
@@ -170,23 +161,37 @@ export const AuthProvider = ({ children }: any ) => {
     /** Registra un nuevo usuario y ejecuta el login
      * de acceso al mismo tiempo
      */
-    const signUp = async ( datauser : RegisterData, region: string, distribuidor: string, cuentaHija: string, bases: boolean ) => {
+    const signUp = async ( datauser : RegisterData, region: string, distribuidor: string, cuentaHija: string, bases: boolean) => {
 
         try {
 
-            const validate: any = validateForm(datauser, region, distribuidor);
+            const validate: any = validateForm(datauser, region, distribuidor, cuentaHija);
             
             if(!validate.status){
                 dispatch({ type: 'addErrorSignup', payload: validate.msg });
                 return;
             }
             
+
             if(!bases){
                 dispatch({type: 'addErrorSignup', payload: 'Debe aceptar los términos y condiciones'});
                 return;
             }
             
-            
+
+            /** Esta validacion esta implementada exclusivamente 
+             * para utilizar el modal de Validar las cuentas
+             * esta validacion hace que el modal se muestra por unica
+             * vez antes de finalizar el registro
+             */
+            if(!validCuentas){
+                setValidCuentas(!validCuentas);
+                dispatch({ type: 'confirmCuentas', payload: true });
+                return;
+
+            } 
+
+                
             let ctaHija;
             (region === constantes.regionInterior) ? ctaHija = cuentaHija : ctaHija = distribuidor;
             
@@ -203,7 +208,7 @@ export const AuthProvider = ({ children }: any ) => {
                     idMedioDeEntregaPadre: distribuidor,
                     nroCuentaHija: ctaHija,
                     localidad: datauser.Localidad,
-                    paquete: datauser.Paquete,
+                    paquete: datauser.Paquete ,
                 }
             });
 
@@ -224,13 +229,15 @@ export const AuthProvider = ({ children }: any ) => {
                     enabledReposity: response.data.HabilitadoRepo,
                 }
             });
+
+
             
         } catch (error) {
 
             const err = error as AxiosError;
             dispatch({
                 type: 'addErrorSignup', 
-                payload: JSON.stringify(err.response?.request._response) || 'Informacion Incorrecta',
+                payload: err.response?.data || 'Informacion Incorrecta',
             });
             return;
         }
@@ -253,7 +260,7 @@ export const AuthProvider = ({ children }: any ) => {
     /** Remuevo el error para que vuelva a funcionar
      * la alerta del login
      */
-    const removeError = () => {
+    const  removeError = () => {
 
         dispatch({
             type: 'removeError',
@@ -296,7 +303,7 @@ export const AuthProvider = ({ children }: any ) => {
     /** validamos los campos del form segun restricciones
      * solicitadas en documentacion
      */
-    const validateForm = (datauser: object, region: string, distri: string): object => {
+    const validateForm = (datauser: object, region: string, distri: string, cuentaHija: string): object => {
         
         let  clave: string = '';
 
@@ -313,8 +320,11 @@ export const AuthProvider = ({ children }: any ) => {
                 
                 if( key !== 'Paquete'){
 
-                    if(!Boolean(value) || !Boolean(region) || !Boolean(distri))
-                    {
+                    if( !Boolean(value) 
+                        || !Boolean(region) 
+                        || !Boolean(distri) 
+                        || region === constantes.regionInterior && !Boolean(cuentaHija)
+                    ){
 
                         validate = {
                             status: false,
@@ -356,6 +366,13 @@ export const AuthProvider = ({ children }: any ) => {
 
         return validate;
     };
+
+
+
+    // const confirmCuentaMadreAndHija = () => {
+
+    //     setValidComplete(!validComplete);
+    // }
 
 
     return(

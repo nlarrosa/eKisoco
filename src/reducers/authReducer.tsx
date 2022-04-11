@@ -10,6 +10,7 @@ export interface AuthState {
     token: string | null,
     enabledReposity: boolean,
     status: 'checking' | 'authenticated' | 'no-authenticated' | null,
+    validateComplete: boolean,
 }
 
 
@@ -22,6 +23,7 @@ type AuthAction =
     |{ type: 'removeError' }
     |{ type: 'NoAuthenticated' }
     |{ type: 'logout' }
+    |{ type: 'confirmCuentas', payload: boolean }
 
 
     
@@ -39,7 +41,7 @@ export const authReducer = ( state: AuthState, action: AuthAction ):AuthState =>
                 token: action.payload.token,
                 userId: action.payload.userId,
                 dataUser: action.payload.dataUser,
-                enabledReposity: action.payload.enabledReposity
+                enabledReposity: action.payload.enabledReposity,
             }
         break;
 
@@ -54,6 +56,7 @@ export const authReducer = ( state: AuthState, action: AuthAction ):AuthState =>
                 status: 'no-authenticated',
                 token: null,
                 enabledReposity: false,
+
             }
         break;
 
@@ -91,6 +94,7 @@ export const authReducer = ( state: AuthState, action: AuthAction ):AuthState =>
                 errorMessage: '',
                 errorForgot: '',
                 errorSignup: '',
+                validateComplete: false,
             }
         break;
 
@@ -106,6 +110,13 @@ export const authReducer = ( state: AuthState, action: AuthAction ):AuthState =>
                 status: 'no-authenticated',
                 token: null,
                 enabledReposity: false,
+            }
+        break;
+
+        case 'confirmCuentas':
+            return {
+                ...state,
+                validateComplete: action.payload,
             }
         break;
 

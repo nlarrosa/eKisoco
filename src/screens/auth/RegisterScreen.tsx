@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, TouchableOpacity, ScrollView, KeyboardAvoidingView, Platform, StyleSheet, Alert, Modal, Pressable } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Alert, Modal, Pressable } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 import { Picker } from '@react-native-picker/picker';
 import { Icon, Input } from 'react-native-elements';
@@ -15,6 +15,8 @@ import { CuentasMadresData, CuentasHijasData } from '../../interfaces/userInterf
 import { useForm } from '../../hooks/useForm';
 import { AuthContext } from '../../context/AuthContext';
 import constGral from '../../constants/globals';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { ConfirmDistri } from '../../components/auth/ConfirmDistri';
 
 
 
@@ -30,17 +32,18 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   const goToForgot        = () => navigation.navigate('ForgotScreen');
 
   const { getCuentasMadres, getCuentasHijas, cuentasMadresData, cuentasHijasData } = useContext(UserContext);
-  const { signUp, errorSignup, removeError } = useContext(AuthContext);
+  const { signUp, errorSignup, removeError, validateComplete } = useContext(AuthContext);
 
   const [basesStatus, setBasesStatus] = useState({ isActive: false });
   const [selectedRegion, setSelectedRegion] = useState('');
   const [selectedCuenta, setSelectedCuenta] = useState('');
   const [selectedCuentaHija, setSelectedCuentaHija] = useState('');
-  const [regionStatus, setRegionStatus] = useState(false);
-  const [showPass, setShowPass] = useState(false);
+  const [regionStatus, setRegionStatus] = useState<boolean>(false);
+  const [showPass, setShowPass] = useState<boolean>(false);
   const { isActive } = basesStatus;
-  const [modalVisible, setModalVisible] = useState(true)
-  
+  const [modalVisible, setModalVisible] = useState<boolean>(false)
+  const [distriRazonSocial, setDistriRazonSocial] = useState<string>('');
+  const [locaRazonSocial, setLocaRazonSocial] = useState<string>('');
 
 
   const zona = [
@@ -88,6 +91,31 @@ export const RegisterScreen = ( {navigation}: Props ) => {
 
 
 
+ /**Modal que se utiliza una sola aparicion durante el registro
+  * para que el susuario confirme y vea los datos del 
+  * distribuidor y localidad que esta cargando
+  */
+  useEffect(() => {
+    
+    if(!validateComplete) 
+    return;
+
+    setModalVisible(!modalVisible);
+    setDistriRazonSocial('');
+    setLocaRazonSocial('');
+
+    if(selectedCuenta) {
+      const distri = cuentasMadresData?.filter(( item:CuentasMadresData ) => item.IdCuentaMadre === selectedCuenta);
+      setDistriRazonSocial(distri?.[0].RazonSocial || '');
+    }
+    
+    if(selectedCuentaHija) {
+      const loca = cuentasHijasData?.filter((item:CuentasHijasData) => item.IdCuentaHija === selectedCuentaHija);
+      setLocaRazonSocial(loca?.[0].RazonSocial || '');
+    }
+
+  }, [validateComplete]);
+
   /** Obtiene el valor del switch 
    * de terminos y condiciones
    */
@@ -115,6 +143,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
 
 
 
+  
   /** Obtenemos las cuentas hijas segun
    *  ID cuenta madre seleccionado
    */
@@ -123,43 +152,54 @@ export const RegisterScreen = ( {navigation}: Props ) => {
   }, [selectedCuenta])
   
 
+
+
+
+
+
   /** Confirmar antes de guardar el distribuidor
    * y la localidad del usuario
    */
-  const confirmDataDistri = () => {
+  // const confirmDataDistri = () => {
 
-    if(basesStatus.isActive){
+  //   if(validComplete && selectedCuenta) {
 
-      const distri = cuentasMadresData?.filter(( item:CuentasMadresData ) => item.IdCuentaMadre === selectedCuenta);
-      const loca = cuentasHijasData?.filter( (item:CuentasHijasData) => item.IdCuentaHija === selectedCuentaHija);
+  //     setModalVisible(!modalVisible);
+  //     setDistriRazonSocial('');
+  //     setLocaRazonSocial('');
 
-      if(selectedRegion === constGral.regionInterior)
-      {
-      }
+  //     if(selectedCuenta) {
+  //       const distri = cuentasMadresData?.filter(( item:CuentasMadresData ) => item.IdCuentaMadre === selectedCuenta);
+  //       setDistriRazonSocial(distri?.[0].RazonSocial || '');
+  //     }
       
-      setModalVisible(!modalVisible);
-    } else {
+  //     if(selectedCuentaHija) {
+  //       const loca = cuentasHijasData?.filter((item:CuentasHijasData) => item.IdCuentaHija === selectedCuentaHija);
+  //       setLocaRazonSocial(loca?.[0].RazonSocial || '');
+  //     }
+      
+  //   } else {
 
-      saveRegisterHandler();
-    }
-  }
+  //     saveRegisterHandler();
+  //   }
+  // }
+
+
+
 
   /** actualiza el valor de los campos
    * input del formulario
    */
   const saveRegisterHandler = () => {
-    // signUp(formData, selectedRegion, selectedCuenta, selectedCuentaHija, basesStatus.isActive);
+    signUp(formData, selectedRegion, selectedCuenta, selectedCuentaHija, basesStatus.isActive);
   }
   
     
   return (
-      <KeyboardAvoidingView 
-          style={{ flex: 1 }}
-          behavior={ (Platform.OS === 'ios') ? 'padding' : 'height' }
-      >
+
+      <KeyboardAwareScrollView style={{ flex: 1 }}>
         {/* Logo */}
         <LogoHeader subTitle={ 'Registrate ahora!' }/>
-
         {/* Form Register */}
         <ScrollView style={ stylesGral.glScrollView }>
           <View style={ styleRegister.registerContainer }>
@@ -306,7 +346,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
           <View style={ stylesGral.glFooterContainer }>
               <TouchableOpacity 
                 style={ stylesGral.glButton }
-                onPress={ confirmDataDistri }
+                onPress={ saveRegisterHandler }
               >
                 <Text style={ stylesGral.glButtonText }>Registrate</Text>
               </TouchableOpacity>
@@ -318,32 +358,16 @@ export const RegisterScreen = ( {navigation}: Props ) => {
               </TouchableOpacity>
           </View>
 
-
-          <Modal
-            animationType="fade"
-            transparent={false}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
-          >
-            <View>
-              <View>
-                <View>
-                  <Text>Confirme los datos de su Dsitrubuidor y su localidad</Text>
-                </View>
-                <Pressable onPress={() => setModalVisible(!modalVisible)} >
-                  <Text>Hide Modal</Text>
-                </Pressable>
-              </View>
-            </View>
-      </Modal>
-
+          {/* Modal Confirm Distribuidor Localidad*/}
+          <ConfirmDistri 
+            visible = { modalVisible }
+            distribuidor = {distriRazonSocial}
+            localidad={ locaRazonSocial}
+            close={ () => { setModalVisible(!modalVisible) }}
+            confirm={ saveRegisterHandler }
+          />
         </ScrollView>
-      </KeyboardAvoidingView>
-   
-
+      </KeyboardAwareScrollView>
   )
 }
 
