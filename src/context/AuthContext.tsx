@@ -195,7 +195,6 @@ export const AuthProvider = ({ children }: any ) => {
             let ctaHija;
             (region === constantes.regionInterior) ? ctaHija = cuentaHija : ctaHija = distribuidor;
             
-
             const { data } = await Sgdi.post<LoginResponse>('/Canillas', null, {
                 params: {
                     mail: datauser.Email,
@@ -208,7 +207,7 @@ export const AuthProvider = ({ children }: any ) => {
                     idMedioDeEntregaPadre: distribuidor,
                     nroCuentaHija: ctaHija,
                     localidad: datauser.Localidad,
-                    paquete: datauser.Paquete ,
+                    paquete: datauser.Paquete || 'NULL',
                 }
             });
 

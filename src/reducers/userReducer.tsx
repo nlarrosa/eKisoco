@@ -6,6 +6,7 @@ export interface UserState {
     messageProfile: string,
     cuentasMadresData: CuentasMadresData | null,
     cuentasHijasData: CuentasHijasData | null,
+    houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}},
 }
 
 
@@ -15,6 +16,7 @@ type UserAction =
     |{ type: 'removeErrorProfile' }
     |{ type: 'cuentasMadres', payload: { cuentasMadresData: CuentasMadresData }}
     |{ type: 'cuentasHijas', payload: { cuentasHijasData: CuentasHijasData }}
+    |{ type: 'houersDaysData', payload:  {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}} }
 
 
 export const userReducer = ( state: UserState, action: UserAction):UserState  => {
@@ -53,6 +55,14 @@ export const userReducer = ( state: UserState, action: UserAction):UserState  =>
                 cuentasHijasData: action.payload.cuentasHijasData,
                 messageProfile: '',
             }
+        break;
+
+        case 'houersDaysData':
+            return {
+                ...state,
+                houersDays: action.payload,
+            }
+
         break;
     
         default:

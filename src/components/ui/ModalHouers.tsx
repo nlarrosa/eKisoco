@@ -13,7 +13,7 @@ interface Props {
 }
 
 
-export const ModalHouers = ( { status, onClose }: Props ) => {
+export const ModalHouers = ( { status, onClose}: Props ) => {
 
   const {  asignHouersDays } = useContext(UserContext);
   const [days, setDays] = useState<{ [key: string]: { desde:string, hasta:string, status:boolean, color: string, name: string} }>({});
@@ -74,26 +74,31 @@ export const ModalHouers = ( { status, onClose }: Props ) => {
   useEffect(() => {
     setModalStatus(!modalStatus);
   }, [status])
+
+
+  
   
 
 
 
   /** Agrego los dias seleccionados a un array para luego
    * recorrerlos ya gregarle la hora seleccionadaTambien cambio 
-   * el estado del boton seleccionado
+   * el estado del boton seleccionado 
    */
   const daysChangeHandler = (key: string, status: boolean) => {
 
     days[key].status = status;
+    days[key].color = constColor.green;
     
     if(!arrDays.includes(key)){
-
-      days[key].color = constColor.green;
       setArrDays([ ...arrDays, key ]);
 
     } else {
 
       days[key].color = constColor.grey;
+      days[key].status = false;
+      days[key].desde = '';
+      days[key].hasta = '';
       const newDays: string[] = arrDays.filter( (item) => item !== key);
       setArrDays( newDays );
     }
@@ -118,6 +123,7 @@ export const ModalHouers = ( { status, onClose }: Props ) => {
 
     setDays({ ...days });
   }
+
 
 
 

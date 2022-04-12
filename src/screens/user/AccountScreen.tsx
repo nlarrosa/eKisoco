@@ -21,7 +21,7 @@ import { ModalHouers } from '../../components/ui/ModalHouers';
 
 export const AccountScreen = () => {
 
-  const { getAccount, houersDays } = useContext(UserContext);
+  const { getAccount, houersDays, deleteHouersDay } = useContext(UserContext);
   const [account, setAccount] = useState()
   const [provinciaSelected, setProvinciaSelected] = useState('');
   const [reparto, setReparto] = useState(false);
@@ -30,7 +30,7 @@ export const AccountScreen = () => {
   const [cargaDiario, setCargaDiario] = useState(false);
   const [cargaRevista, setCargaRevista] = useState(false);
   const [cargaOpcionales, setCargaOpcionales] = useState(false);
-  const [modalStatus, setModalStatus] = useState(false);
+  const [modalStatus, setModalStatus] = useState(true);
 
 
   const { onChange, formData, setFormValue, resetField} = useForm({
@@ -412,7 +412,9 @@ export const AccountScreen = () => {
                   { day.hasta.length > 0 ? day.hasta : '---' } hs.
                 </Text>
 
-                <TouchableOpacity>
+                <TouchableOpacity
+                  onPress={ () => deleteHouersDay(key) }
+                >
                   <Icon 
                     tvParallaxProperties={undefined}
                     name='trash'

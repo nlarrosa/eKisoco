@@ -28,6 +28,7 @@ type UserContextProps = {
     getProfile: (token:string, idCanilla:string) => Promise<ProfileData>,
     getAccount: () => Promise<AccountData>,
     asignHouersDays: (houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => void;
+    deleteHouersDay: (day: string) => void,
 }
 
 
@@ -36,6 +37,7 @@ const  userInitialState: UserState = {
     messageProfile: '',
     cuentasMadresData: null,
     cuentasHijasData: null,
+    houersDays: {},
 }
 
 
@@ -49,7 +51,6 @@ export const UserProvider = ( { children }: any ) => {
     const [ state, dispatch ]   = useReducer( userReducer, userInitialState);
     const [isLoading, setIsLoading] = useState(false);
     const [profile, setProfile] = useState<ProfileData>();   
-    const [account, setAccount] = useState<AccountData>()
     const [insigne, setInsigne] = useState(''); 
     const [houersDays, setHouersDays] = useState<{[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}>({});
 
@@ -281,10 +282,25 @@ export const UserProvider = ( { children }: any ) => {
 
 
 
+    /** Generamos los datos de los horarios de atencion
+     * para giardar en el context
+     */
+    const asignHouersDays = ( houersDaysData: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => {
 
-    const asignHouersDays = ( houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => {
+        setHouersDays(houersDaysData);
+        dispatch({ type: 'houersDaysData', payload: houersDaysData });
+    }
 
+
+    /**Eliminamos un dia y horario desde la lista 
+     * de horarios de atencion
+     */
+    const deleteHouersDay = (key: string) => {
+      
+        houersDays[key].desde = '';
+        houersDays[key].hasta = '';
         setHouersDays(houersDays);
+        dispatch({ type: 'houersDaysData', payload: houersDays });
     }
 
 
@@ -301,7 +317,8 @@ export const UserProvider = ( { children }: any ) => {
             removeErrorProfile,
             getCuentasMadres,
             getCuentasHijas,
-            asignHouersDays
+            asignHouersDays,
+            deleteHouersDay
         }}>
 
             { children }
