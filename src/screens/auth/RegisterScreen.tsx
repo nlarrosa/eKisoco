@@ -16,7 +16,7 @@ import { useForm } from '../../hooks/useForm';
 import { AuthContext } from '../../context/AuthContext';
 import constGral from '../../constants/globals';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { ConfirmDistri } from '../../components/auth/ConfirmDistri';
+import { ConfirmDistri } from './ConfirmDistri';
 
 
 
@@ -151,39 +151,6 @@ export const RegisterScreen = ( {navigation}: Props ) => {
     getCuentasHijas(selectedCuenta);
   }, [selectedCuenta])
   
-
-
-
-
-
-
-  /** Confirmar antes de guardar el distribuidor
-   * y la localidad del usuario
-   */
-  // const confirmDataDistri = () => {
-
-  //   if(validComplete && selectedCuenta) {
-
-  //     setModalVisible(!modalVisible);
-  //     setDistriRazonSocial('');
-  //     setLocaRazonSocial('');
-
-  //     if(selectedCuenta) {
-  //       const distri = cuentasMadresData?.filter(( item:CuentasMadresData ) => item.IdCuentaMadre === selectedCuenta);
-  //       setDistriRazonSocial(distri?.[0].RazonSocial || '');
-  //     }
-      
-  //     if(selectedCuentaHija) {
-  //       const loca = cuentasHijasData?.filter((item:CuentasHijasData) => item.IdCuentaHija === selectedCuentaHija);
-  //       setLocaRazonSocial(loca?.[0].RazonSocial || '');
-  //     }
-      
-  //   } else {
-
-  //     saveRegisterHandler();
-  //   }
-  // }
-
 
 
 

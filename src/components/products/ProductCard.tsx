@@ -1,17 +1,17 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Text, TouchableOpacity, View } from 'react-native';
 import { Card } from 'react-native-elements';
 
 
-import { ProductoData } from '../interfaces/reposicionesInterface';
-import { styleProduct } from '../theme/productTheme';
-import { stylesGral } from '../theme/generalTheme';
+import { ProductoData } from '../../interfaces/reposicionesInterface';
+import { styleProduct } from '../../theme/productTheme';
+import { stylesGral } from '../../theme/generalTheme';
 import { ActivityIndicator } from 'react-native-paper';
-import { Quantity } from './Quantity';
-import constColor from '../constants/color';
-import { CartContext } from '../context/CartContext';
-import { CartData } from '../interfaces/cartInterfaces';
-import { ProductContext } from '../context/ProductContext';
+import { Quantity } from '../ui/Quantity';
+import constColor from '../../constants/color';
+import { CartContext } from '../../context/CartContext';
+import { CartData } from '../../interfaces/cartInterfaces';
+
 
 
 
@@ -23,10 +23,11 @@ interface Props {
 
 export const ProductCard = ({ producto, quantityRepository }: Props ) => {
 
+
   const { addToCart, quantity } = useContext(CartContext);
-  // const { quantity } = useContext(ProductContext);
 
 
+  /** Agregamos el producto al carrito */
   const addToCartHandler = (selectedProduct: CartData, idProdLogistica: string, quantity: number) => {
 
       addToCart(selectedProduct, idProdLogistica, quantity);
@@ -56,7 +57,7 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
           {/* <Text style={ styleProduct.title }>Cantidad a Solicitar</Text> */}
           <View style={{ justifyContent: 'center', alignItems: 'center'}}>
             <Quantity 
-                initValue={ quantity }
+                initValue={ 1 }
                 max={ quantityRepository } 
                 buttonColor={ constColor.green}
                 title={'Cantidad a Solicitar'}

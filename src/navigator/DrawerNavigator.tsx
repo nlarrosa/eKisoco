@@ -81,54 +81,6 @@ export const  DrawerNavigator = () => {
       drawerContent={  (props)  => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen 
-        name ="ProductScreen" 
-        component ={ProductScreen} 
-        options = {{
-          title: 'Productos',
-          drawerIcon: () => (
-            <Icon 
-              tvParallaxProperties
-              type='ionicon' 
-              name='newspaper-outline' 
-              color={constColor.greyDark} 
-              size={20}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name ="CartScreen" 
-        component ={CartScreen} 
-        options = {{
-          title: 'Carrito',
-          drawerIcon: () => (
-            <Icon 
-              tvParallaxProperties
-              type='ionicon' 
-              name='cart-outline' 
-              color={constColor.greyDark} 
-              size={20}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name ="OrdersScreen" 
-        component ={OrdersScreen} 
-        options = {{
-          title: 'Mis Ordenes',
-          drawerIcon: () => (
-            <Icon 
-              tvParallaxProperties
-              type='ionicon' 
-              name='document-text-outline' 
-              color={constColor.greyDark} 
-              size={20}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen 
         name ="ProfileScreen" 
         component ={ProfileScreen} 
         options = {{
@@ -154,6 +106,54 @@ export const  DrawerNavigator = () => {
               tvParallaxProperties
               type='ionicon' 
               name='settings-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name ="OrdersScreen" 
+        component ={OrdersScreen} 
+        options = {{
+          title: 'Mis Ordenes',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='document-text-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name ="ProductScreen" 
+        component ={ProductScreen} 
+        options = {{
+          title: 'Productos',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='newspaper-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
+        }}
+      />
+      <Drawer.Screen 
+        name ="CartScreen" 
+        component ={CartScreen} 
+        options = {{
+          title: 'Carrito',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='cart-outline' 
               color={constColor.greyDark} 
               size={20}
             />

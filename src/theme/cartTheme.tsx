@@ -3,6 +3,70 @@ import constColor from '../constants/color';
 
 export const styleCart = StyleSheet.create({
 
+    crHeaderTotals: {
+        width: '100%', 
+        height: 120,
+        paddingTop: 15,
+        paddingBottom: 15,
+        borderBottomWidth: 4,
+        borderBottomColor: constColor.green,
+        backgroundColor: constColor.green,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7,
+    },
+
+    crHeaderTotalContainer: {
+        flex: 1, 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        marginHorizontal: 20, 
+        flexDirection: 'row'
+    },
+
+    crTotalArticulos: {
+        fontSize: 15, 
+        color: 'white', 
+        marginBottom: 5
+    },
+
+    crTotalPVP: {
+        fontSize: 17, 
+        fontWeight: 'bold', 
+        color: 'white'
+    },
+
+    crTotalPrice: {
+        fontSize: 20, 
+        fontWeight: 'bold', 
+        color: 'white'
+    },
+
+    crButtonConfirm: {
+        backgroundColor: 'white',
+        padding: 12,
+        borderRadius: 10,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+        elevation: 7,
+    },
+
+    crButtonConfirmText: {
+        color: constColor.green,
+        fontSize: 15,
+        fontWeight: 'bold'
+    },
+
     crContainer: {
         flexDirection: 'row',
         borderBottomWidth: 2,

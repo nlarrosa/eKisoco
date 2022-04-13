@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect, useReducer, useState } from "react";
-import AsyncStorage from '@react-native-async-storage/async-storage';                               
+import { createContext, useContext, useEffect, useReducer, useState } from "react";                         
 import { AxiosError } from "axios";
 
 
@@ -24,8 +23,8 @@ type ProductContextProps = {
     getSearchByText:   (texto: string) => Promise<ProductSearchData | undefined> ,
     getFamiliaByTipo:  (tipo: string) => Promise<FamiliasProductoData[] | undefined>,
     getAutorByFamilia: (idProductoLogistica: string) => Promise<AutorProductData[] | undefined>,
-    getTitulosByAutor:  (idProductoLogistica: string, autor: string) => Promise<ProductoData[] | undefined>,
-    getQuantityProduct: (quantity: number) => void,
+    getTitulosByAutor: (idProductoLogistica: string, autor: string) => Promise<ProductoData[] | undefined>,
+    getQuantityProduct:(quantity: number) => void,
     removeError: () => void,
 }
 
@@ -98,14 +97,21 @@ export const ProductProvider = ({ children }: any ) => {
                     messageProduct: constantsGl.productNoData,
                 }
             })
-            
-            
+
+            setQuantity(1);
             setIsLoading(false);
             return searchProduct.data;
 
         } catch (error) {
 
-            
+            const err = error as AxiosError;
+            dispatch({
+                type: 'addMessageProduct',
+                payload:{
+                    titleMessage: 'Atencion!',
+                    messageProduct: err.response?.data,
+                }
+            });
         }
     }
 

@@ -1,6 +1,6 @@
 import React  from 'react'
 import { Picker } from '@react-native-picker/picker'
-import { stylesGral } from '../theme/generalTheme';
+import { stylesGral } from '../../theme/generalTheme';
 
 
 

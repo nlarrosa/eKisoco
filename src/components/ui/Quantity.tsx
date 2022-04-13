@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, TextInput, View } from 'react-native'
 import { Button } from 'react-native-elements'
-import { CartContext } from '../context/CartContext';
+import { CartContext } from '../../context/CartContext';
 
 
 

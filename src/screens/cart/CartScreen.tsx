@@ -1,17 +1,17 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Text, KeyboardAvoidingView, Platform, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
+import { useNavigation } from '@react-navigation/native';
 
 
 
-import { Quantity } from '../../components/Quantity';
+import { Quantity } from '../../components/ui/Quantity';
 import { ProductContext } from '../../context/ProductContext';
 import { CartContext } from '../../context/CartContext';
 import { styleCart } from '../../theme/cartTheme';
 import constColor from '../../constants/color';
-import { LogoEmptyCart } from '../../components/ui/LogoEmptyCart';
+import { LogoEmptyCart } from './EmptyCart';
 import { CartData } from '../../interfaces/cartInterfaces';
-import { useNavigation } from '@react-navigation/native';
 
 
 
@@ -63,53 +63,20 @@ export const CartScreen = () =>
         style={{ flex: 1, backgroundColor: 'white' }}
         behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
         >
-        <View style={{ 
-            // justifyContent: 'flex-end',
-            width: '100%', 
-            height: 120,
-            paddingTop: 15,
-            paddingBottom: 15,
-            borderBottomWidth: 4,
-            borderBottomColor: constColor.green,
-            backgroundColor: constColor.green,
-            shadowColor: "#000",
-            shadowOffset: {
-                width: 0,
-                height: 3,
-            },
-            shadowOpacity: 0.29,
-            shadowRadius: 4.65,
-            elevation: 7,
-        }}>
-            <View style={{ flex: 1, justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 20, flexDirection: 'row'}}>
+        <View style={ styleCart.crHeaderTotals }>
+            <View style={styleCart.crHeaderTotalContainer}>
                 <View>
-                    <Text style={{ fontSize: 15, color: 'white', marginBottom: 5}}>Total Artículos: { totalQuantity }</Text>
-                    <Text style={{ fontSize: 17, fontWeight: 'bold', color: 'white'}}>Total PVP:</Text>
-                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white'}}>$ { totalPrice.toFixed(2) }</Text>
+                    <Text style={ styleCart.crTotalArticulos }>Total Artículos: { totalQuantity }</Text>
+                    <Text style={ styleCart.crTotalPVP }>Total PVP:</Text>
+                    <Text style={ styleCart.crTotalPrice }>$ { totalPrice.toFixed(2) }</Text>
                 </View>
 
                 { totalQuantity > 0 && 
                     <View>
                         <TouchableOpacity 
                         onPress={ () => confirmGenerateOrder(productsCart || []) }
-                        style={{ 
-                            backgroundColor: 'white',
-                            padding: 12,
-                            borderRadius: 10,
-                            shadowColor: "#000",
-                            shadowOffset: {
-                                width: 0,
-                                height: 3,
-                            },
-                            shadowOpacity: 0.29,
-                            shadowRadius: 4.65,
-                            elevation: 7,
-                        }}>
-                            <Text style={{ 
-                                color: constColor.green,
-                                fontSize: 15,
-                                fontWeight: 'bold'
-                            }}>
+                        style={ styleCart.crButtonConfirm }>
+                            <Text style={ styleCart.crButtonConfirmText }>
                                 Confirmar
                             </Text>
                         </TouchableOpacity>

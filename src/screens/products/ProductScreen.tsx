@@ -6,15 +6,15 @@ import { SearchBar } from 'react-native-elements';
 import { stylesGral } from '../../theme/generalTheme';
 import { styleProduct } from '../../theme/productTheme';
 import  constColor  from '../../constants/color';
-import { AsistenSearch } from '../../components/AsistenSearch';
+import { AsistenSearch } from '../../components/products/AsistenSearch';
 import { ProductContext } from '../../context/ProductContext';
 import { useNavigation } from '@react-navigation/native';
 import { ProductSearchData } from '../../interfaces/reposicionesInterface';
-import { ProductCard } from '../../components/ProductCard';
+import { ProductCard } from '../../components/products/ProductCard';
 import { CartContext } from '../../context/CartContext';
 import { Loading } from '../../components/ui/Loading';
 import { AuthContext } from '../../context/AuthContext';
-import { DisabledReposity } from '../../components/products/DisabledReposity';
+import { DisabledReposity } from './DisabledReposity';
 
 
 
@@ -32,14 +32,21 @@ export const ProductScreen = () => {
     const [searchResult, setSearchResult] = useState<ProductSearchData>();
     const navigation = useNavigation();
 
+
+    /** Validamos si el usuario esta habilitado
+     * para hacer reposiciones
+     */
     useEffect(() => {
         if(enabledReposity){
-            console.log(enabledReposity);
             getUserQuantityReposity();
         }
     }, [messageProduct])
 
 
+
+    /** Validamos si existe alguna alerta que
+     * venga del context
+     */
     useEffect(() => {
 
         if(messageProduct?.length === 0)
@@ -105,6 +112,8 @@ export const ProductScreen = () => {
     }
 
 
+
+    
     if(!enabledReposity){
         return <DisabledReposity />
     }

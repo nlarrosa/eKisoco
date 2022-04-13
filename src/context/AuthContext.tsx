@@ -98,12 +98,12 @@ export const AuthProvider = ({ children }: any ) => {
 
         try {
 
-            if(mail.length === 0 || clave.length === 0){
+            if(mail.trim().length === 0 || clave.trim().length === 0){
                 dispatch({ type: 'addError', payload: 'Complete los campos obligatorios'});
                 return;
             }
 
-            if(!constantes.emailRegex.test(mail)){
+            if(!constantes.emailRegex.test(mail.trim())){
                 dispatch({ type: 'addError', payload: 'El campo Email es incorrecto'});
                 return;
             }
@@ -111,8 +111,8 @@ export const AuthProvider = ({ children }: any ) => {
 
             const { data } = await Sgdi.get<LoginResponse>('/Login', { 
                 params: {
-                    mail, 
-                    clave
+                    mail: mail.trim(), 
+                    clave: clave.trim(),
                 } 
             });
             
@@ -238,7 +238,6 @@ export const AuthProvider = ({ children }: any ) => {
                 type: 'addErrorSignup', 
                 payload: err.response?.data || 'Informacion Incorrecta',
             });
-            return;
         }
     };
 

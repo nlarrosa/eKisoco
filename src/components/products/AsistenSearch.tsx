@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { View } from 'react-native';
 
-import { stylesGral } from '../theme/generalTheme';
+import { stylesGral } from '../../theme/generalTheme';
 import { Picker } from '@react-native-picker/picker';
-import colors from '../constants/color';
+import colors from '../../constants/color';
 import { Divider } from 'react-native-elements';
-import { ProductContext } from '../context/ProductContext';
-import { TipoProductosData, FamiliasProductoData, AutorProductData, ProductoData } from '../interfaces/reposicionesInterface';
-import { Loading } from './ui/Loading';
+import { ProductContext } from '../../context/ProductContext';
+import { TipoProductosData, FamiliasProductoData, AutorProductData, ProductoData } from '../../interfaces/reposicionesInterface';
+import { Loading } from '../ui/Loading';
 import { ProductCard } from './ProductCard';
 
 

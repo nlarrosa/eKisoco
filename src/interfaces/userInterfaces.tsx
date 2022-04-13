@@ -90,3 +90,42 @@ export interface Horarios {
     Sabado:    null;
     Domingo:   null;
 }
+
+
+export interface AccountModify {
+    Dni:               string;
+    Cuit:              string;
+    Provincia:         string;
+    Calles:            string;
+    reparto:           boolean;
+    entregaDiario:     boolean;
+    entregaRevista:    boolean;
+    cargaDiario:       boolean;
+    cargaRevista:      boolean;
+    cargaOpcionales:   boolean;
+    calle1:            string;
+    calle2:            string;
+    calle3:            string;
+    calle4:            string;
+    calle5:            string;
+    calle6:            string;
+    calle7:            string;
+    calle8:            string;
+    calle9:            string;
+    calle10:           string;
+}
+
+
+
+export interface HouersDays {
+    houersDays: {
+        [key: string]: { 
+            desde:string, 
+            hasta:string, 
+            status:boolean, 
+            color: string, 
+            name:string
+        }
+    }
+}
+           

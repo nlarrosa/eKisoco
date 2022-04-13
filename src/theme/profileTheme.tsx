@@ -16,7 +16,7 @@ export const styleProfile = StyleSheet.create({
 
     headerTitleText: {
         fontWeight: 'bold',
-        fontSize: 12,
+        fontSize: 14,
         textAlign: 'left',
         color: constColor.dark,
     },
@@ -31,8 +31,9 @@ export const styleProfile = StyleSheet.create({
 
     headerSubtitleText: {
         fontSize: 13,
-        color: constColor.darkLight,
+        color: constColor.green,
         textAlign: 'left',
+        fontWeight: 'bold'
     },
 
     avatarContent: {

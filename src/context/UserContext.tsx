@@ -1,7 +1,7 @@
 import { createContext, useReducer, useState, useContext } from "react"
 import { AxiosError } from 'axios';
 
-import { ProfileModify, CuentasMadresData, CuentasHijasData, ProfileData, AccountData } from '../interfaces/userInterfaces';
+import { ProfileModify, CuentasMadresData, CuentasHijasData, ProfileData, AccountData, AccountModify } from '../interfaces/userInterfaces';
 import { userReducer, UserState } from '../reducers/userReducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Sgdi from "../api/Sgdi";
@@ -29,6 +29,9 @@ type UserContextProps = {
     getAccount: () => Promise<AccountData>,
     asignHouersDays: (houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => void;
     deleteHouersDay: (day: string) => void,
+    editAccount: (accountModify: AccountModify, houers:{[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => void,
+    editHouers: (houers:{[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => void,
+    editZone: (accountModify: AccountModify) => void,
 }
 
 
@@ -53,6 +56,11 @@ export const UserProvider = ( { children }: any ) => {
     const [profile, setProfile] = useState<ProfileData>();   
     const [insigne, setInsigne] = useState(''); 
     const [houersDays, setHouersDays] = useState<{[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}>({});
+    
+    
+    const [createHouers, setCreateHouers] = useState<{ [key:string]: string }>({
+        Lunes:'', Martes:'', Miercoles:'', Jueves:'', Viernes:'', Sabado:'', Domingo:''
+    });
 
 
     /** Devuelve los datos del Canilla lofueado */
@@ -68,7 +76,6 @@ export const UserProvider = ( { children }: any ) => {
         });
 
         getInsigneName();
-
         setIsLoading(false);
         return response.data;
     }
@@ -147,6 +154,99 @@ export const UserProvider = ( { children }: any ) => {
 
 
 
+    /** Recibimos los datos generales y totales para 
+     * editar o guardar parametros de la cuenta del usuario
+     */
+    const editAccount = async(accountModify: AccountModify, houers: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => {
+
+        try {
+            const responseAccount = await Sgdi.put('Canillas/ActualizarCanillaAdicional', null, {
+                params: {
+                    token,
+                    idCanilla: userId,
+                    DNI: accountModify.Dni,
+                    CUIT: accountModify.Cuit,
+                    Provincia: accountModify.Provincia,
+                    EntrecallesPuesto: accountModify.Calles,
+                    tieneReparto: accountModify.reparto,
+                    entregaSuscripcionDiario: accountModify.entregaDiario,
+                    entregaSuscripcionRevistas: accountModify.entregaRevista,
+                    cargaDiario: accountModify.cargaDiario,
+                    cargaRevista: accountModify.cargaRevista,
+                    cargaOpcionales: accountModify.cargaOpcionales
+                }
+            });
+
+
+            editZone(accountModify);
+            editHouers(houers);
+
+            dispatch({
+                type: 'addMessageProfile',
+                payload: 'Perfil de cuenta actualizado',
+            });
+
+            
+        } catch (error) {
+
+            const err = error as AxiosError;
+            dispatch({
+                type: 'addMessageProfile',
+                payload: err.response?.data,
+            });
+            
+        }
+    }
+
+
+
+    /** Editar y guaradr los datos de la cuenta 
+     * la seccion zona de reparto */
+    const editZone = async(accountModify: AccountModify) => {
+
+        const responseZone = await Sgdi.put('Canillas/ActualizarCanillaZonaReparto', null, {
+            params: {
+                token,
+                IdCanilla: userId,
+                calle01: accountModify.calle1,
+                calle02: accountModify.calle2,
+                calle03: accountModify.calle3,
+                calle04: accountModify.calle4,
+                calle05: accountModify.calle5,
+                calle06: accountModify.calle6,
+                calle07: accountModify.calle7,
+                calle08: accountModify.calle8,
+                calle09: accountModify.calle9,
+                calle10: accountModify.calle10,
+            }
+        });
+    }
+
+
+    /** Editar y guaradr los datos de la cuenta 
+     * la seccion horario de atencion */
+    const editHouers = (houers: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => {
+
+        const houersAtention: Object[] = Object.entries(houers).map(([ key, day]) => {
+            return day.desde + ' - ' + day.hasta;
+        });
+
+        const responseHouers = Sgdi.put('Canillas/ActualizarCanillaHorarios', null, {
+            params: {
+                token,
+                idCanilla: userId,
+                lunes: houersAtention[0],
+                martes: houersAtention[1],
+                miercoles: houersAtention[2],
+                jueves: houersAtention[3],
+                viernes: houersAtention[4],
+                sabado: houersAtention[5],
+                domingo: houersAtention[6],
+            }
+        });
+    }
+
+
     /** Obtenemos las cuentas madres segun
      * la region seleccionada
     */
@@ -177,6 +277,7 @@ export const UserProvider = ( { children }: any ) => {
             });
         }
     };
+
 
 
     /** Obtenemos las cuentas hijas segun
@@ -287,11 +388,36 @@ export const UserProvider = ( { children }: any ) => {
      */
     const asignHouersDays = ( houersDaysData: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => {
 
+
+        // Object.entries(houersDaysData).map( ([ key, day]) => {
+
+        //     let desde = Number(day.desde.replace(':', ''));
+        //     let hasta = Number(day.hasta.replace(':', ''));
+
+        //     if(desde > 0 && hasta > 0)
+        //     {
+        //         if(desde >= hasta){
+        //             return false; 
+        //         }
+        //     }
+        // });
+        
+
+       
+        //     dispatch({
+        //         type: 'addMessageProfile',
+        //         payload: constantes.HouerOpen,
+        //     });
+        
+
         setHouersDays(houersDaysData);
         dispatch({ type: 'houersDaysData', payload: houersDaysData });
+        
     }
 
 
+
+    
     /**Eliminamos un dia y horario desde la lista 
      * de horarios de atencion
      */
@@ -302,6 +428,10 @@ export const UserProvider = ( { children }: any ) => {
         setHouersDays(houersDays);
         dispatch({ type: 'houersDaysData', payload: houersDays });
     }
+
+    
+
+
 
 
     return(
@@ -318,7 +448,10 @@ export const UserProvider = ( { children }: any ) => {
             getCuentasMadres,
             getCuentasHijas,
             asignHouersDays,
-            deleteHouersDay
+            deleteHouersDay,
+            editAccount,
+            editHouers,
+            editZone
         }}>
 
             { children }
