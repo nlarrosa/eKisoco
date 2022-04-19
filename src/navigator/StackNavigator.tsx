@@ -11,6 +11,7 @@ import { ProfileScreen } from '../screens/user/ProfileScreen';
 import { AccountScreen } from '../screens/user/AccountScreen';
 import { DrawerNavigator } from './DrawerNavigator';
 import { Loading } from '../components/ui/Loading';
+import { TabBottomNavigator } from './TabBottomNavigator';
 
 
 
@@ -19,9 +20,10 @@ export type rootStackParams = {
     RegisterScreen:  undefined,
     ForgotScreen:    undefined,
     DrawerNavigator: undefined,
+    TabBottomNavigator: undefined,
     LoginScreen:     undefined,
-    ProfileScreen:   undefined,
-    AccountScreen:   undefined,
+    // ProfileScreen:   undefined,
+    // AccountScreen:   undefined,
 } 
 
 const Stack = createNativeStackNavigator<rootStackParams>();
@@ -49,6 +51,7 @@ export const StackNavigator = () => {
         ) : (
             <>
                 <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} options={{ headerShown: false }}/>
+                <Stack.Screen name="TabBottomNavigator" component={TabBottomNavigator} options={{ headerShown: false }}/>
             </>
 
         )}

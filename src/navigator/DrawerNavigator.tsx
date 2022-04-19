@@ -15,6 +15,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 import { rootStackParams } from './StackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { OrdersScreen } from '../screens/cart/OrdersScreen';
+import { NewsScreen } from '../screens/home/NewsScreen';
 
 
 export type rootDrawParams = {
@@ -24,6 +25,7 @@ export type rootDrawParams = {
     ProductScreen: undefined,
     CartScreen: undefined,
     OrdersScreen: undefined,
+    NewsScreen: undefined,
 }
 
 const Drawer =  createDrawerNavigator<rootDrawParams>();
@@ -38,7 +40,7 @@ export const  DrawerNavigator = () => {
 
   return (
     <Drawer.Navigator
-      initialRouteName='ProductScreen'
+      initialRouteName='NewsScreen'
       screenOptions={{ headerTitleStyle: { fontSize: 18 },
         headerRight:  () => (
           <TouchableOpacity
@@ -80,6 +82,22 @@ export const  DrawerNavigator = () => {
     }}
       drawerContent={  (props)  => <CustomDrawerContent {...props} />}
     >
+      <Drawer.Screen 
+        name ="NewsScreen" 
+        component ={NewsScreen} 
+        options = {{
+          title: 'Inicio',
+          drawerIcon: () => (
+            <Icon 
+              tvParallaxProperties
+              type='ionicon' 
+              name='home-outline' 
+              color={constColor.greyDark} 
+              size={20}
+            />
+          ),
+        }}
+      />
       <Drawer.Screen 
         name ="ProfileScreen" 
         component ={ProfileScreen} 

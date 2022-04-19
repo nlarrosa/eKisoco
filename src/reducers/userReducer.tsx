@@ -4,6 +4,7 @@ import { CuentasMadresData, CuentasHijasData, ProfileModify } from '../interface
 export interface UserState {
 
     messageProfile: string,
+    title: string
     cuentasMadresData: CuentasMadresData | null,
     cuentasHijasData: CuentasHijasData | null,
     houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}},
@@ -12,7 +13,7 @@ export interface UserState {
 
 type UserAction = 
 
-    |{ type: 'addMessageProfile', payload: string }
+    |{ type: 'addMessageProfile', payload: { messageProfile: string, title: string }}
     |{ type: 'removeErrorProfile' }
     |{ type: 'cuentasMadres', payload: { cuentasMadresData: CuentasMadresData }}
     |{ type: 'cuentasHijas', payload: { cuentasHijasData: CuentasHijasData }}
@@ -26,7 +27,8 @@ export const userReducer = ( state: UserState, action: UserAction):UserState  =>
         case 'addMessageProfile':
             return {
                 ...state,
-                messageProfile: action.payload,
+                messageProfile: action.payload.messageProfile,
+                title: action.payload.title,
                 cuentasMadresData: null,
                 cuentasHijasData: null,
             }
@@ -36,6 +38,7 @@ export const userReducer = ( state: UserState, action: UserAction):UserState  =>
             return {
                 ...state,
                 messageProfile: '',
+                title: '',
                 cuentasMadresData: null,
                 cuentasHijasData: null,
             }
@@ -46,6 +49,7 @@ export const userReducer = ( state: UserState, action: UserAction):UserState  =>
                 ...state,
                 cuentasMadresData: action.payload.cuentasMadresData,
                 messageProfile: '',
+                title: '',
             }
         break;
 
@@ -54,6 +58,7 @@ export const userReducer = ( state: UserState, action: UserAction):UserState  =>
                 ...state,
                 cuentasHijasData: action.payload.cuentasHijasData,
                 messageProfile: '',
+                title: '',
             }
         break;
 

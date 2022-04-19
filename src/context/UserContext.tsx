@@ -18,6 +18,7 @@ type UserContextProps = {
     profile: ProfileData | undefined,
     insigne: string,
     messageProfile: string,
+    title: string,
     cuentasMadresData: CuentasMadresData[] | null,
     cuentasHijasData: CuentasHijasData[] | null,
     houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}},
@@ -38,6 +39,7 @@ type UserContextProps = {
 const  userInitialState: UserState = {
     
     messageProfile: '',
+    title: '',
     cuentasMadresData: null,
     cuentasHijasData: null,
     houersDays: {},
@@ -136,7 +138,10 @@ export const UserProvider = ( { children }: any ) => {
             
             dispatch({
                 type: 'addMessageProfile',
-                payload: 'Perfil de vendedor actualizado.'
+                payload: {
+                    messageProfile: 'Perfil de vendedor actualizado.',
+                    title: 'Atención!'
+                }
             });
             
             /*Obtengo los datos actualizados*/
@@ -147,7 +152,10 @@ export const UserProvider = ( { children }: any ) => {
             const err = error as AxiosError;
             dispatch({
                 type: 'addMessageProfile',
-                payload: err.response?.data,
+                payload: {
+                    messageProfile: err.response?.data,
+                    title: 'Error!',
+                }
             });
         }
     }
@@ -183,7 +191,10 @@ export const UserProvider = ( { children }: any ) => {
 
             dispatch({
                 type: 'addMessageProfile',
-                payload: 'Perfil de cuenta actualizado',
+                payload: { 
+                    messageProfile: 'Perfil de cuenta actualizado',
+                    title: 'Atención!'
+                }
             });
 
             
@@ -192,7 +203,10 @@ export const UserProvider = ( { children }: any ) => {
             const err = error as AxiosError;
             dispatch({
                 type: 'addMessageProfile',
-                payload: err.response?.data,
+                payload: {
+                    messageProfile: err.response?.data,
+                    title: 'Error!',
+                }
             });
             
         }
@@ -273,7 +287,10 @@ export const UserProvider = ( { children }: any ) => {
             const err = error as AxiosError;
             dispatch({
                 type: 'addMessageProfile',
-                payload: err.response?.data,
+                payload: {
+                    messageProfile: err.response?.data,
+                    title: 'Error!',
+                }
             });
         }
     };
@@ -305,7 +322,10 @@ export const UserProvider = ( { children }: any ) => {
             const err = error as AxiosError;
             dispatch({
                 type: 'addMessageProfile',
-                payload: err.response?.data,
+                payload: {
+                    messageProfile: err.response?.data,
+                    title: 'Error!',
+                }
             });
         }
     };
@@ -387,28 +407,6 @@ export const UserProvider = ( { children }: any ) => {
      * para giardar en el context
      */
     const asignHouersDays = ( houersDaysData: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}) => {
-
-
-        // Object.entries(houersDaysData).map( ([ key, day]) => {
-
-        //     let desde = Number(day.desde.replace(':', ''));
-        //     let hasta = Number(day.hasta.replace(':', ''));
-
-        //     if(desde > 0 && hasta > 0)
-        //     {
-        //         if(desde >= hasta){
-        //             return false; 
-        //         }
-        //     }
-        // });
-        
-
-       
-        //     dispatch({
-        //         type: 'addMessageProfile',
-        //         payload: constantes.HouerOpen,
-        //     });
-        
 
         setHouersDays(houersDaysData);
         dispatch({ type: 'houersDaysData', payload: houersDaysData });
