@@ -9,20 +9,26 @@ import { ProductContext } from '../../context/ProductContext';
 import { NewsCard } from '../../components/products/NewsCard';
 import { HorizontalSlide } from '../../components/ui/HorizontalSlide';
 import { Loading } from '../../components/ui/Loading';
-import { ActivityIndicator } from 'react-native-paper';
+import { Divider } from 'react-native-elements/dist/divider/Divider';
+import constColor from '../../constants/color';
+import { ProductoData } from '../../interfaces/reposicionesInterface';
+
 
 
 
 
 export const NewsScreen = () => {
 
-    const { getSearchByText, isLoading } = useContext(ProductContext);
+    const { getSearchByText, isLoading, getUserQuantityReposity } = useContext(ProductContext);
     const [news, setNews] = useState([]);
     const [totalNews, setTotalNews] = useState<number>(0);
     const { width: windowWidth } = Dimensions.get('window');
+    const [modalProductDetail, setModalProductDetail] = useState(false)
+    const [productDetail, setProductDetail] = useState<ProductoData>();
 
     useEffect(() => {
       getNews();
+      getUserQuantityReposity();
     }, []);
 
 
@@ -33,37 +39,43 @@ export const NewsScreen = () => {
     }
 
 
+
+
     if(isLoading){
         return (<Loading />);
     }
     
 
     return (
-
-    <ScrollView >
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', paddingBottom: 10 }}>
+    
+    <ScrollView style={{ backgroundColor: 'white' }}>
+        <View style={{ flex:1, justifyContent: 'center', alignItems: 'center', paddingBottom: 40 }}>
             <View style={ styleNews.headerTitle}>
                 <Text style={ styleNews.headerTextNews }>DESTACADOS / NOVEDADES</Text>
             </View>
             <Carousel 
                 data={ news }
-                renderItem={  ({item}) => <NewsCard width={215} height={275} product={ item } ribbonStatus={true}/> }
+                renderItem={  ({item}) => 
+                    <NewsCard 
+                        width={230} 
+                        height={295} 
+                        product={ item } 
+                        ribbonStatus={true}
+                    /> }
                 sliderWidth={ windowWidth }
-                itemWidth={ 200}
-                inactiveSlideOpacity={0.6}
+                itemWidth={220}
+                inactiveSlideOpacity={0.5}
                 firstItem={2}
                 containerCustomStyle={{ flex: 1 }}
                 slideStyle={{ flex: 1 }}
             />
         </View>
-        <HorizontalSlide 
-            products={news}
-            title={ 'SEMANA DEL NIÑO' }
-        />
+        <Divider width={4} color={ constColor.green } style={{ marginVertical: 5 }}/>
         <HorizontalSlide 
             products={news}
             title={ 'SEMANA DEL NIÑO' }
         />
     </ScrollView>
+
   )
 }

@@ -10,7 +10,7 @@ const glLabel = stylesGral.glLabel;
 export const styleProduct = StyleSheet.create({
 
     container: {
-        marginHorizontal: 35,
+        marginHorizontal: 25,
         flex: 1,
         backgroundColor: 'white',
         // justifyContent: 'flex-start',
@@ -98,8 +98,10 @@ export const styleProduct = StyleSheet.create({
     },
 
     imageProduct: {
-        height: 280,
-        borderRadius: 10
+        height: 295,
+        width: 230,
+        borderRadius: 10,
+        
     },
 
     description: {

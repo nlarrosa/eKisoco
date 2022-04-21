@@ -6,8 +6,11 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 
 import { ProfileScreen } from '../screens/user/ProfileScreen';
 import constColor from '../constants/color';
-import { Text, Platform } from 'react-native';
-import { AccountScreen } from '../screens/user/AccountScreen';
+import { Platform } from 'react-native';
+import { NewsScreen } from '../screens/home/NewsScreen';
+import { ProductScreen } from '../screens/products/ProductScreen';
+import { OrdersScreen } from '../screens/cart/OrdersScreen';
+
 
 
 const TabIos = createBottomTabNavigator();
@@ -31,24 +34,6 @@ const TabBottomIos = () => {
       sceneContainerStyle = {{
         backgroundColor: 'white',
       }}
-
-      screenOptions = { ({ route }) => ({
-          tabBarIcon: ({ color, focused, size }) => {
-
-            let iconName: string = '';
-
-            switch (route.name) {
-              case 'ProfileScreen':
-                iconName = 'PF';
-              break;
-            
-              default:
-                break;
-            }
-
-            return <Text>{ iconName }</Text>
-          }
-      })}
     >
       <TabIos.Screen 
         name="ProfileScreen" 
@@ -62,60 +47,58 @@ const TabBottomIos = () => {
 
 const TabBottomAndroid = () => {
 
-
   return (
     
     <TabAndroid.Navigator
-      initialRouteName='ProfileScreen'
+      initialRouteName='NewsScreen'
       activeColor={constColor.green}
-      inactiveColor='#979c98'
+      inactiveColor={ constColor.green}
 
       barStyle = {{
         backgroundColor: 'white',
-        elevation: 5,
+        borderTopWidth: 2,
+        borderColor: constColor.green,
+        shadowColor: "#000",
+        elevation: 9,
       }}
-
-      // screenOptions = { ({ route }) => ({
-          
-      //     tabBarIcon: ({ color, focused }) => {
-
-      //       let iconName: string = '';
-
-      //       switch (route.name) {
-      //         case 'ProfileScreen':
-      //           iconName = 'person-circle-outline';
-      //         break;
-            
-      //         default:
-      //           break;
-      //       }
-
-      //       return <Icon>{ iconName }</Text>
-      //     }
-      // })}
     >
+
+
       <TabAndroid.Screen 
-        name="ProfileScreen" 
-        component={ProfileScreen} 
+        name="NewsScreen" 
+        component={NewsScreen} 
         options={{ 
-          title: 'Perfil',
+          title: 'Inicio',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-circle" color={color} size={26} />
+            <MaterialCommunityIcons name="home" color={color} size={26} />
           ),
         }}
       />
+
+
       <TabAndroid.Screen 
-        name="AccountScreen" 
-        component={AccountScreen} 
+        name="OrdersScreen" 
+        component={OrdersScreen} 
         options={{ 
-          title: 'Mi Cuenta',
+          title: 'Mis Ordenes',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="account-box-multiple-outline" color={color} size={26} />
+            <MaterialCommunityIcons name="shopping" color={color} size={26} />
+          ),
+          tabBarBadge: 3,
+        }}
+      />
+
+
+      <TabAndroid.Screen 
+        name="ProductScreen" 
+        component={ProductScreen} 
+        options={{ 
+          title: 'Buscar',
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="search-web" color={color} size={26} />
           ),
         }}
       />
     </TabAndroid.Navigator>
   )
-
-
 }

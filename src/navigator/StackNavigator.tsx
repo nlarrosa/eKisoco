@@ -7,11 +7,10 @@ import { LoginScreen } from '../screens/auth/LoginScreen';
 import { RegisterScreen } from '../screens/auth/RegisterScreen';
 import { ForgotScreen } from '../screens/auth/ForgotScreen';
 import { AuthContext } from '../context/AuthContext';
-import { ProfileScreen } from '../screens/user/ProfileScreen';
-import { AccountScreen } from '../screens/user/AccountScreen';
 import { DrawerNavigator } from './DrawerNavigator';
 import { Loading } from '../components/ui/Loading';
-import { TabBottomNavigator } from './TabBottomNavigator';
+import { ProductDetailScreen } from '../screens/products/ProductDetailScreen';
+import constColor from '../constants/color';
 
 
 
@@ -22,6 +21,8 @@ export type rootStackParams = {
     DrawerNavigator: undefined,
     TabBottomNavigator: undefined,
     LoginScreen:     undefined,
+    NewsScreen: undefined,
+    ProductDetailScreen: undefined
     // ProfileScreen:   undefined,
     // AccountScreen:   undefined,
 } 
@@ -39,6 +40,14 @@ export const StackNavigator = () => {
 
     <Stack.Navigator
         initialRouteName='LoginScreen'
+        screenOptions={{
+            headerTitleAlign: 'center',
+            headerTintColor: 'white',
+            headerStyle: { 
+                backgroundColor: constColor.green,
+            },
+        }}
+
     >
         { ( status !== 'authenticated') 
         
@@ -51,9 +60,9 @@ export const StackNavigator = () => {
         ) : (
             <>
                 <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} options={{ headerShown: false }}/>
-                <Stack.Screen name="TabBottomNavigator" component={TabBottomNavigator} options={{ headerShown: false }}/>
+                {/* <Stack.Screen name="NewsScreen" component={NewsScreen} options={{ title: 'Detalle de Producto' }}/> */}
+                <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} options={{ title: 'Detalle de Producto' }}/>
             </>
-
         )}
 
     </Stack.Navigator>

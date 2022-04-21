@@ -44,10 +44,13 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
         <Card>
           <Card.Title> { producto?.IdProductoLogistica } - Edicion { producto?.Edicion} </Card.Title>
           <Card.Divider />
-          <Card.Image style={ styleProduct.imageProduct }
-            source={{ uri: producto?.URLImagen }}
-            PlaceholderContent={ <ActivityIndicator /> }
-          />
+          
+          <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+            <Card.Image style={ styleProduct.imageProduct } 
+              source={{ uri: producto?.URLImagen }}
+              PlaceholderContent={ <ActivityIndicator /> }
+            />
+          </View>
 
           <Text style={ styleProduct.title }>{ producto?.Descripcion?.toUpperCase().split("-")[1] }</Text>
           <Text style={ styleProduct.description}>Autor: { producto?.Autor }</Text>

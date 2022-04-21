@@ -3,7 +3,9 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { ProductoData } from '../../interfaces/reposicionesInterface';
 import constColor from '../../constants/color';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/core';
+
+
 
 
 interface Props {
@@ -16,12 +18,12 @@ interface Props {
 
 export const NewsCard = ({ width=180, height=220, product, ribbonStatus=false }: Props) => {
 
-    const navigation = useNavigation();
+    const navigation: any = useNavigation();
     const urlImg = product.URLImagen;
 
   return (
     <TouchableOpacity
-        onPress={ () => navigation.navigate('ProductScreen', movie ) }
+        onPress={ () => navigation.navigate('ProductDetailScreen', product ) }
         activeOpacity={0.6}
         style={ {
             width,
@@ -36,14 +38,14 @@ export const NewsCard = ({ width=180, height=220, product, ribbonStatus=false }:
                 <View style={{ 
                     position: 'absolute',
                     top: height -45,
-                    left: width / 2 - 75
+                    left: width / 2 - 85
                 }}>
                     <View style={{ 
                         backgroundColor: constColor.green, 
                         zIndex: 9000, 
                         padding: 5, 
                         borderRadius: 10,
-                        width: 140,
+                        width: 160,
                         shadowColor: "#000",
                         borderColor: 'white',
                         borderWidth: 2,
@@ -56,7 +58,7 @@ export const NewsCard = ({ width=180, height=220, product, ribbonStatus=false }:
                         elevation: 15,
                     }}>
                         <Text style={{ 
-                            fontSize: 18, 
+                            fontSize: 15, 
                             fontWeight: 'bold', 
                             textAlign: 'center', 
                             color: 'white',}}>PROMO $990</Text>

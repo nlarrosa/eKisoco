@@ -12,12 +12,13 @@ export const styleNews = StyleSheet.create({
         marginVertical: 5,
         alignItems: 'center',
         justifyContent: 'center',
+        marginBottom: 15
     },
 
     headerTextNews: {
         fontSize: 18,
         color: 'white',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
 
     headerText: {

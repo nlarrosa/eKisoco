@@ -16,6 +16,7 @@ import { rootStackParams } from './StackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { OrdersScreen } from '../screens/cart/OrdersScreen';
 import { NewsScreen } from '../screens/home/NewsScreen';
+import { TabBottomNavigator } from './TabBottomNavigator';
 
 
 export type rootDrawParams = {
@@ -26,6 +27,7 @@ export type rootDrawParams = {
     CartScreen: undefined,
     OrdersScreen: undefined,
     NewsScreen: undefined,
+    TabBottomNavigator: undefined
 }
 
 const Drawer =  createDrawerNavigator<rootDrawParams>();
@@ -83,8 +85,8 @@ export const  DrawerNavigator = () => {
       drawerContent={  (props)  => <CustomDrawerContent {...props} />}
     >
       <Drawer.Screen 
-        name ="NewsScreen" 
-        component ={NewsScreen} 
+        name ="TabBottomNavigator" 
+        component ={TabBottomNavigator} 
         options = {{
           title: 'Inicio',
           drawerIcon: () => (

@@ -1,10 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react'
-import { Text, View, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState, useContext, useRef } from 'react'
+import { Text, View, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 
 import { styleCart } from '../../theme/cartTheme';
 import { CartContext } from '../../context/CartContext';
 import { AuthContext } from '../../context/AuthContext';
 import { Loading } from '../../components/ui/Loading';
+import { Item } from 'react-native-paper/lib/typescript/components/List/List';
+import { OrderCard } from '../../components/orders/OrderCard';
+
 
 
 
@@ -14,18 +17,23 @@ export const OrdersScreen = () => {
 
   const { userId } = useContext(AuthContext);
   const { getOrderByUser, isLoading, orders } = useContext(CartContext);
-  const [btnDetails, setBtnDetails] = useState<boolean>(false);
-  // const [orders, setOrders] = useState<Reposiciones[]>();
+  const ordersPage = useRef<number>(0);
+
 
 
   useEffect(() => {
-    initOrders();
+    initOrders(ordersPage.current);
   }, []);
   
-  const initOrders = async () => {
-    getOrderByUser( 0 );
+
+
+  const initOrders = async (page:number) => {
+    console.log(page);
+    ordersPage.current = page;
+    getOrderByUser( page );
   }
   
+
 
   if( isLoading ){
     return <Loading />
@@ -37,57 +45,13 @@ export const OrdersScreen = () => {
     style={{ flex: 1, backgroundColor: 'white' }}
     behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
     >
-      <ScrollView>
-        { orders?.map(( order ) => (
-          <View key={ order.IdReposicion } style={{ ...styleCart.crContainer, paddingRight:30}}>
-              <View style={{ width: '100%'}}>
-                  <View style={{ ...styleCart.crTitleEdicion, ...styleCart.crStatus}}>
-                      <View >
-                        <Text>Fecha Pedido:  { order.FechaCreacion.split('T')[0] }</Text>
-                        <Text>Pedido: { order.IdReposicion }</Text>
-                      </View> 
-                      <Text style={{
-                        ...styleCart.crBadge,
-                        borderColor:  order.EstadoColor,
-                        color: order.EstadoColor
-                      }}>
-                        { order.Estado }
-                      </Text>
-                  </View>
-                  <View style={{ ...styleCart.crTitleEdicion, marginTop: 5 }}>
-                      <Text style={{ fontWeight: 'bold', fontSize: 17}}>{ order.Titulo }</Text>
-                  </View>
-                  <View>
-                      <Text style={ styleCart.crSubPrecio }> 
-                        PVP.: <Text style={ styleCart.crPrecio }>$ { order.PrecioTotal.toFixed(2) }</Text>
-                      </Text>
-                  </View>
-
-                  <View style={{ ...styleCart.crTitle }}>
-                      <Text >Cant. Solicitada: { order.CantidadSolicitada} / Cant. Despachada: { order.CantidadAsignada }</Text>
-                  </View>
-
-                  { btnDetails && (
-                    <View style={{ marginTop: 20 }}>
-                      <Text>Nro. Familia: { order.Familia }</Text>
-                      <Text>Edicion: { order.Edicion }</Text>
-                      <Text>{ order.Autor }</Text>
-                    </View>
-                  )}
-
-                  <View>
-                      <TouchableOpacity 
-                        onPress={ () => setBtnDetails(!btnDetails) }
-                        style={ styleCart.crBtnDetail }>
-                        <Text style={{ color: 'white'}}>
-                          { btnDetails ? 'Ocultar' : 'Detalles' }
-                        </Text>
-                      </TouchableOpacity>
-                  </View>
-              </View>
-          </View>
-        ))}
-      </ScrollView>
+      <FlatList 
+        data={ orders }
+        keyExtractor={ (Item) => Item.IdReposicion.toString() }
+        renderItem={ ({ item }) => <OrderCard order={item}/>  }
+        onEndReachedThreshold={0.4}
+        onEndReached={ () => initOrders(ordersPage.current + 1) }
+      />
     </KeyboardAvoidingView>
   )
 }

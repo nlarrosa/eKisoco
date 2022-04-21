@@ -135,7 +135,6 @@ export const stylesGral = StyleSheet.create({
       },
 
       glModalView: {
-        // marginVertical: 50,
         backgroundColor: "white",
         borderRadius: 20,
         paddingVertical: 40,
