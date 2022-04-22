@@ -10,6 +10,7 @@ import { useForm } from '../../hooks/useForm';
 import { ProvinciasPicker } from '../../components/ui/ProvinciasPicker';
 import { UserContext } from '../../context/UserContext';
 import constColor from '../../constants/color';
+import constGlobals from '../../constants/globals';
 import { ModalHouers } from '../../components/ui/ModalHouers';
 
 
@@ -80,7 +81,7 @@ export const AccountScreen = () => {
       return;
 
       Alert.alert(
-        'Error!', 
+        constGlobals.titleError, 
         messageProfile, 
         [{ text: 'Aceptar', onPress: removeErrorProfile}]
       );

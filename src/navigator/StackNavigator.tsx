@@ -23,8 +23,6 @@ export type rootStackParams = {
     LoginScreen:     undefined,
     NewsScreen: undefined,
     ProductDetailScreen: undefined
-    // ProfileScreen:   undefined,
-    // AccountScreen:   undefined,
 } 
 
 const Stack = createNativeStackNavigator<rootStackParams>();

@@ -93,8 +93,8 @@ export const ProductProvider = ({ children }: any ) => {
             dispatch({
                 type: 'addMessageProduct',
                 payload:{
-                    titleMessage: 'Atencion!',
-                    messageProduct: constantsGl.productNoData,
+                    titleMessage: constantsGl.titleAttention,
+                    messageProduct: constantsGl.productNoDataMsg,
                 }
             })
 
@@ -108,7 +108,7 @@ export const ProductProvider = ({ children }: any ) => {
             dispatch({
                 type: 'addMessageProduct',
                 payload:{
-                    titleMessage: 'Atencion!',
+                    titleMessage: constantsGl.titleError,
                     messageProduct: err.response?.data,
                 }
             });
@@ -138,7 +138,7 @@ export const ProductProvider = ({ children }: any ) => {
             dispatch({
                 type: 'addMessageProduct',
                 payload:{
-                    titleMessage: 'Atencion!',
+                    titleMessage: constantsGl.titleError,
                     messageProduct: err.response?.data,
                 }
             });
@@ -171,8 +171,8 @@ export const ProductProvider = ({ children }: any ) => {
                     dispatch({
                         type: 'addMessageProduct',
                         payload:{
-                            titleMessage: 'Atencion!',
-                            messageProduct: constantsGl.productNoData,
+                            titleMessage: constantsGl.titleAttention,
+                            messageProduct: constantsGl.productNoDataMsg,
                         }
                     });
                 }
@@ -187,7 +187,7 @@ export const ProductProvider = ({ children }: any ) => {
             dispatch({
                 type: 'addMessageProduct',
                 payload:{
-                    titleMessage: 'Atencion!',
+                    titleMessage: constantsGl.titleError,
                     messageProduct: err.response?.data,
                 }
 
@@ -221,8 +221,8 @@ export const ProductProvider = ({ children }: any ) => {
                     dispatch({
                         type: 'addMessageProduct',
                         payload:{
-                            titleMessage: 'Atencion!',
-                            messageProduct: constantsGl.productNoData,
+                            titleMessage: constantsGl.titleAttention,
+                            messageProduct: constantsGl.productNoDataMsg,
                         }
                     });
                 }
@@ -237,7 +237,7 @@ export const ProductProvider = ({ children }: any ) => {
             dispatch({
                 type: 'addMessageProduct',
                 payload:{
-                    titleMessage: 'Atencion!',
+                    titleMessage: constantsGl.titleError,
                     messageProduct: err.response?.data,
                 }
 
@@ -271,8 +271,8 @@ export const ProductProvider = ({ children }: any ) => {
                     dispatch({
                         type: 'addMessageProduct',
                         payload:{
-                            titleMessage: 'Atencion!',
-                            messageProduct: constantsGl.productNoData,
+                            titleMessage: constantsGl.titleAttention,
+                            messageProduct: constantsGl.productNoDataMsg,
                         }
                     });
                 }
@@ -287,7 +287,7 @@ export const ProductProvider = ({ children }: any ) => {
             dispatch({
                 type: 'addMessageProduct',
                 payload:{
-                    titleMessage: 'Atencion!',
+                    titleMessage: constantsGl.titleError,
                     messageProduct: err.response?.data,
                 }
 

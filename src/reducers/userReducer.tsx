@@ -3,10 +3,10 @@ import { CuentasMadresData, CuentasHijasData, ProfileModify } from '../interface
 
 export interface UserState {
 
-    messageProfile: string,
-    title: string
+    messageProfile:    string,
+    title:             string
     cuentasMadresData: CuentasMadresData | null,
-    cuentasHijasData: CuentasHijasData | null,
+    cuentasHijasData:  CuentasHijasData | null,
     houersDays: {[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}},
 }
 

@@ -184,13 +184,7 @@ export const ModalHouers = ( { status, onClose}: Props ) => {
       >
         <View style={stylesGral.glModalCenterView} >
         <View style={stylesGral.glModalView}>
-        <View style={{ 
-              position: 'absolute',
-              top: -8,
-              right: -8,
-              backgroundColor: 'white',
-              borderRadius: 100
-            }}>
+        <View style={ stylesGral.mhModalHouersCloseBtn }>
           <TouchableOpacity onPress={ onClose }>
             <Icon 
               tvParallaxProperties={ undefined }
@@ -201,28 +195,16 @@ export const ModalHouers = ( { status, onClose}: Props ) => {
             />
           </TouchableOpacity>
         </View>
-        <Text style={{ fontSize: 17, fontWeight: 'bold'}}>Seleccione Dias y Horario</Text>
-        <Text style={{ fontSize: 14, marginBottom: 30, paddingHorizontal: 40, textAlign: 'center'}}>Puede seleccionar uno o varios dias para colocarle el mismo horario</Text>
+        <Text style={ stylesGral.mhModalHouersTitle }>Seleccione Dias y Horario</Text>
+        <Text style={ stylesGral.mhModalHouersSubtitle }>Puede seleccionar uno o varios dias para colocarle el mismo horario</Text>
 
           {/* SELECTOR DE DIAS */}
-          <View style={{ justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+          <View style={ stylesGral.mhModalHouersDaysContainer }>
             { Object.entries(days).map( ([ key, data ]) => (
             <TouchableOpacity key={ key } 
             onPress={ () => daysChangeHandler(key, !data.status) }
-            style={{ 
-              backgroundColor:  data.color ,
-              width: 46,
-              height: 45,
-              padding: 5,
-              borderRadius: 10,
-              justifyContent:'center',
-              marginHorizontal: 2,
-            }}>
-                <Text style={{
-                  textAlign: 'center',
-                  color: 'white',
-                  fontWeight: 'bold',
-                }}>
+            style={{ ...stylesGral.mhModalHouersDays, backgroundColor:  data.color }}>
+                <Text style={ stylesGral.mhModalHouersDaysText }>
                   { key }
                 </Text>
             </TouchableOpacity>
@@ -231,7 +213,7 @@ export const ModalHouers = ( { status, onClose}: Props ) => {
           {/* FIN SELECTOR DE DIAS */}
 
 
-          <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+          <View style={ stylesGral.mhModalHouersContainer }>
               {/* SELECTOR HORAS DESDE */}
               <View style={{ justifyContent: 'center', alignItems: 'center'}}>
                   <TouchableOpacity onPress={ () => increaseDesde( +2 ) }>
@@ -244,20 +226,7 @@ export const ModalHouers = ( { status, onClose}: Props ) => {
                     />
                   </TouchableOpacity>
                   <TextInput 
-                      style={{ 
-                        fontSize: 25,
-                        borderWidth: 2,
-                        marginHorizontal: 25, 
-                        width: 100, 
-                        height: 55,
-                        marginVertical: 5,
-                        padding: 10,
-                        borderColor: constColor.green,
-                        borderRadius: 10,
-                        textAlign: 'center',
-                        color: '#000000',
-                      }}
-                      
+                      style={ stylesGral.mhModalHouersArrows }
                       value={ counter[desdeCount] }
                       editable={false}
                       placeholder='Desde'
@@ -291,19 +260,7 @@ export const ModalHouers = ( { status, onClose}: Props ) => {
                   />
                 </TouchableOpacity>
                 <TextInput 
-                    style={{ 
-                      fontSize: 25,
-                      borderWidth: 2,
-                      marginHorizontal: 25, 
-                      width: 100, 
-                      height: 55,
-                      marginVertical: 5,
-                      padding: 10,
-                      borderColor: constColor.green,
-                      borderRadius: 10,
-                      textAlign: 'center',
-                      color: '#000000',
-                    }}
+                    style={ stylesGral.mhModalHouersArrows }
                     value={ counter[hastaCount] }
                     editable={false}
                     placeholder='Hasta'
@@ -326,20 +283,8 @@ export const ModalHouers = ( { status, onClose}: Props ) => {
           <View>
             <TouchableOpacity 
                 onPress={ HouersChangeSave }
-                style={{ 
-                  backgroundColor: constColor.green, 
-                  marginHorizontal: 80,
-                  padding: 10,
-                  borderRadius: 10,
-                  height: 45,
-                  width: 120,
-                  marginTop: 30
-                }}>
-                  <Text style={{ 
-                    color: 'white',
-                    fontSize: 16,
-                    textAlign: 'center'
-                  }}>Guardar</Text>
+                style={ stylesGral.mhModalHouersBtnSave }>
+                  <Text style={ stylesGral.mhModalHouersBtnText }>Guardar</Text>
                 </TouchableOpacity>
           </View>
           {/* FIN BOTON GUARDAR */}

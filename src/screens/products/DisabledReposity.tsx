@@ -29,7 +29,7 @@ export const DisabledReposity = () => {
 
         <Image  style={stylesGral.glLogo } source={logoUrl} />
         <Text style={{ textAlign: 'center', fontSize: 17, marginTop: 20, marginHorizontal: 50}}>
-            Usuario deshabilitado para carga de reposiciones, comuníquese con su distribuidor 
+            { constGeneral.disabledReposityMsg } 
         </Text>
     </View>
   )

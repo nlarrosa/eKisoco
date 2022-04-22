@@ -3,11 +3,11 @@ import { ProfileData } from '../interfaces/userInterfaces';
 export interface AuthState {
 
     errorMessage: string,
-    errorForgot: string,
-    errorSignup: string,
-    userId:      string | null,
-    dataUser: ProfileData | null,
-    token: string | null,
+    errorForgot:  string,
+    errorSignup:  string,
+    userId:       string | null,
+    dataUser:     ProfileData | null,
+    token:        string | null,
     enabledReposity: boolean,
     status: 'checking' | 'authenticated' | 'no-authenticated' | null,
     validateComplete: boolean,

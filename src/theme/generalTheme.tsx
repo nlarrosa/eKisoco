@@ -4,6 +4,7 @@ import  constColor  from '../constants/color';
 
 export const stylesGral = StyleSheet.create({
 
+    /** GENERAL STYLES */
     glSafeArea: {
         flex: 1,
         backgroundColor: 'white',
@@ -149,5 +150,151 @@ export const stylesGral = StyleSheet.create({
         shadowRadius: 4,
         elevation: 5
       },
+
+      /** ------------------------------------- COMPONENTS STYLES --------------------------------------------------------- */
+      /** HORIZONTAL SLIDE */
+      uiHorizontaContainer: {
+        flex:1, 
+        backgroundColor: constColor.green, 
+        paddingBottom: 40, 
+        paddingTop:10
+      },
+      
+      uiHorizontalTitle: {
+        fontWeight: 'bold', 
+        color: 'white', 
+        marginVertical: 10, 
+        fontSize: 17, 
+        textAlign:'center'
+      },
+
+
+      /** LOADING */
+      uiLoadingContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginVertical: 15
+      },
+
+
+      /** MODAL HOUERS */
+      mhModalHouersCloseBtn: {
+        position: 'absolute',
+        top: -8,
+        right: -8,
+        backgroundColor: 'white',
+        borderRadius: 100
+      },
+
+      mhModalHouersTitle: {
+        fontSize: 17, 
+        fontWeight: 'bold'
+      },
+
+      mhModalHouersSubtitle: {
+        fontSize: 14, 
+        marginBottom: 30, 
+        paddingHorizontal: 40, 
+        textAlign: 'center'
+      },
+
+      mhModalHouersDaysContainer: {
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        flexDirection: 'row'
+      },
+
+      mhModalHouersDays: {
+        width: 46,
+        height: 45,
+        padding: 5,
+        borderRadius: 10,
+        justifyContent:'center',
+        marginHorizontal: 2,
+      },
+
+      mhModalHouersDaysText: {
+        textAlign: 'center',
+        color: 'white',
+        fontWeight: 'bold',
+      },
+
+      mhModalHouersArrows: {
+        fontSize: 25,
+        borderWidth: 2,
+        marginHorizontal: 25, 
+        width: 100, 
+        height: 55,
+        marginVertical: 5,
+        padding: 10,
+        borderColor: constColor.green,
+        borderRadius: 10,
+        textAlign: 'center',
+        color: '#000000',
+      },
+
+      mhModalHouersContainer: {
+        flexDirection: 'row', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        marginTop: 40
+      },
+
+      mhModalHouersBtnSave: {
+        backgroundColor: constColor.green, 
+        marginHorizontal: 80,
+        padding: 10,
+        borderRadius: 10,
+        height: 45,
+        width: 120,
+        marginTop: 30
+      },
+
+      mhModalHouersBtnText: {
+        color: 'white',
+        fontSize: 16,
+        textAlign: 'center'
+      },
+
+
+      /** QUANTITY */
+      qtQuantityTitle: {
+        marginTop: 15, 
+        fontWeight: '700'
+      },
+
+      qtQuantityContainer: {
+        alignItems: 'center', 
+        flexDirection: 'row'
+      },
+
+      qtQuantityBtnLeft: {
+        borderTopLeftRadius: 10,
+        borderBottomLeftRadius: 10,
+        height: 40,
+      },
+
+      qtQuantityBtnRight: {
+        borderTopRightRadius: 10,
+        borderBottomRightRadius: 10,
+        height: 40,
+      },
+
+      qtQuantityBtnText: {
+        justifyContent: 'center',
+        width: 45,
+        height: 45,
+        marginVertical: 10,
+      },
+
+      qtQuantityText: {
+        borderWidth: 1, 
+        borderColor: 'green', 
+        width: 45, 
+        height: 40,
+        fontSize: 17,
+        fontWeight: 'bold'
+      }
 
 });

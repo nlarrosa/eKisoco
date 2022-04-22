@@ -1,10 +1,12 @@
 import { createContext, useReducer, useState, useContext, useRef } from "react";
+
 import { cartReducer, CartState } from '../reducers/cartReducer';
 import { CartData, OrdersData, Reposiciones } from '../interfaces/cartInterfaces';
 import { ProductContext } from './ProductContext';
 import { AuthContext } from './AuthContext';
 import Sgdi from "../api/Sgdi";
 import { AxiosError } from 'axios';
+import constGlobals from '../constants/globals';
 
 
 type CartContextProps = {
@@ -17,6 +19,7 @@ type CartContextProps = {
     totalQuantity: number,
     totalPrice: number,
     orders: Reposiciones[],
+    loadOrders: boolean,
     addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => void,
     removeToCart: ( idProducto: string ) => void,
     addQuantityProduct: ( idProducto: string, quantity:number, actionCart:boolean ) => void,
@@ -51,6 +54,7 @@ export const CartProvider = ({ children }: any ) => {
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [quantity, setQuantity] = useState<number>(1);
     const [orders, setOrders] = useState<Reposiciones[]>([]);
+    const [loadOrders, setLoadOrders] = useState(true);
 
 
     const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => 
@@ -61,8 +65,8 @@ export const CartProvider = ({ children }: any ) => {
             return dispatch({
                 type: 'errorCart',
                 payload:  {
-                    messageCart: 'El artículo ya se encuentra agregado al carrito',
-                    titleMessage: 'Atención!',
+                    messageCart: constGlobals.cartProductExistMsg,
+                    titleMessage: constGlobals.titleAttention,
                 }
             });
         }
@@ -93,8 +97,8 @@ export const CartProvider = ({ children }: any ) => {
              type: 'addToCart',
              payload: {
                  productsCart: productsCart,
-                 messageCart: 'Artículo agregado al carrito',
-                 titleMessage: 'Exito!',
+                 messageCart: constGlobals.productAddCartMsg,
+                 titleMessage: constGlobals.titleExit,
              }
          });
 
@@ -180,8 +184,8 @@ export const CartProvider = ({ children }: any ) => {
             dispatch({
                 type: 'errorCart',
                 payload: {
-                    titleMessage: 'Atención!',
-                    messageCart: 'Pedido generado correctamente',
+                    titleMessage: constGlobals.titleAttention,
+                    messageCart: constGlobals.cartProductMsg,
                 }
             });
 
@@ -197,7 +201,7 @@ export const CartProvider = ({ children }: any ) => {
             dispatch({
                 type: 'errorCart',
                 payload: {
-                    titleMessage: 'Error!',
+                    titleMessage: constGlobals.titleError,
                     messageCart: err.response?.data || 'Error del sistema',
                 }
             });
@@ -205,14 +209,16 @@ export const CartProvider = ({ children }: any ) => {
     }
 
 
-
+    /** obtenemos las ordenes de pedidos de reposiciones
+     *  por usuario logueado 10 por carga
+     */
     const getOrderByUser = async ( hojaActual: number) => {
 
         try {
             
             setIsLoading(true);
             
-            const orders = await Sgdi.get<OrdersData>('/Reposiciones', {
+            const ordersRepo = await Sgdi.get<OrdersData>('/Reposiciones', {
                 params: {
                     token,
                     IdCanilla: userId,
@@ -221,7 +227,7 @@ export const CartProvider = ({ children }: any ) => {
             });
 
 
-            const dataOrders: Reposiciones[] = orders.data.reposiciones.map( (order) => {
+            const dataOrders: Reposiciones[] = ordersRepo.data.reposiciones.map( (order) => {
                 
                 if(order.Estado === 'Pendiente'){  order.EstadoColor = 'orange' };
                 if(order.Estado === 'Sin Stock'){  order.EstadoColor = 'red' };
@@ -244,9 +250,13 @@ export const CartProvider = ({ children }: any ) => {
                 };           
             });
 
-            setOrders(dataOrders);
+            if(dataOrders.length > 0){
+                setOrders([ ...orders,  ...dataOrders ]);
+            } else {
+                setLoadOrders(false);
+            }
+
             setIsLoading(false);
-            
 
         } catch (error) {
             
@@ -254,7 +264,7 @@ export const CartProvider = ({ children }: any ) => {
             dispatch({
                 type: 'errorCart',
                 payload: {
-                    titleMessage: 'Error!',
+                    titleMessage: constGlobals.titleError,
                     messageCart: err.response?.data || 'Error del sistema',
                 }
             });
@@ -293,6 +303,7 @@ export const CartProvider = ({ children }: any ) => {
             generateOrder,
             getOrderByUser,
             orders,
+            loadOrders,
         }}>
 
         { children}

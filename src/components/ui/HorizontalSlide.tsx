@@ -5,6 +5,7 @@ import { View, Text, FlatList } from 'react-native';
 
 import constColor from '../../constants/color';
 import { NewsCard } from '../products/NewsCard';
+import { stylesGral } from '../../theme/generalTheme';
 
 interface Props {
   products: Object[],
@@ -16,8 +17,8 @@ export const HorizontalSlide = ({ products, title }: Props) => {
 
   return (
 
-    <View style={{flex:1,  backgroundColor: constColor.green, paddingBottom: 40, paddingTop:10 }}>
-        <Text style={{ fontWeight: 'bold', color: 'white', marginVertical: 10, fontSize: 17, textAlign:'center'}}>{ title }</Text>
+    <View style={ stylesGral.uiHorizontaContainer }>
+        <Text style={ stylesGral.uiHorizontalTitle }>{ title }</Text>
         <FlatList 
             keyExtractor={ (item) => item.Edicion }
             data={ products }

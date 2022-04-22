@@ -6,6 +6,7 @@ import { rootStackParams } from '../../navigator/StackNavigator';
 import { stylesGral } from '../../theme/generalTheme';
 import { styleLogin } from '../../theme/loginTheme';
 import  constColor  from '../../constants/color';
+import  constGlobals  from '../../constants/globals';
 import { AuthContext } from '../../context/AuthContext';
 import { useForm } from '../../hooks/useForm';
 import { LogoHeader } from '../../components/ui/LogoHeader';
@@ -44,7 +45,7 @@ export const ForgotScreen = ({ route , navigation} : Props ) => {
     return;
 
     Alert.alert(
-      'Error Cambiar Clave',
+      constGlobals.titleAttention,
       errorForgot,
       [{ text: 'Aceptar', onPress: removeError }]
     );

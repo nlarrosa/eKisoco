@@ -3,20 +3,21 @@ import { View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
 import constColor from '../../constants/color';
+import { stylesGral } from '../../theme/generalTheme';
 
+interface Props {
+  size?: number,
+  color?: string,
+}
 
-export const Loading = () => {
+export const Loading = ( { size = 50, color = constColor.green}: Props) => {
 
 
   return (
-    <View style={{ 
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-    }}>
+    <View style={ stylesGral.uiLoadingContainer }>
         <ActivityIndicator 
-            size={ 50 }
-            color={ constColor.green }
+            size={ size }
+            color={ color }
         />
     </View>
   )

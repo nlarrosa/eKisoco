@@ -3,6 +3,7 @@ import { Modal, View, Text, Pressable } from 'react-native';
 import { Icon } from 'react-native-elements';
 
 import constColor from '../../constants/color';
+import constGlobals from '../../constants/globals';
 import { styleRegister } from '../../theme/registerTheme';
 
 
@@ -24,12 +25,12 @@ export const ConfirmDistri = ( props: Props ) => {
 
     useEffect(() => {
 
-        setMsgeModal('Confirme los datos de su distribuidor');
+        setMsgeModal(constGlobals.confirmDistriMsg);
         setLocalidadStatus(false);
 
 
         if(String(localidad).length > 0) {
-           setMsgeModal('Confirme los datos de su distribuidor y su localidad');
+           setMsgeModal(constGlobals.confirmLocalMsg);
            setLocalidadStatus(true);
         }
 

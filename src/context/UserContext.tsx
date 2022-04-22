@@ -139,8 +139,8 @@ export const UserProvider = ( { children }: any ) => {
             dispatch({
                 type: 'addMessageProfile',
                 payload: {
-                    messageProfile: 'Perfil de vendedor actualizado.',
-                    title: 'Atención!'
+                    messageProfile: constantes.profileUpdateMsg,
+                    title: constantes.titleAttention
                 }
             });
             
@@ -154,7 +154,7 @@ export const UserProvider = ( { children }: any ) => {
                 type: 'addMessageProfile',
                 payload: {
                     messageProfile: err.response?.data,
-                    title: 'Error!',
+                    title: constantes.titleError,
                 }
             });
         }
@@ -192,8 +192,8 @@ export const UserProvider = ( { children }: any ) => {
             dispatch({
                 type: 'addMessageProfile',
                 payload: { 
-                    messageProfile: 'Perfil de cuenta actualizado',
-                    title: 'Atención!'
+                    messageProfile: constantes.accountUpdateMsg,
+                    title: constantes.titleAttention
                 }
             });
 
@@ -205,7 +205,7 @@ export const UserProvider = ( { children }: any ) => {
                 type: 'addMessageProfile',
                 payload: {
                     messageProfile: err.response?.data,
-                    title: 'Error!',
+                    title: constantes.titleError,
                 }
             });
             
@@ -289,7 +289,7 @@ export const UserProvider = ( { children }: any ) => {
                 type: 'addMessageProfile',
                 payload: {
                     messageProfile: err.response?.data,
-                    title: 'Error!',
+                    title: constantes.titleError,
                 }
             });
         }
@@ -306,7 +306,7 @@ export const UserProvider = ( { children }: any ) => {
 
             const response = await Sgdi.get('/CuentasHijas', {
                 params: {
-                    grupoCuenta: 'YDI',
+                    grupoCuenta: constantes.regionInterior,
                     idCuentaMadre,
                 }
             });
@@ -324,7 +324,7 @@ export const UserProvider = ( { children }: any ) => {
                 type: 'addMessageProfile',
                 payload: {
                     messageProfile: err.response?.data,
-                    title: 'Error!',
+                    title: constantes.titleError,
                 }
             });
         }
@@ -371,7 +371,7 @@ export const UserProvider = ( { children }: any ) => {
                 if( grupoCuenta === constantes.regionAmba && !Boolean(value)){
                     validate = {
                         status: false,
-                        msg: 'Complete el campo Paquete',
+                        msg: constantes.requiredPakageMsg,
                     };
                 }
             }
@@ -381,7 +381,7 @@ export const UserProvider = ( { children }: any ) => {
                 if(!constantes.celularRegex.test(value)){
                     validate = {
                         status: false,
-                        msg: 'El formato del Celular es incorrecto',
+                        msg: constantes.invalidPhoneMsg,
                     }
                 }
             }

@@ -1,17 +1,19 @@
-import React, { useContext } from 'react'
-import { Text, KeyboardAvoidingView, Platform, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { useContext } from 'react'
+import { KeyboardAvoidingView, Platform, Alert, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Icon } from 'react-native-elements';
 
 
 
-import { Quantity } from '../../components/ui/Quantity';
 import { ProductContext } from '../../context/ProductContext';
 import { CartContext } from '../../context/CartContext';
 import { styleCart } from '../../theme/cartTheme';
+import { CartData } from '../../interfaces/cartInterfaces';
+import constGlobals from '../../constants/globals';
 import constColor from '../../constants/color';
 import { LogoEmptyCart } from './EmptyCart';
-import { CartData } from '../../interfaces/cartInterfaces';
+import { Quantity } from '../../components/ui/Quantity';
+
 
 
 
@@ -28,8 +30,8 @@ export const CartScreen = () =>
     const confirmRemoveProduct = (productId: string) => {
 
         Alert.alert(
-          "Atencion!",
-          "Desea borrar el producto seleccionado?",
+          constGlobals.titleAttention,
+          constGlobals.deleteProductMsg,
           [ { text: "SI", onPress: () => { removeToCart(productId) }},
             { text: "NO"},
           ]
@@ -40,8 +42,8 @@ export const CartScreen = () =>
     const confirmGenerateOrder = (products: {[key: string] : CartData} ) => {
 
         Alert.alert(
-          "Atencion!",
-          "Desea confirmar el pedido?",
+            constGlobals.titleAttention,
+          constGlobals.confirmProductMsg,
           [ { text: "SI", onPress: () => { generateOrder(products) }},
             { text: "NO"},
           ]
@@ -51,8 +53,8 @@ export const CartScreen = () =>
 
     if( totalQuantity <= 0){ 
         return ( 
-            <LogoEmptyCart 
-                subTitle='El carrito se encuentra vacio.' 
+            <LogoEmptyCart
+                subTitle={ constGlobals.emptyCartMsg } 
             />
         );
     }
@@ -105,7 +107,7 @@ export const CartScreen = () =>
                 </View>
                 <View style={ styleCart.crButtonDelete }>
                     <TouchableOpacity onPress={ () => confirmRemoveProduct(product.Edicion)}>
-                        <Icon 
+                        <Icon
                             tvParallaxProperties
                             raised
                             reverse

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import { Text, TextInput, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { CartContext } from '../../context/CartContext';
+import { stylesGral } from '../../theme/generalTheme';
 
 
 
@@ -40,24 +41,14 @@ export const Quantity = ({ initValue, max, buttonColor, title, productId, cartAc
     return (
         
         <View style={{ flex: 1 }}>
-            <Text style={{ marginTop: 15, fontWeight: '700'}}>{ title }</Text>
-            <View style={{ alignItems: 'center', flexDirection: 'row'}}>
+            <Text style={ stylesGral.qtQuantityTitle }>{ title }</Text>
+            <View style={ stylesGral.qtQuantityContainer }>
                 <Button
                     title="-"
                     onPress={ () => increaseBy( -1 ) }
                     titleStyle={{ fontWeight: '800' }}
-                    buttonStyle={{
-                        backgroundColor: buttonColor,
-                        borderTopLeftRadius: 10,
-                        borderBottomLeftRadius: 10,
-                        height: 40,
-                    }}
-                    containerStyle={{
-                        justifyContent: 'center',
-                        width: 45,
-                        height: 45,
-                        marginVertical: 10,
-                    }}
+                    buttonStyle={{...stylesGral.qtQuantityBtnLeft, backgroundColor: buttonColor }}
+                    containerStyle={ stylesGral.qtQuantityBtnText }
                 />
                 <TextInput value={ counter.toString() }
                     textAlign='center'
@@ -65,31 +56,14 @@ export const Quantity = ({ initValue, max, buttonColor, title, productId, cartAc
                     autoCapitalize='none'
                     autoCompleteType='off'
                     editable={ true }
-                    style={{ 
-                        borderWidth: 1, 
-                        borderColor: 'green', 
-                        width: 45, 
-                        height: 40,
-                        fontSize: 17,
-                        fontWeight: 'bold'
-                    }}
+                    style={ stylesGral.qtQuantityText }
                     />
                 <Button
                     title="+"
                     onPress={ () => increaseBy( +1 ) }
                     titleStyle={{ fontWeight: '900' }}
-                    buttonStyle={{
-                        backgroundColor: buttonColor,
-                        borderTopRightRadius: 10,
-                        borderBottomRightRadius: 10,
-                        height: 40,
-                    }}
-                    containerStyle={{
-                        justifyContent: 'center',
-                        width: 45,
-                        height: 45,
-                        marginVertical: 10,
-                    }}
+                    buttonStyle={{ ...stylesGral.qtQuantityBtnRight, backgroundColor: buttonColor }}
+                    containerStyle={ stylesGral.qtQuantityBtnText }
                     />
             </View>
         </View>

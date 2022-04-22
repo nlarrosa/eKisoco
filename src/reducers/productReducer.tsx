@@ -1,7 +1,7 @@
 export interface ProductState {
 
-    titleMessage: string,
-    messageProduct: string,
+    titleMessage:     string,
+    messageProduct:   string,
     quantityReposity: string,
 }
 

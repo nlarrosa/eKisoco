@@ -3,12 +3,12 @@ import { ProductoData } from '../interfaces/reposicionesInterface';
 
 
 export interface CartState {
-    titleMessage: string
-    messageCart: string,
-    productsCart: { [key:string]:CartData } ,
-    quantity: number,
+    titleMessage:  string
+    messageCart:   string,
+    productsCart:  { [key:string]:CartData } ,
+    quantity:      number,
     totalQuantity: number,
-    totalPrice: number,
+    totalPrice:    number,
 };
 
 

@@ -1,7 +1,7 @@
-import React, { Component, useContext } from 'react';
+import React, { useContext } from 'react';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerContentComponentProps, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
-import { Badge, Button, Icon } from 'react-native-elements';
+import { Badge, Icon } from 'react-native-elements';
 import constColor from '../constants/color';
 
 import { ProfileScreen } from '../screens/user/ProfileScreen';
@@ -11,11 +11,8 @@ import { AuthContext } from '../context/AuthContext';
 import { CartScreen } from '../screens/cart/CartScreen';
 import { TouchableOpacity } from 'react-native';
 import { CartContext } from '../context/CartContext';
-import { StackScreenProps } from '@react-navigation/stack';
-import { rootStackParams } from './StackNavigator';
 import { useNavigation } from '@react-navigation/native';
 import { OrdersScreen } from '../screens/cart/OrdersScreen';
-import { NewsScreen } from '../screens/home/NewsScreen';
 import { TabBottomNavigator } from './TabBottomNavigator';
 
 

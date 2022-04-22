@@ -6,6 +6,7 @@ import { rootStackParams } from '../../navigator/StackNavigator';
 import { stylesGral } from '../../theme/generalTheme';
 import { styleLogin } from '../../theme/loginTheme';
 import  constColor  from '../../constants/color';
+import  constGlobals  from '../../constants/globals';
 import { useForm } from '../../hooks/useForm';
 import { AuthContext } from '../../context/AuthContext';
 import { LogoHeader } from '../../components/ui/LogoHeader';
@@ -31,7 +32,6 @@ export const LoginScreen = ( {route , navigation}: Props ) => {
   useEffect(() => {
     navigation.setOptions({
       headerShown: false,
-      // title: params.name,
     })
   }, []);
 
@@ -42,7 +42,7 @@ export const LoginScreen = ( {route , navigation}: Props ) => {
     return;
 
     Alert.alert(
-      'Error al Ingresar', 
+      constGlobals.titleAttention, 
       errorMessage, 
       [{ text: 'Aceptar', onPress: removeError}]
     );

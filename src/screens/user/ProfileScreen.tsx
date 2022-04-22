@@ -26,7 +26,6 @@ export const ProfileScreen = ({ navigation }: Props ) => {
   const { messageProfile, removeErrorProfile, editProfile, getProfile, isLoading, insigne } = useContext(UserContext);
   const [grupoCuenta, setGrupoCuenta] = useState('');
   const [opcional, setOpcional] = useState('opcional');
-  const [refresh, setRefresh] = useState(false);
 
 
   const {onChange, formData, setFormValue } = useForm({ 
@@ -77,7 +76,7 @@ export const ProfileScreen = ({ navigation }: Props ) => {
     return;
 
     Alert.alert(
-      'Error!', 
+      constGlobal.titleError, 
       messageProfile, 
       [{ text: 'Aceptar', onPress: removeErrorProfile}]
     );
@@ -90,9 +89,6 @@ export const ProfileScreen = ({ navigation }: Props ) => {
   }
 
 
-  const loadProfileToRefresh = () => {
-
-  }
 
   if( isLoading ){
     return( <Loading />)

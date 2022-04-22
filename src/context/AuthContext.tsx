@@ -99,12 +99,12 @@ export const AuthProvider = ({ children }: any ) => {
         try {
 
             if(mail.trim().length === 0 || clave.trim().length === 0){
-                dispatch({ type: 'addError', payload: 'Complete los campos obligatorios'});
+                dispatch({ type: 'addError', payload: constantes.requiredFieldMsg});
                 return;
             }
 
             if(!constantes.emailRegex.test(mail.trim())){
-                dispatch({ type: 'addError', payload: 'El campo Email es incorrecto'});
+                dispatch({ type: 'addError', payload: constantes.requiredEmailMsg});
                 return;
             }
             
@@ -174,7 +174,7 @@ export const AuthProvider = ({ children }: any ) => {
             
 
             if(!bases){
-                dispatch({type: 'addErrorSignup', payload: 'Debe aceptar los términos y condiciones'});
+                dispatch({type: 'addErrorSignup', payload: constantes.requiredTermsMsg});
                 return;
             }
             
@@ -275,7 +275,7 @@ export const AuthProvider = ({ children }: any ) => {
         try {
 
             if(!mail || !constantes.emailRegex.test(mail)){
-                dispatch({ type: 'addErrorForgot', payload: 'Ingrese un email válido' });
+                dispatch({ type: 'addErrorForgot', payload: constantes.invalidEmailMsg });
                 return;
             } 
             
@@ -326,7 +326,7 @@ export const AuthProvider = ({ children }: any ) => {
 
                         validate = {
                             status: false,
-                            msg: 'Complete los campos obligatorios (*)',
+                            msg: constantes.requiredFieldMsg,
                         };
                     }
 
@@ -334,7 +334,7 @@ export const AuthProvider = ({ children }: any ) => {
                         if(!constantes.emailRegex.test(value)){
                             validate = {
                                 status: false,
-                                msg: 'Ingrese un Email válido',
+                                msg: constantes.invalidEmailMsg,
                             };
                         }
                     }
@@ -344,7 +344,7 @@ export const AuthProvider = ({ children }: any ) => {
                         if( value !== clave ){
                             validate = {
                                 status: false,
-                                msg: 'Las Claves ingresadas no coinciden'
+                                msg: constantes.passConfirmMsg
                             }
                         }
                     }
@@ -355,7 +355,7 @@ export const AuthProvider = ({ children }: any ) => {
                     {
                         validate = {
                             status: false,
-                            msg: 'Complete el campo Paquete',
+                            msg: constantes.requiredPakageMsg,
                         };
                     }
                 }
@@ -365,12 +365,6 @@ export const AuthProvider = ({ children }: any ) => {
         return validate;
     };
 
-
-
-    // const confirmCuentaMadreAndHija = () => {
-
-    //     setValidComplete(!validComplete);
-    // }
 
 
     return(

@@ -83,7 +83,7 @@ export const RegisterScreen = ( {navigation}: Props ) => {
     return;
 
     Alert.alert(
-      'Atención!', 
+      constGral.titleAttention, 
       errorSignup, 
       [{ text: 'Aceptar', onPress: removeError}]
     );

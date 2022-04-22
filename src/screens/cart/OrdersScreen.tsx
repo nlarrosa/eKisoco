@@ -1,12 +1,14 @@
-import React, { useEffect, useState, useContext, useRef } from 'react'
-import { Text, View, KeyboardAvoidingView, Platform, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useContext, useRef } from 'react'
+import { KeyboardAvoidingView, Platform, FlatList, Text, View } from 'react-native';
 
-import { styleCart } from '../../theme/cartTheme';
+
 import { CartContext } from '../../context/CartContext';
 import { AuthContext } from '../../context/AuthContext';
 import { Loading } from '../../components/ui/Loading';
-import { Item } from 'react-native-paper/lib/typescript/components/List/List';
 import { OrderCard } from '../../components/orders/OrderCard';
+import constColor from '../../constants/color';
+import constGlobal from '../../constants/globals';
+
 
 
 
@@ -16,7 +18,7 @@ import { OrderCard } from '../../components/orders/OrderCard';
 export const OrdersScreen = () => {
 
   const { userId } = useContext(AuthContext);
-  const { getOrderByUser, isLoading, orders } = useContext(CartContext);
+  const { getOrderByUser, orders, loadOrders } = useContext(CartContext);
   const ordersPage = useRef<number>(0);
 
 
@@ -28,30 +30,38 @@ export const OrdersScreen = () => {
 
 
   const initOrders = async (page:number) => {
-    console.log(page);
-    ordersPage.current = page;
-    getOrderByUser( page );
+    if(loadOrders){
+      ordersPage.current = page;
+      getOrderByUser( page );
+    }
   }
   
 
 
-  if( isLoading ){
-    return <Loading />
-  }
-
   return (
     
-    <KeyboardAvoidingView
-    style={{ flex: 1, backgroundColor: 'white' }}
-    behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
-    >
-      <FlatList 
-        data={ orders }
-        keyExtractor={ (Item) => Item.IdReposicion.toString() }
-        renderItem={ ({ item }) => <OrderCard order={item}/>  }
-        onEndReachedThreshold={0.4}
-        onEndReached={ () => initOrders(ordersPage.current + 1) }
-      />
-    </KeyboardAvoidingView>
+    <View style={{ flex: 1, backgroundColor: 'white' }} >
+        <FlatList 
+          data={ orders }
+          keyExtractor={ (Item) => Item.IdReposicion.toString() }
+          showsVerticalScrollIndicator={false}
+          renderItem={ ({ item }) => <OrderCard order={item}/>  }
+          onEndReached={ () => initOrders(ordersPage.current + 1) }
+          onEndReachedThreshold={0.2}
+          ListFooterComponent={ 
+            loadOrders 
+            ? ( <Loading size={40}/> ) 
+            : ( <Text style={{ 
+                    textAlign: 'center', 
+                    fontSize: 17, 
+                    marginVertical: 20, 
+                    color: constColor.green,
+                    fontWeight: 'bold'
+                  }}> { constGlobal.loadOrdersMsg }
+                </Text>
+          )}
+        />
+
+    </View>
   )
 }
