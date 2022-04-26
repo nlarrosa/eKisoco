@@ -12,13 +12,14 @@ import { UserContext } from '../../context/UserContext';
 import constColor from '../../constants/color';
 import constGlobals from '../../constants/globals';
 import { ModalHouers } from '../../components/ui/ModalHouers';
+import { Loading } from '../../components/ui/Loading';
 
 
 
 
 export const AccountScreen = () => {
   
-  const { getAccount, houersDays, deleteHouersDay, messageProfile, removeErrorProfile, editAccount } = useContext(UserContext);
+  const { getAccount, houersDays, deleteHouersDay, messageProfile, removeErrorProfile, editAccount, isLoading } = useContext(UserContext);
   const [provinciaSelected, setProvinciaSelected] = useState('');
   const [modalStatus, setModalStatus] = useState<boolean>(true);
   const [houers, setHouers] = useState<{ [key: string]: { desde:string, hasta:string, status:boolean, color: string, name: string} }>({});
@@ -210,6 +211,10 @@ export const AccountScreen = () => {
   }
 
   
+
+  if(isLoading){
+    return (<Loading />);
+  }
 
   return (
     

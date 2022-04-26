@@ -58,7 +58,6 @@ export const StackNavigator = () => {
         ) : (
             <>
                 <Stack.Screen name="DrawerNavigator" component={DrawerNavigator} options={{ headerShown: false }}/>
-                {/* <Stack.Screen name="NewsScreen" component={NewsScreen} options={{ title: 'Detalle de Producto' }}/> */}
                 <Stack.Screen name="ProductDetailScreen" component={ProductDetailScreen} options={{ title: 'Detalle de Producto' }}/>
             </>
         )}

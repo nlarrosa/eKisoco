@@ -54,7 +54,7 @@ export const UserProvider = ( { children }: any ) => {
 
     const { userId, token } = useContext(AuthContext);
     const [ state, dispatch ]   = useReducer( userReducer, userInitialState);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [profile, setProfile] = useState<ProfileData>();   
     const [insigne, setInsigne] = useState(''); 
     const [houersDays, setHouersDays] = useState<{[key: string]: { desde:string, hasta:string, status:boolean, color: string, name:string}}>({});

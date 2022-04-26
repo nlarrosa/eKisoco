@@ -5,7 +5,6 @@ import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-import { rootStackParams } from '../../navigator/StackNavigator';
 import { styleProfile } from '../../theme/profileTheme';
 import { stylesGral } from '../../theme/generalTheme';
 import constColor from '../../constants/color';
@@ -18,9 +17,7 @@ import { Loading } from '../../components/ui/Loading';
 
 
 
-interface Props extends StackScreenProps<rootStackParams, 'ProfileScreen'>{}
-
-export const ProfileScreen = ({ navigation }: Props ) => {
+export const ProfileScreen = () => {
 
   const { dataUser } = useContext(AuthContext);
   const { messageProfile, removeErrorProfile, editProfile, getProfile, isLoading, insigne } = useContext(UserContext);

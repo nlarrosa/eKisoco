@@ -12,9 +12,6 @@ import constGlobal from '../../constants/globals';
 
 
 
-
-
-
 export const OrdersScreen = () => {
 
   const { userId } = useContext(AuthContext);
@@ -61,7 +58,6 @@ export const OrdersScreen = () => {
                 </Text>
           )}
         />
-
     </View>
   )
 }

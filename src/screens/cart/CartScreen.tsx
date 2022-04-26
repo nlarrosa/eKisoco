@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { KeyboardAvoidingView, Platform, Alert, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Icon } from 'react-native-elements';
+import { FAB, Icon } from 'react-native-elements';
 
 
 
@@ -21,7 +21,7 @@ import { Quantity } from '../../components/ui/Quantity';
 
 export const CartScreen = () => 
 {
-    const { productsCart, totalPrice, removeToCart, totalQuantity, generateOrder } = useContext(CartContext)
+    const { productsCart, totalPrice, removeToCart, totalQuantity, generateOrder, isLoading } = useContext(CartContext)
     const { quantityReposity } = useContext(ProductContext);
     const navigation = useNavigation();
 
@@ -58,6 +58,7 @@ export const CartScreen = () =>
             />
         );
     }
+
   
     return (
     
@@ -106,7 +107,8 @@ export const CartScreen = () =>
 
                 </View>
                 <View style={ styleCart.crButtonDelete }>
-                    <TouchableOpacity onPress={ () => confirmRemoveProduct(product.Edicion)}>
+                    <TouchableOpacity>
+                        {/* { !isLoading && (
                         <Icon
                             tvParallaxProperties
                             raised
@@ -114,8 +116,19 @@ export const CartScreen = () =>
                             type='ionicon' 
                             name='trash' 
                             color={constColor.danger} 
-                            size={20}
+                            size={19}
                         />
+                        )} */}
+
+                        <FAB
+                            loading={isLoading}
+                            visible={true}
+                            icon={{ name: 'delete', color: 'white' }}
+                            size='small'
+                            color={constColor.danger} 
+                            onPress={ () => confirmRemoveProduct(product.Edicion)}
+                        />
+             
                     </TouchableOpacity>
                 </View>
             </View>

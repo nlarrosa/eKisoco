@@ -39,8 +39,6 @@ export const NewsScreen = () => {
     }
 
 
-
-
     if(isLoading){
         return (<Loading />);
     }

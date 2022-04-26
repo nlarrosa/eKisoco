@@ -9,11 +9,12 @@ import { AccountScreen } from '../screens/user/AccountScreen';
 import { ProductScreen } from '../screens/products/ProductScreen';
 import { AuthContext } from '../context/AuthContext';
 import { CartScreen } from '../screens/cart/CartScreen';
-import { TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { CartContext } from '../context/CartContext';
 import { useNavigation } from '@react-navigation/native';
 import { OrdersScreen } from '../screens/cart/OrdersScreen';
 import { TabBottomNavigator } from './TabBottomNavigator';
+import CustomDrawerItem from '../components/ui/CustomDrawerItem';
 
 
 export type rootDrawParams = {
@@ -186,10 +187,25 @@ export const  DrawerNavigator = () => {
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
     const { logOut } = useContext(AuthContext);
+    const navigation = useNavigation();
 
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
+
+        <DrawerItem 
+          label={() => ( <CustomDrawerItem title='Mis Pedidos' badge={ true } />)} 
+          onPress={ () => navigation.navigate('OrdersScreen' as never)} 
+          icon={() => <Icon 
+              tvParallaxProperties
+              type='ionicon'
+              name='log-out-outline'
+              color={constColor.green} 
+              size={20} 
+              /> 
+          }
+        />
+
         <DrawerItem 
           label="Cerrar Sesion" 
           onPress={logOut} 

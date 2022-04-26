@@ -112,6 +112,8 @@ export const CartProvider = ({ children }: any ) => {
      */
     const removeToCart = ( idProducto: string ) => 
     {
+        setIsLoading(true);
+
         setTotalQuantity( totalQuantity - Number(productsCart[idProducto].Cantidad) );
         setTotalPrice( totalPrice - (Number(productsCart[idProducto].Precio) * Number(productsCart[idProducto].Cantidad)));
         delete productsCart[idProducto];
@@ -119,6 +121,8 @@ export const CartProvider = ({ children }: any ) => {
         setProductsCart({
             ...productsCart
         });
+
+        setIsLoading(false);
     }
 
 

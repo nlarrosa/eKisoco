@@ -46,7 +46,7 @@ export const ProductProvider = ({ children }: any ) => {
 
     const [ state, dispatch ] =  useReducer(productReducer, ProductInitialState);
     const { token, enabledReposity} = useContext(AuthContext);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [quantityReposity, setQuantityReposity] = useState<number>(0);
     const [quantity, setQuantity] = useState<number>(1);
 
