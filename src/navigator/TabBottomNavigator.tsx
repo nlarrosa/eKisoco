@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -10,6 +10,8 @@ import { Platform } from 'react-native';
 import { NewsScreen } from '../screens/home/NewsScreen';
 import { ProductScreen } from '../screens/products/ProductScreen';
 import { OrdersScreen } from '../screens/cart/OrdersScreen';
+import { CartContext } from '../context/CartContext';
+import { AccountScreen } from '../screens/user/AccountScreen';
 
 
 
@@ -47,20 +49,24 @@ const TabBottomIos = () => {
 
 const TabBottomAndroid = () => {
 
+  const { notificationOrders } = useContext(CartContext);
+
   return (
     
     <TabAndroid.Navigator
       initialRouteName='NewsScreen'
       activeColor={constColor.green}
-      inactiveColor={ constColor.green}
-
+      inactiveColor={ 'gray'}
+      backBehavior={'firstRoute'}
       barStyle = {{
         backgroundColor: 'white',
-        borderTopWidth: 2,
-        borderColor: constColor.green,
+        borderTopWidth: 0,
+        borderColor: 'gray',
         shadowColor: "#000",
-        elevation: 9,
+        elevation: 11,
       }}
+
+      
     >
 
 
@@ -68,9 +74,9 @@ const TabBottomAndroid = () => {
         name="NewsScreen" 
         component={NewsScreen} 
         options={{ 
-          title: 'Inicio',
+          tabBarLabel: 'Inicio',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="home" color={color} size={26} />
+            <MaterialCommunityIcons name="home-outline" color={color} size={24} />
           ),
         }}
       />
@@ -82,9 +88,9 @@ const TabBottomAndroid = () => {
         options={{ 
           title: 'Mis Ordenes',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="shopping" color={color} size={26} />
+            <MaterialCommunityIcons name="shopping-outline" color={color} size={24} />
           ),
-          tabBarBadge: 3,
+          tabBarBadge:  (notificationOrders > 0 ) ? notificationOrders : false,
         }}
       />
 
@@ -93,9 +99,9 @@ const TabBottomAndroid = () => {
         name="ProductScreen" 
         component={ProductScreen} 
         options={{ 
-          title: 'Buscar',
+          title: 'Productos',
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="search-web" color={color} size={26} />
+            <MaterialCommunityIcons name="magnify" color={color} size={24} />
           ),
         }}
       />

@@ -20,11 +20,14 @@ type CartContextProps = {
     totalPrice: number,
     orders: Reposiciones[],
     loadOrders: boolean,
+    notificationOrders: number,
     addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => void,
     removeToCart: ( idProducto: string ) => void,
     addQuantityProduct: ( idProducto: string, quantity:number, actionCart:boolean ) => void,
     generateOrder: (products: { [key:string]: CartData } ) => void,
-    getOrderByUser: (hojaActual: number) => void;
+    getOrderByUser: (hojaActual: number) => void,
+    getQuantityNotificationsOrders: () => void,
+    removeNotificationOrders: () => void,
     removeMessageCart: () => void,
 }
 
@@ -36,6 +39,7 @@ const CartInitialState: CartState = {
     quantity: 0,
     totalQuantity: 0,
     totalPrice: 0,
+    notificationOrders: 0,
 }
 
 
@@ -59,50 +63,59 @@ export const CartProvider = ({ children }: any ) => {
 
     const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => 
     {
-
-        if(Boolean(productsCart[selectedProduct.Edicion])){
-
-            return dispatch({
-                type: 'errorCart',
-                payload:  {
-                    messageCart: constGlobals.cartProductExistMsg,
-                    titleMessage: constGlobals.titleAttention,
+        try {
+            
+            if(Boolean(productsCart[selectedProduct.Edicion])){
+    
+                return dispatch({
+                    type: 'errorCart',
+                    payload:  {
+                        messageCart: constGlobals.cartProductExistMsg,
+                        titleMessage: constGlobals.titleAttention,
+                    }
+                });
+            }
+    
+            const precioSum = Number(selectedProduct.Precio) * quantity;
+    
+            setTotalQuantity( totalQuantity + quantity );
+            setTotalPrice( totalPrice + precioSum);
+    
+            setProductsCart( oldProductCart => {
+                return {
+                    ...oldProductCart,
+                    [selectedProduct.Edicion]: { 
+                        ...selectedProduct,  
+                        idProductoLogistica,
+                        PrecioSum: precioSum,
+                        IdCanilla: userId || undefined,
+                        Cantidad: quantity,
+                    },
                 }
             });
+    
+            setQuantity(1);
+            
+             dispatch({
+                 type: 'addToCart',
+                 payload: {
+                     productsCart: productsCart,
+                     messageCart: constGlobals.productAddCartMsg,
+                     titleMessage: constGlobals.titleExit,
+                 }
+             });
+
+        } catch (error) {
+            
+            const err = error as AxiosError;
+            return dispatch({
+                type: 'errorCart',
+                payload: {
+                    titleMessage: constGlobals.titleAttention,
+                    messageCart: err.response?.data
+                }
+            })
         }
-
-
-        const precioSum = Number(selectedProduct.Precio) * quantity;
-
-
-        setTotalQuantity( totalQuantity + quantity );
-        setTotalPrice( totalPrice + precioSum);
-
-        setProductsCart( oldProductCart => {
-            return {
-                ...oldProductCart,
-                [selectedProduct.Edicion]: { 
-                    ...selectedProduct,  
-                    idProductoLogistica,
-                    PrecioSum: precioSum,
-                    IdCanilla: userId || undefined,
-                    Cantidad: quantity,
-                },
-            }
-        });
-
-        setQuantity(1);
-        
-         dispatch({
-             type: 'addToCart',
-             payload: {
-                 productsCart: productsCart,
-                 messageCart: constGlobals.productAddCartMsg,
-                 titleMessage: constGlobals.titleExit,
-             }
-         });
-
-         /** Limpio a cero el contador de cantidades */
     }
 
 
@@ -112,17 +125,30 @@ export const CartProvider = ({ children }: any ) => {
      */
     const removeToCart = ( idProducto: string ) => 
     {
-        setIsLoading(true);
+        try {
+            
+            setIsLoading(true);
+    
+            setTotalQuantity( totalQuantity - Number(productsCart[idProducto].Cantidad) );
+            setTotalPrice( totalPrice - (Number(productsCart[idProducto].Precio) * Number(productsCart[idProducto].Cantidad)));
+            delete productsCart[idProducto];
+    
+            setProductsCart({
+                ...productsCart
+            });
+    
+            setIsLoading(false);
 
-        setTotalQuantity( totalQuantity - Number(productsCart[idProducto].Cantidad) );
-        setTotalPrice( totalPrice - (Number(productsCart[idProducto].Precio) * Number(productsCart[idProducto].Cantidad)));
-        delete productsCart[idProducto];
-
-        setProductsCart({
-            ...productsCart
-        });
-
-        setIsLoading(false);
+        } catch (error) {
+            const err = error as AxiosError;
+            dispatch({
+                type: 'errorCart',
+                payload: {
+                    titleMessage: constGlobals.titleAttention,
+                    messageCart: err.response?.data
+                }
+            })
+        }
     }
 
 
@@ -251,6 +277,7 @@ export const CartProvider = ({ children }: any ) => {
                     Familia: order.Familia,            
                     Edicion: order.Edicion,         
                     Autor: order.Autor,   
+                    RepoNotificada: order.RepoNotificada,
                 };           
             });
 
@@ -275,6 +302,57 @@ export const CartProvider = ({ children }: any ) => {
         }
     }
 
+
+
+    /** Obtengo las notificaciones de los cambios de estado 
+     * de las ordenes del usuario
+     */
+    const getQuantityNotificationsOrders = async() => {
+
+        try {
+
+            const quantityOrders = await Sgdi.get<number>('/Reposiciones/ObtenerCantidadNotificacionesRepo', {
+                params: {
+                    token,
+                    IdCanilla: userId,
+                }
+            });
+
+            console.log(quantityOrders.data);
+
+            dispatch({
+                type:'notificationOrders',
+                payload: {
+                    notificationOrders: quantityOrders.data,
+                }
+            })
+            
+        } catch (error) {
+
+            const err = error as AxiosError;
+            dispatch({
+                type: 'errorCart',
+                payload: {
+                    titleMessage: constGlobals.titleError,
+                    messageCart: err.response?.data || 'Error del sistema',
+                }
+            });
+        }
+    }
+
+
+
+    /** Limpia las notificaciones una vez que el usaurio
+     * accede a la seccion de mis ordenes
+     */
+     const removeNotificationOrders = () => {
+         dispatch({
+             type:'notificationOrders',
+             payload: {
+                 notificationOrders: 0,
+             }
+         })
+     }
 
 
     /** Remuevo el error para que vuelva a funcionar
@@ -308,6 +386,8 @@ export const CartProvider = ({ children }: any ) => {
             getOrderByUser,
             orders,
             loadOrders,
+            getQuantityNotificationsOrders,
+            removeNotificationOrders,
         }}>
 
         { children}

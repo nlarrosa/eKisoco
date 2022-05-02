@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { KeyboardAvoidingView, Platform, Alert, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { FAB, Icon } from 'react-native-elements';
@@ -13,6 +13,7 @@ import constGlobals from '../../constants/globals';
 import constColor from '../../constants/color';
 import { LogoEmptyCart } from './EmptyCart';
 import { Quantity } from '../../components/ui/Quantity';
+import { Loading } from '../../components/ui/Loading';
 
 
 
@@ -23,12 +24,14 @@ export const CartScreen = () =>
 {
     const { productsCart, totalPrice, removeToCart, totalQuantity, generateOrder, isLoading } = useContext(CartContext)
     const { quantityReposity } = useContext(ProductContext);
+    const deleteLoading = useRef(false);
     const navigation = useNavigation();
 
 
     
+    
     const confirmRemoveProduct = (productId: string) => {
-
+        deleteLoading.current = true;
         Alert.alert(
           constGlobals.titleAttention,
           constGlobals.deleteProductMsg,
@@ -57,6 +60,10 @@ export const CartScreen = () =>
                 subTitle={ constGlobals.emptyCartMsg } 
             />
         );
+    }
+
+    if(isLoading){
+        return (<Loading />)
     }
 
   
@@ -108,27 +115,14 @@ export const CartScreen = () =>
                 </View>
                 <View style={ styleCart.crButtonDelete }>
                     <TouchableOpacity>
-                        {/* { !isLoading && (
-                        <Icon
-                            tvParallaxProperties
-                            raised
-                            reverse
-                            type='ionicon' 
-                            name='trash' 
-                            color={constColor.danger} 
-                            size={19}
-                        />
-                        )} */}
-
                         <FAB
-                            loading={isLoading}
-                            visible={true}
+                            loading={ deleteLoading.current }
+                            visible={ true }
                             icon={{ name: 'delete', color: 'white' }}
                             size='small'
                             color={constColor.danger} 
                             onPress={ () => confirmRemoveProduct(product.Edicion)}
                         />
-             
                     </TouchableOpacity>
                 </View>
             </View>

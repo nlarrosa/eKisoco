@@ -1,9 +1,10 @@
 {
   "expo": {
-    "name": "E-Kiosco",
-    "slug": "e-kiosco",
+    "name": "LN eKiosco",
     "privacy": "public",
-    "version": "2.0.0",
+    "description": "Aplicación canillitas La Nacion",
+    "slug": "ln-ekiosco",
+    "version": "1.2.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -23,6 +24,7 @@
     },
     "android": {
       "package": "com.duoaap.EKiosco",
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerContentComponentProps, DrawerItemList, DrawerItem } from '@react-navigation/drawer';
 
 import { Badge, Icon } from 'react-native-elements';
@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { OrdersScreen } from '../screens/cart/OrdersScreen';
 import { TabBottomNavigator } from './TabBottomNavigator';
 import CustomDrawerItem from '../components/ui/CustomDrawerItem';
+
 
 
 export type rootDrawParams = {
@@ -93,7 +94,7 @@ export const  DrawerNavigator = () => {
               type='ionicon' 
               name='home-outline' 
               color={constColor.greyDark} 
-              size={20}
+              size={25}
             />
           ),
         }}
@@ -109,7 +110,7 @@ export const  DrawerNavigator = () => {
               type='ionicon' 
               name='person-circle-outline' 
               color={constColor.greyDark} 
-              size={20}
+              size={25}
             />
           ),
         }}
@@ -125,23 +126,7 @@ export const  DrawerNavigator = () => {
               type='ionicon' 
               name='settings-outline' 
               color={constColor.greyDark} 
-              size={20}
-            />
-          ),
-        }}
-      />
-      <Drawer.Screen 
-        name ="OrdersScreen" 
-        component ={OrdersScreen} 
-        options = {{
-          title: 'Mis Ordenes',
-          drawerIcon: () => (
-            <Icon 
-              tvParallaxProperties
-              type='ionicon' 
-              name='document-text-outline' 
-              color={constColor.greyDark} 
-              size={20}
+              size={25}
             />
           ),
         }}
@@ -157,7 +142,7 @@ export const  DrawerNavigator = () => {
               type='ionicon' 
               name='newspaper-outline' 
               color={constColor.greyDark} 
-              size={20}
+              size={25}
             />
           ),
         }}
@@ -173,7 +158,7 @@ export const  DrawerNavigator = () => {
               type='ionicon' 
               name='cart-outline' 
               color={constColor.greyDark} 
-              size={20}
+              size={25}
             />
           ),
         }}
@@ -187,34 +172,47 @@ export const  DrawerNavigator = () => {
 const CustomDrawerContent = (props: DrawerContentComponentProps) => {
 
     const { logOut } = useContext(AuthContext);
+    const { getQuantityNotificationsOrders, notificationOrders } = useContext(CartContext);
     const navigation = useNavigation();
+
+    useEffect(() => {
+      getQuantityNotificationsOrders();
+    }, []);
+
+
 
     return (
       <DrawerContentScrollView {...props}>
         <DrawerItemList {...props} />
 
         <DrawerItem 
-          label={() => ( <CustomDrawerItem title='Mis Pedidos' badge={ true } />)} 
+          label={() => ( 
+            <CustomDrawerItem 
+              title='Mis Ordenes' 
+              badge={ (notificationOrders > 0 )? true : false } 
+              size={14}
+              badgeText={notificationOrders.toString()} />
+          )} 
           onPress={ () => navigation.navigate('OrdersScreen' as never)} 
           icon={() => <Icon 
               tvParallaxProperties
               type='ionicon'
-              name='log-out-outline'
-              color={constColor.green} 
-              size={20} 
+              name='document-text-outline'
+              color={constColor.greyDark} 
+              size={25} 
               /> 
           }
         />
 
         <DrawerItem 
-          label="Cerrar Sesion" 
+          label={ () => ( <CustomDrawerItem title='Cerrar' textColor={ constColor.dark } />)} 
           onPress={logOut} 
           icon={() => <Icon 
               tvParallaxProperties
               type='ionicon'
               name='log-out-outline'
-              color={constColor.green} 
-              size={20} 
+              color={constColor.dark} 
+              size={25} 
               /> 
           }
         />

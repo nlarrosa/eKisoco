@@ -4,6 +4,8 @@ import { View, Text, TouchableOpacity } from 'react-native';
 
 import { Reposiciones } from '../../interfaces/cartInterfaces';
 import { styleCart } from '../../theme/cartTheme';
+import  constColor from '../../constants/color';
+import { OrderBadgeNew } from './OrderBadgeNew';
 
 
 interface Props {
@@ -21,8 +23,9 @@ export const OrderCard = ({ order}: Props) => {
         <View style={{ width: '100%'}}>
             <View style={{ ...styleCart.crTitleEdicion, ...styleCart.crStatus}}>
                 <View >
-                <Text>Fecha Pedido:  { order.FechaCreacion.split('T')[0] }</Text>
-                <Text>Pedido: { order.IdReposicion }</Text>
+                    <Text style={{ marginBottom: 5}}>{(order.RepoNotificada)? '': <OrderBadgeNew title='Nuevo !'/>}</Text>
+                    <Text>Fecha Pedido:  { order.FechaCreacion.split('T')[0] }</Text>
+                    <Text>Pedido: { order.IdReposicion }</Text>
                 </View> 
                 <Text style={{
                 ...styleCart.crBadge,

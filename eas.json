@@ -4,15 +4,17 @@
   },
   "build": {
     "development": {
-      "releaseChannel": "dev",
+      "releaseChannel": "dev-1.2.0",
       "developmentClient": true,
       "distribution": "internal"
     },
     "staging": {
-      "releaseChannel": "staging",
+      "releaseChannel": "stage-1.2.0",
       "distribution": "internal"
     },
-    "production": {}
+    "production": {
+      "releaseChannel": "prod-1.2.0"
+    }
   },
   "submit": {
     "production": {}

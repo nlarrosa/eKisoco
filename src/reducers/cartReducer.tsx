@@ -9,6 +9,7 @@ export interface CartState {
     quantity:      number,
     totalQuantity: number,
     totalPrice:    number,
+    notificationOrders: number,
 };
 
 
@@ -16,6 +17,7 @@ type CartAction =
     |{ type: 'addToCart', payload:{ productsCart:{ [key:string]:CartData }, messageCart: string, titleMessage: string }}
     |{ type: 'removeProductToCart', payload:{ product: ProductoData }}
     |{ type: 'addQuantitytoProduct', payload:{ quantity: string }}
+    |{ type: 'notificationOrders', payload:{ notificationOrders: number }}
     |{ type: 'errorCart', payload:{ titleMessage:string, messageCart: string }}
     |{ type: 'removeMessageCart' }
  
@@ -45,6 +47,14 @@ export const cartReducer = (state: CartState, action: CartAction):  CartState =>
         case 'addQuantitytoProduct':
             return {
                 ...state,
+            }
+        break;
+
+
+        case 'notificationOrders':
+            return {
+                ...state,
+                notificationOrders: action.payload.notificationOrders
             }
         break;
 

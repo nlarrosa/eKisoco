@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { View, Text, Platform, KeyboardAvoidingView, Image, Dimensions, FlatList, ScrollView } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 
@@ -21,7 +21,6 @@ export const NewsScreen = () => {
 
     const { getSearchByText, isLoading, getUserQuantityReposity } = useContext(ProductContext);
     const [news, setNews] = useState([]);
-    const [totalNews, setTotalNews] = useState<number>(0);
     const { width: windowWidth } = Dimensions.get('window');
     const [modalProductDetail, setModalProductDetail] = useState(false)
     const [productDetail, setProductDetail] = useState<ProductoData>();
@@ -34,7 +33,6 @@ export const NewsScreen = () => {
 
     const getNews = async() => {
         const products = await getSearchByText('noveda');
-        setTotalNews(products?.CantidadBusqueda);
         setNews(products?.Titulos);
     }
 
@@ -63,7 +61,7 @@ export const NewsScreen = () => {
                 sliderWidth={ windowWidth }
                 itemWidth={220}
                 inactiveSlideOpacity={0.5}
-                firstItem={2}
+                firstItem={4}
                 containerCustomStyle={{ flex: 1 }}
                 slideStyle={{ flex: 1 }}
             />

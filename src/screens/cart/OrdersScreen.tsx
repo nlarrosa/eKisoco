@@ -15,13 +15,14 @@ import constGlobal from '../../constants/globals';
 export const OrdersScreen = () => {
 
   const { userId } = useContext(AuthContext);
-  const { getOrderByUser, orders, loadOrders } = useContext(CartContext);
+  const { getOrderByUser, orders, loadOrders, removeNotificationOrders } = useContext(CartContext);
   const ordersPage = useRef<number>(0);
 
 
 
   useEffect(() => {
     initOrders(ordersPage.current);
+    removeNotificationOrders();
   }, []);
   
 
@@ -32,7 +33,6 @@ export const OrdersScreen = () => {
       getOrderByUser( page );
     }
   }
-  
 
 
   return (

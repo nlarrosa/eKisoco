@@ -52,7 +52,7 @@ export const UserContext = createContext( {} as UserContextProps );
 
 export const UserProvider = ( { children }: any ) => {
 
-    const { userId, token } = useContext(AuthContext);
+    const { userId, token, dataUser } = useContext(AuthContext);
     const [ state, dispatch ]   = useReducer( userReducer, userInitialState);
     const [isLoading, setIsLoading] = useState(true);
     const [profile, setProfile] = useState<ProfileData>();   
@@ -395,9 +395,8 @@ export const UserProvider = ( { children }: any ) => {
     /** Generamos la insignia del logo del perfil */
     const getInsigneName = async() => {
 
-        const userData  = await AsyncStorage.getItem('userData');
-        const { dataUser } = JSON.parse(userData || '{}');
-        const insigneName =  (dataUser.Nombre.charAt(0) + dataUser.Apellido.charAt(0)).toUpperCase();
+        
+        const insigneName =  (dataUser?.Nombre.charAt(0) + dataUser.Apellido.charAt(0)).toUpperCase();
         setInsigne(insigneName);
     }
 

@@ -32,4 +32,5 @@ export interface Reposiciones {
     Familia:            string;
     Edicion:            number;
     Autor:              string;
+    RepoNotificada:     boolean;
 }
