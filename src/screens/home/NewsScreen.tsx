@@ -11,7 +11,7 @@ import { HorizontalSlide } from '../../components/ui/HorizontalSlide';
 import { Loading } from '../../components/ui/Loading';
 import { Divider } from 'react-native-elements/dist/divider/Divider';
 import constColor from '../../constants/color';
-import { ProductoData } from '../../interfaces/reposicionesInterface';
+import { NewsData, ProductoData } from '../../interfaces/reposicionesInterface';
 
 
 
@@ -19,21 +19,32 @@ import { ProductoData } from '../../interfaces/reposicionesInterface';
 
 export const NewsScreen = () => {
 
-    const { getSearchByText, isLoading, getUserQuantityReposity } = useContext(ProductContext);
-    const [news, setNews] = useState([]);
+    const { getNews, isLoading, getUserQuantityReposity } = useContext(ProductContext);
+    const [news, setNews] = useState<ProductoData[]>([]);
+    const [titleNews, setTitleNews] = useState<string>('')
+    const [destacados, setDestacados] = useState<ProductoData[]>([]);
     const { width: windowWidth } = Dimensions.get('window');
     const [modalProductDetail, setModalProductDetail] = useState(false)
     const [productDetail, setProductDetail] = useState<ProductoData>();
 
+
+
     useEffect(() => {
-      getNews();
+      getInit();
       getUserQuantityReposity();
     }, []);
 
 
-    const getNews = async() => {
-        const products = await getSearchByText('noveda');
-        setNews(products?.Titulos);
+
+    const getInit = async() => {
+
+        const products = await getNews();
+        const destacadosData: NewsData[] = products.filter( ({ Orden }) => Orden == 1);
+        const newsData: NewsData[] = products.filter( ({ Orden }) => Orden == 2);
+
+        setDestacados(destacadosData[0].items);
+        setTitleNews(newsData[0].Nombre.toUpperCase());
+        setNews(newsData[0].items);
     }
 
 
@@ -50,7 +61,7 @@ export const NewsScreen = () => {
                 <Text style={ styleNews.headerTextNews }>DESTACADOS / NOVEDADES</Text>
             </View>
             <Carousel 
-                data={ news }
+                data={ destacados }
                 renderItem={  ({item}) => 
                     <NewsCard 
                         width={230} 
@@ -69,7 +80,7 @@ export const NewsScreen = () => {
         <Divider width={4} color={ constColor.green } style={{ marginVertical: 5 }}/>
         <HorizontalSlide 
             products={news}
-            title={ 'SEMANA DEL NIÑO' }
+            title={ titleNews }
         />
     </ScrollView>
 

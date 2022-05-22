@@ -56,26 +56,39 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
           <Text style={ styleProduct.description}>Autor: { producto?.Autor }</Text>
           <Text style={ styleProduct.description}>Familia: { producto?.Familia }</Text>
           <Text style={ styleProduct.precio}>PVP: $ { producto?.Precio?.toFixed(2) }</Text>
+          <Text style={ styleProduct.cantidad}>( disponibles:  { producto?.Cantidad } u. )</Text>
 
-          {/* <Text style={ styleProduct.title }>Cantidad a Solicitar</Text> */}
-          <View style={{ justifyContent: 'center', alignItems: 'center'}}>
-            <Quantity 
-                initValue={ 1 }
-                max={ quantityRepository } 
-                buttonColor={ constColor.green}
-                title={'Cantidad a Solicitar'}
-                productId={String(producto?.Edicion)}
-            />
-          </View>
-          
-          <View style={{ marginHorizontal: 30}}>
-            <TouchableOpacity 
-              style={{ ...styleProduct.glButton }}
-              onPress={() => addToCartHandler( producto, producto?.IdProductoLogistica, quantity) }  
-            >
-                <Text style={ stylesGral.glButtonText }>Agregar al Carrito</Text>
-            </TouchableOpacity>
-          </View>
+          { producto?.Circulado && (
+            <View>
+              <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+                <Quantity 
+                    initValue={ 1 }
+                    max={ quantityRepository } 
+                    buttonColor={ constColor.green}
+                    title={'Cantidad a Solicitar'}
+                    productId={String(producto?.Edicion)}
+                />
+              </View>
+              <View style={{ marginHorizontal: 30}}>
+                <TouchableOpacity 
+                  style={{ ...styleProduct.glButton }}
+                  onPress={() => addToCartHandler( producto, producto?.IdProductoLogistica, quantity) }  
+                >
+                    <Text style={ stylesGral.glButtonText }>Agregar al Carrito</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+
+          { !producto?.Circulado && (
+            <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+              <View style={ styleProduct.ncRibbonCard }>
+                  <Text style={ styleProduct.ncRibbonText }>PROXIMAMENTE!</Text>
+              </View>
+            </View>
+          )}
+
+
         </Card>
 
       </View>

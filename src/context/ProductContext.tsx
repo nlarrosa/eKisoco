@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 
 
 import Sgdi from "../api/Sgdi";
-import { TipoProductosData, FamiliasProductoData, ProductoData, AutorProductData, ProductSearchData } from '../interfaces/reposicionesInterface';
+import { TipoProductosData, FamiliasProductoData, ProductoData, AutorProductData, ProductSearchData, NewsData } from '../interfaces/reposicionesInterface';
 import { productReducer, ProductState } from '../reducers/productReducer';
 import constantsGl from '../constants/globals';
 import { AuthContext } from './AuthContext';
@@ -25,6 +25,7 @@ type ProductContextProps = {
     getAutorByFamilia: (idProductoLogistica: string) => Promise<AutorProductData[] | undefined>,
     getTitulosByAutor: (idProductoLogistica: string, autor: string) => Promise<ProductoData[] | undefined>,
     getQuantityProduct:(quantity: number) => void,
+    getNews: () => Promise<NewsData[]>,
     removeError: () => void,
 }
 
@@ -306,6 +307,25 @@ export const ProductProvider = ({ children }: any ) => {
 
 
 
+    /** Obtenemos los destacados y carrousel que cargan en la home
+     * los destacados son los de Orden 1 y los customizables los de Orden 2
+     */
+    const getNews = async () => {
+
+        setIsLoading(true);
+
+        const news = await Sgdi.get<NewsData[]>('/Destacados', {
+            params: {
+                token
+            }
+        });
+
+        setIsLoading(false);
+        return news.data; 
+    }
+
+
+
     /** Remuevo el error para que vuelva a funcionar
      * la alerta del buscador de productos
      */
@@ -333,7 +353,8 @@ export const ProductProvider = ({ children }: any ) => {
             getTitulosByAutor,
             getQuantityProduct,
             removeError,
-            getUserQuantityReposity
+            getUserQuantityReposity,
+            getNews
         }}>
         
         { children }

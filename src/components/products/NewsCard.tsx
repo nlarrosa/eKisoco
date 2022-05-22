@@ -32,9 +32,11 @@ export const NewsCard = ({ width=180, height=220, product, ribbonStatus=false }:
                     top: height -45,
                     left: width / 2 - 85
                 }}>
-                    <View style={ styleProduct.ncRibbon }>
-                        <Text style={ styleProduct.ncRibbonText }>PROMO $990</Text>
-                    </View>
+                    { !product.Circulado && (
+                        <View style={ styleProduct.ncRibbon }>
+                                <Text style={ styleProduct.ncRibbonText }>PROXIMAMENTE!</Text>
+                        </View>
+                    )}
                 </View>
             )}
             <Image

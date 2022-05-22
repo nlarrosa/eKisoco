@@ -30,6 +30,8 @@ export interface ProductoData {
     Descripcion:         string;
     Precio:              number;
     URLImagen:           string;
+    Cantidad:            string;
+    Circulado:           boolean;
 }
 
 
@@ -50,6 +52,15 @@ export interface Titulo {
     Descripcion:         string;
     Precio:              number;
     URLImagen:           string;
+}
+
+
+
+
+export interface NewsData {
+    Nombre: string;
+    Orden:  number;
+    items:  ProductoData[];
 }
 
 

@@ -22,7 +22,7 @@ export const styleProduct = StyleSheet.create({
     },
 
     title: {
-        fontSize: 15,
+        fontSize: 16,
         fontWeight: 'bold',
         textAlign: 'center',
         marginVertical: 15,
@@ -105,15 +105,23 @@ export const styleProduct = StyleSheet.create({
     },
 
     description: {
-        fontSize: 13,
+        fontSize: 15,
         textAlign: 'center',
     },
 
     precio: {
-        fontSize: 14,
+        fontSize: 17,
         textAlign: 'center',
         fontWeight: 'bold',
         color: constColor.green,
+        marginTop: 10,
+    },
+
+    cantidad: {
+        fontSize: 16,
+        textAlign: 'center',
+        fontWeight: 'bold',
+        color: constColor.greyDark,
         marginTop: 10,
     },
 
@@ -139,6 +147,24 @@ export const styleProduct = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 7,
         elevation: 15,
+    },
+
+    ncRibbonCard: {
+        backgroundColor: constColor.green, 
+        padding: 10, 
+        marginTop: 20,
+        borderRadius: 10,
+        width: 190,
+        shadowColor: "#000",
+        borderColor: 'white',
+        borderWidth: 2,
+        shadowOffset: {
+            width: 2,
+            height: 10,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 7,
+        elevation: 9,
     },
 
     ncRibbonText: {
