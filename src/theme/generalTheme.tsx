@@ -15,7 +15,7 @@ export const stylesGral = StyleSheet.create({
 
     glCenterContainer: {
         alignItems: 'center',
-        marginHorizontal: 45,
+        marginHorizontal: 30,
         marginVertical: 50,
     },
 

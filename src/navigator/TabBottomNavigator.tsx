@@ -11,7 +11,7 @@ import { NewsScreen } from '../screens/home/NewsScreen';
 import { ProductScreen } from '../screens/products/ProductScreen';
 import { OrdersScreen } from '../screens/cart/OrdersScreen';
 import { CartContext } from '../context/CartContext';
-import { AccountScreen } from '../screens/user/AccountScreen';
+
 
 
 
@@ -57,13 +57,13 @@ const TabBottomAndroid = () => {
       initialRouteName='NewsScreen'
       activeColor={constColor.green}
       inactiveColor={ 'gray'}
-      backBehavior={'firstRoute'}
+      backBehavior={'initialRoute'}
       barStyle = {{
         backgroundColor: 'white',
-        borderTopWidth: 0,
+        borderTopWidth: 1,
         borderColor: 'gray',
         shadowColor: "#000",
-        elevation: 11,
+        elevation: 13,
       }}
 
       

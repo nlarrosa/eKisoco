@@ -116,7 +116,6 @@ export const CartScreen = () =>
                 <View style={ styleCart.crButtonDelete }>
                     <TouchableOpacity>
                         <FAB
-                            loading={ deleteLoading.current }
                             visible={ true }
                             icon={{ name: 'delete', color: 'white' }}
                             size='small'

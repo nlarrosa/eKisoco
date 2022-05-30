@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Dimensions, Text, TouchableOpacity, View } from 'react-native';
 import { Card } from 'react-native-elements';
 
 
@@ -10,7 +10,8 @@ import { ActivityIndicator } from 'react-native-paper';
 import { Quantity } from '../ui/Quantity';
 import constColor from '../../constants/color';
 import { CartContext } from '../../context/CartContext';
-import { CartData } from '../../interfaces/cartInterfaces';
+
+
 
 
 
@@ -25,10 +26,12 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
 
 
   const { addToCart, quantity } = useContext(CartContext);
+  const widthScreen = Dimensions.get ('window').width;
+  const heightScreen = Dimensions.get ('window').height;
 
 
   /** Agregamos el producto al carrito */
-  const addToCartHandler = (selectedProduct: CartData, idProdLogistica: string, quantity: number) => {
+  const addToCartHandler = (selectedProduct: ProductoData, idProdLogistica: string, quantity: number) => {
 
       addToCart(selectedProduct, idProdLogistica, quantity);
   }
@@ -38,7 +41,7 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
     
       <View 
         key={producto?.Edicion}
-        style={{ marginBottom: 20}}
+        style={{ flex: 1 }}
       >
 
         <Card>
@@ -55,10 +58,14 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
           <Text style={ styleProduct.title }>{ producto?.Descripcion?.toUpperCase().split("-")[1] }</Text>
           <Text style={ styleProduct.description}>Autor: { producto?.Autor }</Text>
           <Text style={ styleProduct.description}>Familia: { producto?.Familia }</Text>
-          <Text style={ styleProduct.precio}>PVP: $ { producto?.Precio?.toFixed(2) }</Text>
-          <Text style={ styleProduct.cantidad}>( disponibles:  { producto?.Cantidad } u. )</Text>
+          {/* <Text style={ styleProduct.precio}>PVP: $ { producto?.Precio?.toFixed(2) }</Text>
+          <Text style={ styleProduct.cantidad}>( disponibles:  { producto?.Cantidad } u. )</Text> */}
+          <View style={{ flexDirection:'row', justifyContent:'center', alignItems: 'center'}}>
+            <Text style={ styleProduct.precio}>PVP: $ { producto?.Precio?.toFixed(2) } - </Text>
+            <Text style={ styleProduct.precio}>(Stock: { producto?.Cantidad } u.)</Text>
+          </View>
 
-          { producto?.Circulado && (
+          { producto?.Circulado && producto?.Cantidad != '0' && (
             <View>
               <View style={{ justifyContent: 'center', alignItems: 'center'}}>
                 <Quantity 
@@ -79,6 +86,16 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
               </View>
             </View>
           )}
+
+
+          { producto?.Circulado && producto?.Cantidad == '0' && (
+            <View style={{ justifyContent: 'center', alignItems: 'center'}}>
+              <View style={{ ...styleProduct.ncRibbonCard, backgroundColor: 'red',  }}>
+                  <Text style={styleProduct.ncRibbonText}>AGOTADO!</Text>
+              </View>
+            </View>
+          )}
+
 
           { !producto?.Circulado && (
             <View style={{ justifyContent: 'center', alignItems: 'center'}}>

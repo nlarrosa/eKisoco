@@ -22,10 +22,10 @@ export const styleProduct = StyleSheet.create({
     },
 
     title: {
-        fontSize: 16,
+        fontSize: 17,
         fontWeight: 'bold',
         textAlign: 'center',
-        marginVertical: 15,
+        marginTop: 15,
     },
 
     labelSearch: {
@@ -98,8 +98,8 @@ export const styleProduct = StyleSheet.create({
     },
 
     imageProduct: {
-        height: 295,
-        width: 230,
+        height: 280,
+        width: 210,
         borderRadius: 10,
         
     },
@@ -110,7 +110,7 @@ export const styleProduct = StyleSheet.create({
     },
 
     precio: {
-        fontSize: 17,
+        fontSize: 18,
         textAlign: 'center',
         fontWeight: 'bold',
         color: constColor.green,
@@ -121,8 +121,8 @@ export const styleProduct = StyleSheet.create({
         fontSize: 16,
         textAlign: 'center',
         fontWeight: 'bold',
-        color: constColor.greyDark,
-        marginTop: 10,
+        color: constColor.dark,
+        marginTop: 5,
     },
 
     ncCountainer: {
@@ -149,8 +149,8 @@ export const styleProduct = StyleSheet.create({
         elevation: 15,
     },
 
-    ncRibbonCard: {
-        backgroundColor: constColor.green, 
+    ncRibbonCard: { 
+        backgroundColor: constColor.green,
         padding: 10, 
         marginTop: 20,
         borderRadius: 10,

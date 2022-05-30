@@ -109,7 +109,7 @@ export const styleCart = StyleSheet.create({
     },
 
     crButtonDelete: {
-        justifyContent: 'flex-end',
+        // justifyContent: 'space-evenly',
         alignItems: 'center',
         alignContent: 'space-around',
         width: '25%',

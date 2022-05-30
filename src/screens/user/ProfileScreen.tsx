@@ -95,13 +95,14 @@ export const ProfileScreen = () => {
   return (
     <>
       <View style={ styleProfile.headerBanner }>
+        
           <View style={ styleProfile.avatarContent }>
             <Avatar
-              size={75}
-              rounded
+              size={65}
               title = { insigne }
               containerStyle={{ 
                 backgroundColor: constColor.green,
+                borderRadius: 10
               }}
             />
           </View>

@@ -34,9 +34,6 @@ export interface ProductoData {
     Circulado:           boolean;
 }
 
-
-
-
 export interface ProductSearchData {
     CantidadBusqueda: number;
     HojaActual:       number;

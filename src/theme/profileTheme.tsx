@@ -23,10 +23,10 @@ export const styleProfile = StyleSheet.create({
 
     headerNameText: {
         fontWeight: 'bold',
-        fontSize: 17,
+        fontSize: 19,
         textAlign: 'left',
         color: constColor.dark,
-        marginBottom: 7,
+        marginBottom: 4,
     },
 
     headerSubtitleText: {

@@ -11,11 +11,12 @@ export const OrderBadgeNew = ({ title='New!'}: Props) => {
     
         <View style={{ marginBottom: 10 }}>
             <Text style={{ 
-                color: constColor.green, 
+                color: 'white', 
                 fontWeight:'bold', 
                 fontSize: 17, 
-                backgroundColor: constColor.greenLight, 
+                backgroundColor: 'red', 
                 paddingHorizontal: 3,
+                borderRadius: 3
                 }}>
                     { title }
             </Text>

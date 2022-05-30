@@ -23,14 +23,16 @@ export const OrderCard = ({ order}: Props) => {
         <View style={{ width: '100%'}}>
             <View style={{ ...styleCart.crTitleEdicion, ...styleCart.crStatus}}>
                 <View >
-                    <Text style={{ marginBottom: 5}}>{(order.RepoNotificada)? '': <OrderBadgeNew title='Nuevo !'/>}</Text>
+                    {(!order.RepoNotificada) && (
+                        <Text style={{ marginBottom: 5}}><OrderBadgeNew title='Nuevo !'/></Text>
+                    )}
                     <Text>Fecha Pedido:  { order.FechaCreacion.split('T')[0] }</Text>
                     <Text>Pedido: { order.IdReposicion }</Text>
                 </View> 
                 <Text style={{
                 ...styleCart.crBadge,
                 borderColor:  order.EstadoColor,
-                color: order.EstadoColor
+                color: order.EstadoColor,
                 }}>
                 { order.Estado }
                 </Text>

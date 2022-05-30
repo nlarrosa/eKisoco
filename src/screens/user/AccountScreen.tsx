@@ -19,7 +19,7 @@ import { Loading } from '../../components/ui/Loading';
 
 export const AccountScreen = () => {
   
-  const { getAccount, houersDays, deleteHouersDay, messageProfile, removeErrorProfile, editAccount, isLoading } = useContext(UserContext);
+  const { getAccount, houersDays, deleteHouersDay, messageProfile, removeErrorProfile, editAccount, isLoading, title } = useContext(UserContext);
   const [provinciaSelected, setProvinciaSelected] = useState('');
   const [modalStatus, setModalStatus] = useState<boolean>(true);
   const [houers, setHouers] = useState<{ [key: string]: { desde:string, hasta:string, status:boolean, color: string, name: string} }>({});
@@ -82,7 +82,7 @@ export const AccountScreen = () => {
       return;
 
       Alert.alert(
-        constGlobals.titleError, 
+        title, 
         messageProfile, 
         [{ text: 'Aceptar', onPress: removeErrorProfile}]
       );

@@ -46,7 +46,7 @@ export const ProductProvider = ({ children }: any ) => {
     
 
     const [ state, dispatch ] =  useReducer(productReducer, ProductInitialState);
-    const { token, enabledReposity} = useContext(AuthContext);
+    const { token } = useContext(AuthContext);
     const [isLoading, setIsLoading] = useState(true);
     const [quantityReposity, setQuantityReposity] = useState<number>(0);
     const [quantity, setQuantity] = useState<number>(1);
@@ -312,16 +312,32 @@ export const ProductProvider = ({ children }: any ) => {
      */
     const getNews = async () => {
 
-        setIsLoading(true);
+        try {
+            
+            setIsLoading(true);
+    
+            const news = await Sgdi.get<NewsData[]>('/Destacados', {
+                params: {
+                    token
+                }
+            });
+    
+            setIsLoading(false);
+            return news.data; 
 
-        const news = await Sgdi.get<NewsData[]>('/Destacados', {
-            params: {
-                token
-            }
-        });
+        } catch (error) {
 
-        setIsLoading(false);
-        return news.data; 
+            const err = error as AxiosError;
+            dispatch({
+                type: 'addMessageProduct',
+                payload:{
+                    titleMessage: constantsGl.titleError,
+                    messageProduct: err.response?.data,
+                }
+
+            });
+            
+        }
     }
 
 

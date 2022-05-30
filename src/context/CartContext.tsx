@@ -7,6 +7,7 @@ import { AuthContext } from './AuthContext';
 import Sgdi from "../api/Sgdi";
 import { AxiosError } from 'axios';
 import constGlobals from '../constants/globals';
+import { ProductoData } from '../interfaces/reposicionesInterface';
 
 
 type CartContextProps = {
@@ -21,7 +22,7 @@ type CartContextProps = {
     orders: Reposiciones[],
     loadOrders: boolean,
     notificationOrders: number,
-    addToCart: ( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => void,
+    addToCart: ( selectedProduct: ProductoData, idProductoLogistica: string, quantity: number ) => void,
     removeToCart: ( idProducto: string ) => void,
     addQuantityProduct: ( idProducto: string, quantity:number, actionCart:boolean ) => void,
     generateOrder: (products: { [key:string]: CartData } ) => void,
@@ -61,7 +62,7 @@ export const CartProvider = ({ children }: any ) => {
     const [loadOrders, setLoadOrders] = useState(true);
 
 
-    const addToCart = async( selectedProduct: CartData, idProductoLogistica: string, quantity: number ) => 
+    const addToCart = async( selectedProduct: ProductoData, idProductoLogistica: string, quantity: number ) => 
     {
         try {
             
@@ -219,10 +220,10 @@ export const CartProvider = ({ children }: any ) => {
                 }
             });
 
-            getOrderByUser(0);
             setProductsCart({});
             setTotalPrice(0);
             setTotalQuantity(0);
+            getOrderByUser(0);
 
 
         } catch (error) {
@@ -281,7 +282,9 @@ export const CartProvider = ({ children }: any ) => {
                 };           
             });
 
-            if(dataOrders.length > 0){
+            if(hojaActual === 0){
+                setOrders([ ...dataOrders ]);
+            } else if(hojaActual > 0 && dataOrders.length > 0){
                 setOrders([ ...orders,  ...dataOrders ]);
             } else {
                 setLoadOrders(false);

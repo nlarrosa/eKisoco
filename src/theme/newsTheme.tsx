@@ -16,7 +16,7 @@ export const styleNews = StyleSheet.create({
     },
 
     headerTextNews: {
-        fontSize: 18,
+        fontSize: 16,
         color: 'white',
         fontWeight: 'bold',
     },
