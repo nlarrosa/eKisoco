@@ -68,6 +68,7 @@ export const styleCart = StyleSheet.create({
     },
 
     crContainer: {
+        flex: 1,
         flexDirection: 'row',
         borderBottomWidth: 2,
         borderBottomColor: constColor.grey,

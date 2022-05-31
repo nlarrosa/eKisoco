@@ -40,6 +40,7 @@ export const NewsCard = ({ width=180, height=220, product, ribbonStatus=false }:
                 </View>
             )}
             <Image
+                key={product.Edicion + product.Familia}
                 source={{ uri: urlImg }}
                 style={ styleProduct.ncImage }
             />

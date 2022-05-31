@@ -125,7 +125,7 @@ export const ProductScreen = () => {
         behavior={ (Platform.OS === 'ios') ? 'padding': 'height' }
         keyboardVerticalOffset={ 50 }
     >
-        <ScrollView  nestedScrollEnabled={true} keyboardShouldPersistTaps='handled'>
+        <ScrollView   nestedScrollEnabled={true} keyboardShouldPersistTaps='handled'>
             <View style={ styleProduct.container }>
                 { searchText && (
                     <View>

@@ -37,9 +37,7 @@ export const ProductDetailScreen = ({ route, navigation}: Props) => {
 
   return (
     <ScrollView style={{ backgroundColor: 'white' }}>
-      <View>
-          <ProductCard producto={product} quantityRepository={ quantityReposity }/>
-      </View>
-      </ScrollView>
+      <ProductCard producto={product} quantityRepository={ quantityReposity }/>
+    </ScrollView>
   )
 }

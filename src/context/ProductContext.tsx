@@ -334,9 +334,7 @@ export const ProductProvider = ({ children }: any ) => {
                     titleMessage: constantsGl.titleError,
                     messageProduct: err.response?.data,
                 }
-
             });
-            
         }
     }
 

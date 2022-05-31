@@ -41,7 +41,7 @@ export const ProductCard = ({ producto, quantityRepository }: Props ) => {
     
       <View 
         key={producto?.Edicion}
-        style={{ flex: 1 }}
+        style={{ flex: 1, marginBottom: 20}}
       >
 
         <Card>

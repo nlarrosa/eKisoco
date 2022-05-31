@@ -19,7 +19,7 @@ export const OrderCard = ({ order}: Props) => {
 
     return (
     
-    <View style={{ ...styleCart.crContainer, paddingRight:30}}>
+    <View style={{ ...styleCart.crContainer, paddingRight:20}}>
         <View style={{ width: '100%'}}>
             <View style={{ ...styleCart.crTitleEdicion, ...styleCart.crStatus}}>
                 <View >

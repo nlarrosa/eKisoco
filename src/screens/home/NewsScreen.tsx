@@ -60,12 +60,14 @@ export const NewsScreen = () => {
 
     return (
     
-    <View style={{ backgroundColor: 'white', flexDirection: 'column', flex: 1 }}>
-        <View style={{ flex:3, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ flexDirection: 'column', flex: 1 }}>
+        <View style={{ flex:6, justifyContent: 'center', alignItems: 'center'}}>
             <View style={ styleNews.headerTitle}>
                 <Text style={ styleNews.headerTextNews }>{titleHome}</Text>
             </View>
             <Carousel 
+                layout={'default'} 
+                layoutCardOffset={18}
                 data={destacados}
                 firstItem={firsInit}
                 renderItem={  ({item}) => 
@@ -82,8 +84,8 @@ export const NewsScreen = () => {
                 slideStyle={{ flex: 1 }}
             />
         </View>
-        <Divider width={4} color={ constColor.green } style={{ marginVertical: 5 }}/>
-        <View style={{ flex:2}}>
+        {/* <Divider width={4} color={ constColor.green } style={{ marginVertical: 5 }}/> */}
+        <View style={{ flex:4, justifyContent: 'center' }}>
             <HorizontalSlide 
                 products={news}
                 title={ titleNews }

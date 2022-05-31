@@ -55,9 +55,10 @@ const TabBottomAndroid = () => {
     
     <TabAndroid.Navigator
       initialRouteName='NewsScreen'
+      shifting={false}
       activeColor={constColor.green}
       inactiveColor={ 'gray'}
-      backBehavior={'initialRoute'}
+      backBehavior={'firstRoute'}
       barStyle = {{
         backgroundColor: 'white',
         borderTopWidth: 1,
@@ -65,10 +66,7 @@ const TabBottomAndroid = () => {
         shadowColor: "#000",
         elevation: 13,
       }}
-
-      
     >
-
 
       <TabAndroid.Screen 
         name="NewsScreen" 
@@ -80,7 +78,6 @@ const TabBottomAndroid = () => {
           ),
         }}
       />
-
 
       <TabAndroid.Screen 
         name="OrdersScreen" 

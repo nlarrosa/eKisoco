@@ -9,7 +9,6 @@ export const stylesGral = StyleSheet.create({
         flex: 1,
         backgroundColor: 'white',
         justifyContent: 'center',
-        height: 700,
         paddingTop: 20
     },
 
@@ -154,7 +153,6 @@ export const stylesGral = StyleSheet.create({
       /** ------------------------------------- COMPONENTS STYLES --------------------------------------------------------- */
       /** HORIZONTAL SLIDE */
       uiHorizontaContainer: {
-        flex:1, 
         backgroundColor: constColor.green, 
         paddingBottom: 40, 
         paddingTop:10
