@@ -153,17 +153,18 @@ export const stylesGral = StyleSheet.create({
       /** ------------------------------------- COMPONENTS STYLES --------------------------------------------------------- */
       /** HORIZONTAL SLIDE */
       uiHorizontaContainer: {
-        backgroundColor: constColor.green, 
-        paddingBottom: 40, 
-        paddingTop:10
+        // backgroundColor: constColor.green, 
+        paddingBottom: 5, 
+        paddingTop:5
       },
       
       uiHorizontalTitle: {
         fontWeight: 'bold', 
         color: 'white', 
-        marginVertical: 10, 
+        marginVertical: 7, 
         fontSize: 17, 
-        textAlign:'center'
+        textAlign:'left',
+        marginHorizontal: 10
       },
 
 

@@ -128,7 +128,7 @@ export const styleProduct = StyleSheet.create({
     ncCountainer: {
         marginHorizontal: 2,
         paddingBottom: 0,
-        paddingHorizontal: 7
+        paddingHorizontal: 5
     },
 
     ncRibbon: {
@@ -181,7 +181,9 @@ export const styleProduct = StyleSheet.create({
     
     ncImageContainer: {
         flex: 1,
-        borderRadius: 10,
+        borderRadius: 5,
+        borderWidth: 2,
+        borderColor: 'white',
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

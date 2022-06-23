@@ -116,7 +116,13 @@ export const UserProvider = ( { children }: any ) => {
             const validate:any = validateProfileForm(profileData, grupoCuenta);
 
             if(!validate.status){
-                dispatch({ type: 'addMessageProfile', payload: validate.msg });
+                dispatch({ 
+                    type: 'addMessageProfile', 
+                    payload: { 
+                        messageProfile: validate.msg,
+                        title: constantes.titleError
+                    }
+                });
                 return;
             }
 
@@ -359,7 +365,6 @@ export const UserProvider = ( { children }: any ) => {
                 if( key !== 'Clave')
                 {
                     if(!Boolean(value)){
-        
                         validate = {
                             status: false,
                             msg: `Complete el campo ${key}`

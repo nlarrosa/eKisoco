@@ -15,7 +15,6 @@ interface Props {
 
 export const HorizontalSlide = ({ products, title }: Props) => {
 
-
   return (
 
     <View style={ stylesGral.uiHorizontaContainer }>
@@ -24,7 +23,7 @@ export const HorizontalSlide = ({ products, title }: Props) => {
             refreshing={true}
             keyExtractor={ (item) => item.Edicion + item.Familia }
             data={ products }
-            renderItem={  ({ item}:any) => <NewsCard width={140} height={180} product={ (item) }/> }
+            renderItem={  ({ item}:any) => <NewsCard width={135} height={170} product={ (item) }/> }
             horizontal={ true }
             showsHorizontalScrollIndicator={false}
         />

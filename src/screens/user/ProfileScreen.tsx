@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Text, View, ScrollView, TextInput, TouchableOpacity, Alert, RefreshControl, Platform, KeyboardAvoidingView } from 'react-native';
-import { Avatar } from 'react-native-elements';
+import { Avatar, Divider } from 'react-native-elements';
 import { StackScreenProps } from '@react-navigation/stack';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -120,6 +120,7 @@ export const ProfileScreen = () => {
         behavior={ (Platform.OS === 'ios') ? 'padding' : 'height' }
         keyboardVerticalOffset={ 100 }
       >
+        
         <ScrollView style={ stylesGral.glScrollView } keyboardShouldPersistTaps='handled'>
           <View style={ stylesGral.formControl }>
             <Text style={ stylesGral.glLabel }>Cambiar Clave *</Text>
@@ -158,6 +159,21 @@ export const ProfileScreen = () => {
             />
           </View>
           <View style={ stylesGral.formControl }>
+            <Text style={ stylesGral.glLabel }>Ingrese Celular *</Text>
+            <TextInput 
+              style={ stylesGral.glTextInputLine}
+              keyboardType='phone-pad'
+              autoCapitalize='none'
+              autoCorrect={ false }
+              onChangeText={ (value) => onChange( value, 'Celular')}
+              value={ formData?.Celular }
+              onSubmitEditing={ onSubmitHandler }
+            />
+          </View>
+
+          <Divider width={4} color={ constColor.green } style={{ marginTop: 20 }}/>
+          <Text style={ stylesGral.dividerHeader }>INGRESE LOS DATOS DE SU NEGOCIO</Text>
+          <View style={ stylesGral.formControl }>
             <Text style={ stylesGral.glLabel }>Ingrese Dirección *</Text>
             <TextInput 
               style={ stylesGral.glTextInputLine}
@@ -167,6 +183,7 @@ export const ProfileScreen = () => {
               onChangeText={ (value) => onChange( value, 'Direccion')}
               value={ formData?.Direccion }
               onSubmitEditing={ onSubmitHandler }
+              placeholder='Dirección de su kiosco'
             />
           </View>
           <View style={ stylesGral.formControl }>
@@ -179,18 +196,7 @@ export const ProfileScreen = () => {
               onChangeText={ (value) => onChange( value, 'CodPostal')}
               value={ formData?.CodPostal }
               onSubmitEditing={ onSubmitHandler }
-            />
-          </View>
-          <View style={ stylesGral.formControl }>
-            <Text style={ stylesGral.glLabel }>Ingrese Celular *</Text>
-            <TextInput 
-              style={ stylesGral.glTextInputLine}
-              keyboardType='phone-pad'
-              autoCapitalize='none'
-              autoCorrect={ false }
-              onChangeText={ (value) => onChange( value, 'Celular')}
-              value={ formData?.Celular }
-              onSubmitEditing={ onSubmitHandler }
+              placeholder='Código Postal de su kiosco'
             />
           </View>
           <View style={ stylesGral.formControl }>
@@ -203,6 +209,7 @@ export const ProfileScreen = () => {
               onChangeText={ (value) => onChange( value, 'Localidad' )}
               value={ formData?.Localidad || undefined }
               onSubmitEditing={ onSubmitHandler }
+              placeholder='Localidad de su kiosco'
             />
           </View>
           <View style={ stylesGral.formControl }>
