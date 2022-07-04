@@ -19,13 +19,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export const NewsScreen = () => {
 
-    const { getNews, isLoading, getUserQuantityReposity } = useContext(ProductContext);
+    const { getNews, getUserQuantityReposity } = useContext(ProductContext);
     const [news, setNews] = useState<NewsData[]>([]);
     const [destacados, setDestacados] = useState<ProductoData[]>([]);
     const [titleHome, setTitleHome] = useState<string>('');
     const { width: windowWidth } = Dimensions.get('window');
     const { height: windowHeight } = Dimensions.get('window');
     const [firsInit, setFirsInit] = useState<number>(3);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
 
 
@@ -47,6 +48,7 @@ export const NewsScreen = () => {
         setDestacados(destacadosData[0].items);
         setNews(newsData);
         setFirsInit(initItem);
+        setIsLoading(false);
     }
 
 

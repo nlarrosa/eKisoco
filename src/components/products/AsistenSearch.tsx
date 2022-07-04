@@ -101,7 +101,7 @@ export const AsistenSearch = () => {
 
   const loadTitulosProducts = async() => 
   {
-    const titulos:any = await getTitulosByAutor(selectedFamilia, selectedAutor);
+    const titulos:any = await getTitulosByAutor(selectedFamilia, selectedAutor, '');
     setTitulosProductos(titulos);
   }
 
@@ -126,7 +126,7 @@ export const AsistenSearch = () => {
       <Divider width={1} color={colors.grey} />
 
       
-      { Boolean(selectedTipo) && (
+      { Boolean(familiaProducts) && (
         <View>
           <Picker
             selectedValue={ selectedFamilia}
@@ -144,7 +144,7 @@ export const AsistenSearch = () => {
       <Divider width={1} color={colors.grey} />
 
 
-      { Boolean(selectedFamilia) && (
+      { Boolean(autorProducts) && (
         <View>
           <Picker
             selectedValue={ selectedAutor}
@@ -162,7 +162,7 @@ export const AsistenSearch = () => {
       <Divider width={1} color={colors.grey} />
 
 
-      { Boolean(selectedAutor) && (
+      { Boolean(titulosProductos) && (
         <View>
           <Picker
             selectedValue={ selectedTitulo }

@@ -9,7 +9,7 @@ import  constColor  from '../../constants/color';
 import { AsistenSearch } from '../../components/products/AsistenSearch';
 import { ProductContext } from '../../context/ProductContext';
 import { useNavigation } from '@react-navigation/native';
-import { ProductSearchData } from '../../interfaces/reposicionesInterface';
+import { ProductSearchData, ProductoData } from '../../interfaces/reposicionesInterface';
 import { ProductCard } from '../../components/products/ProductCard';
 import { CartContext } from '../../context/CartContext';
 import { Loading } from '../../components/ui/Loading';
@@ -30,7 +30,6 @@ export const ProductScreen = () => {
     const [searchText, setSearchText] = useState<boolean>(true);
     const [titleAsistida, setTitleAsistida] = useState<string>('BUSQUEDA ASISTIDA');
     const [searchResult, setSearchResult] = useState<ProductSearchData>();
-    const navigation = useNavigation();
 
 
     /** Validamos si el usuario esta habilitado
@@ -172,9 +171,9 @@ export const ProductScreen = () => {
                     <View>
                         { searchResult?.Titulos.map( product => (
                             <ProductCard 
-                            key={ product.Edicion }
-                            quantityRepository={ quantityReposity}
-                            producto={ product }
+                                key={ product.Edicion }
+                                quantityRepository={ quantityReposity}
+                                producto={ product }
                             />
                             ))}
                     </View>

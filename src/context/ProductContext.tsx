@@ -23,7 +23,7 @@ type ProductContextProps = {
     getSearchByText:   (texto: string) => Promise<ProductSearchData | undefined> ,
     getFamiliaByTipo:  (tipo: string) => Promise<FamiliasProductoData[] | undefined>,
     getAutorByFamilia: (idProductoLogistica: string) => Promise<AutorProductData[] | undefined>,
-    getTitulosByAutor: (idProductoLogistica: string, autor: string) => Promise<ProductoData[] | undefined>,
+    getTitulosByAutor: (idProductoLogistica: string, autor: string, edicion: string) => Promise<ProductoData[] | undefined>,
     getQuantityProduct:(quantity: number) => void,
     getNews: () => Promise<NewsData[]>,
     removeError: () => void,
@@ -251,7 +251,7 @@ export const ProductProvider = ({ children }: any ) => {
     /** Obtenemos los datos del producto de los cuales
      * utilizamos la descripcion para generar el titulo
      */
-    const getTitulosByAutor = async (idProductoLogistica: string, autor: string) => {
+    const getTitulosByAutor = async (idProductoLogistica: string, autor: string, edicion: string) => {
             
         try {
             
@@ -264,6 +264,7 @@ export const ProductProvider = ({ children }: any ) => {
                         token,
                         idProductoLogistica,
                         autor,
+                        edicion,
                     }
                 });
                 
@@ -295,7 +296,6 @@ export const ProductProvider = ({ children }: any ) => {
             });
         }
     }
-
 
 
     

@@ -163,7 +163,7 @@ export const stylesGral = StyleSheet.create({
         color: 'white', 
         marginVertical: 7, 
         fontSize: 17, 
-        textAlign:'left',
+        textAlign:'center',
         marginHorizontal: 10
       },
 
