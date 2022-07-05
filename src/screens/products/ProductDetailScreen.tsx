@@ -46,7 +46,6 @@ export const ProductDetailScreen = ({ route, navigation}: Props) => {
 
     const getProduct = async (product: any) => {
        const data = await getTitulosByAutor(product.IdProductoLogistica, product.Autor, product.Edicion);
-       
        data?.map((item) => {
           setProductDetail(item);
        });
