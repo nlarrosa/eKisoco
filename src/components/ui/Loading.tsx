@@ -1,5 +1,5 @@
 import React from 'react'
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
 import { ActivityIndicator } from 'react-native-paper';
 
 import constColor from '../../constants/color';
@@ -19,6 +19,7 @@ export const Loading = ( { size = 50, color = constColor.green}: Props) => {
             size={ size }
             color={ color }
         />
+        <Text style={{ marginTop: 10, alignItems: 'center'}}>Cargando...</Text>
     </View>
   )
 }
