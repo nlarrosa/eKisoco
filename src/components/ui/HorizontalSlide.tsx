@@ -20,6 +20,7 @@ export const HorizontalSlide = ({ products, title }: Props) => {
     <View style={ stylesGral.uiHorizontaContainer }>
         <Text style={ stylesGral.uiHorizontalTitle }>{ title }</Text>
         <FlatList 
+            removeClippedSubviews
             refreshing={true}
             keyExtractor={ (item) => item.Edicion + item.Familia }
             data={ products }

@@ -1,7 +1,7 @@
 import axios from "axios";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const baseURL = 'https://q-sgdiwebapi.lanacion.com.ar/api';
+
+const baseURL = 'https://sgdiwebapi.lanacion.com.ar/api';
 
 
 const Sgdi = axios.create({ 

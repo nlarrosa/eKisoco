@@ -71,8 +71,8 @@ export const NewsScreen = () => {
                     firstItem={firsInit}
                     renderItem={  ({item}) => 
                         <NewsCard 
-                            width={(news.length > 1) ? 200 : 250} 
-                            height={(news.length > 1) ? 250 : 350} 
+                            width={(news.length > 1) ? 200 : 240} 
+                            height={(news.length > 1) ? 250 : 330} 
                             product={ item } 
                             ribbonStatus={true}
                         /> }

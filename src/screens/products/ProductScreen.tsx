@@ -82,6 +82,7 @@ export const ProductScreen = () => {
     /** Busqueda de productos por texto */
     const serachTextHandler = async() => 
     {
+        setSearchResult(undefined);
         const result = await getSearchByText(search.toLowerCase());
         setSearchResult(result);
         Keyboard.dismiss();

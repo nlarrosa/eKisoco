@@ -20,11 +20,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.duoaap.EKiosco"
+      "bundleIdentifier": "com.duoapp.EKiosco"
     },
     "android": {
-      "package": "com.duoaap.EKiosco",
-      "versionCode": 3,
+      "package": "com.duoapp.EKiosco",
+      "versionCode": 5,
+      "permissions": [],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
